@@ -1,0 +1,31 @@
+﻿@using Photor.Core.Models
+@model UserSearchViewModel
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<form method="post">
+    <div class="form-group">
+      <label for="exampleInputEmail1">Search</label>
+      <input value="@Model.SearchValue" asp-for="@Model.SearchValue" type="text" class="form-control" placeholder="Search by username">
+    </div>
+    <button type="submit" class="btn btn-primary" asp-controller="User" asp-action="SearchUsersById">Submit</button>
+</form>
+
+@if (Model.Users == null){
+    <p class="text-center">No matches found</p>
+}
+else {
+    @foreach (var user in Model.Users) {
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">@user.UserName</h5>
+                <a asp-action="SendFriendInvitation" asp-controller="Friend" asp-route-receiverId="@user.Id" class="card-link">Add friend</a>
+                <a href="#" class="card-link">Remove friend</a>
+            </div>
+        </div>
+    }
+}

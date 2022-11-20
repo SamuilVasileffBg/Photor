@@ -12,6 +12,8 @@ namespace Photor.Core.Contracts
     {
         public Task<bool> SendFriendInvitationAsync(string senderId, string receiverId);
 
+        public Task DeleteFriendInvitationAsync(string senderId, string receiverId);
+
         public Task<IEnumerable<FriendInvitationViewModel>> GetReceivedFriendInvitationsAsync(string receiverId);
 
         public Task<FriendInvitation> FindFriendInvitationAsync(string senderId, string receiverId);
@@ -25,6 +27,8 @@ namespace Photor.Core.Contracts
         public Task AddUserFriendAsync(string userId, string friendId);
 
         public Task RemoveUserFriendAsync(string userId, string friendId);
+
+        public Task<IEnumerable<ApplicationUser>> GetUserFriendsAsync(string userId);
 
     }
 }

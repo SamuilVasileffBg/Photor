@@ -2,6 +2,7 @@
 using Photor.Core.Contracts;
 using Photor.Core.Models;
 using Photor.Infrastructure.Data;
+using Photor.Infrastructure.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,21 @@ namespace Photor.Core.Services
         public UserService(ApplicationDbContext context)
         {
             this.context = context;
+        }
+
+        public ApplicationUser? GetUserById(string userId)
+        {
+            return context
+                .Users
+                .ToList()
+                .FirstOrDefault(u => u.Id == userId);
+        }
+
+        public async Task<ApplicationUser?> GetUserByIdAsync(string userId)
+        {
+            return await context
+                .Users
+                .FirstOrDefaultAsync(u => u.Id == userId);
         }
 
         public async Task<IEnumerable<UserViewModel>?> SearchUsersAsync(string? searchValue)

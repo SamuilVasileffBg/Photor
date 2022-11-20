@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Photor.Core.Contracts;
 using Photor.Core.Models;
+using Photor.Core.Parsers;
 using Photor.Infrastructure.Data;
 using Photor.Infrastructure.Data.Models;
 
@@ -119,10 +120,7 @@ namespace Photor.Controllers
         {
             var data = await context
                 .Users
-                .Select(u => new UserViewModel()
-                    {
-                        UserName = u.UserName,
-                    })
+                .Select(u => u.ParseToViewModel())
                 .ToListAsync();
 
             return View(data);

@@ -1,4 +1,4 @@
-﻿namespace Photor.Constants
+﻿namespace Photor.Infrastructure.Data.Constants
 {
     public static class DbModelsConstants
     {
@@ -12,6 +12,12 @@
 
             public const int PasswordMinLength = 5;
             public const int PasswordMaxLength = 20;
+
+            public const int FirstAndLastNameMinLength = 2;
+            public const int FirstAndLastNameMaxLength = 30;
+
+            public const int DescriptionMinLength = 0;
+            public const int DescriptionMaxLength = 1000;
         }
     }
 }

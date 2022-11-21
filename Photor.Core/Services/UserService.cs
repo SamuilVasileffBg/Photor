@@ -20,6 +20,23 @@ namespace Photor.Core.Services
             this.context = context;
         }
 
+        public async Task EditAccountAsync(UserViewModel model)
+        {
+            var user = await GetUserByIdAsync(model.Id);
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(model), "Cannot find user with such id.");
+            }
+
+            user.UserName = model.UserName;
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.Description = model.Description;
+
+            await context.SaveChangesAsync();
+        }
+
         public ApplicationUser? GetUserById(string userId)
         {
             return context

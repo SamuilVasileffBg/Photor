@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Photor.Core.Contracts;
 using Photor.Core.Models;
 using Photor.Core.Parsers;
+using Photor.Extensions;
 using Photor.Infrastructure.Data;
 using Photor.Infrastructure.Data.Models;
 
@@ -148,6 +149,46 @@ namespace Photor.Controllers
         public IActionResult SearchUsersById(UserSearchViewModel model)
         {
             return RedirectToAction(nameof(Search), nameof(User), new { searchValue = model.SearchValue });
+        }
+
+        public async Task<IActionResult> Account(string id)
+        {
+            var model = (await userService.GetUserByIdAsync(id)).ParseToViewModel();
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(string id)
+        {
+            var model = (await userService
+                .GetUserByIdAsync(id))
+                .ParseToViewModel();
+
+            if (User.Id() != id)
+            {
+                throw new Exception("Cannot edit someone else' account.");
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(UserViewModel model)
+        {
+            if (User.Id() != model.Id)
+            {
+                throw new Exception("Cannot edit someone else' account.");
+            }
+
+            if (ModelState.IsValid == false)
+            {
+                return View(model);
+            }
+
+            await userService.EditAccountAsync(model);
+
+            return RedirectToAction(nameof(Account), nameof(User), new { id = model.Id });
         }
     }
 }

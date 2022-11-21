@@ -13,7 +13,7 @@
       <label for="exampleInputEmail1">Search</label>
       <input value="@Model.SearchValue" asp-for="@Model.SearchValue" type="text" class="form-control" placeholder="Search by username">
     </div>
-    <button type="submit" class="btn btn-primary" asp-controller="User" asp-action="SearchUsersById">Submit</button>
+    <button type="submit" class="btn btn-primary" asp-controller="User" asp-action="SearchUsersById">Search</button>
 </form>
 
 @if (Model.Users == null){
@@ -42,7 +42,7 @@ else {
                 }
                 else if (await friendService.FindUserFriendAsync(User.Id(), user.Id) == null)
                 {
-                    <a asp-action="SendFriendInvitation" asp-controller="Friend" asp-route-receiverId="@user.Id" class="card-link">Add friend</a>
+                    <a asp-action="SendFriendInvitation" asp-controller="Friend" asp-route-receiverId="@user.Id" class="card-link">Send friend invitation</a>
                 }
                 else
                 {

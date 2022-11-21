@@ -11,7 +11,9 @@
 {
     <div class="card" style="width: 18rem;">
             <div class="card-body">
-                <h5 class="card-title">@user.UserName</h5>
+                <a asp-action="Account" asp-controller="User" asp-route-id="@user.Id">
+                    <h5 class="card-title">@user.UserName</h5>
+                </a>
                 @if (User.Id() == user.Id)
                 {
                     <p>This is your account</p>
@@ -30,7 +32,7 @@
                 }
                 else if (await friendService.FindUserFriendAsync(User.Id(), user.Id) == null)
                 {
-                    <a asp-action="SendFriendInvitation" asp-controller="Friend" asp-route-receiverId="@user.Id" class="card-link">Add friend</a>
+                    <button class="btn btn-primary" asp-action="SendFriendInvitation" asp-controller="Friend" asp-route-receiverId="@user.Id" class="card-link">Send friend invitation</button>
                 }
                 else
                 {

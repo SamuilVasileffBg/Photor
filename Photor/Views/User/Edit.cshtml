@@ -1,0 +1,55 @@
+﻿@model UserViewModel
+
+@{
+    ViewData["Title"] = "Edit Account";
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+
+
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <form id="registerForm" method="post">
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="@Model.Id" value="@Model.Id"/>
+            <div class="text-center mb-3">
+                <label asp-for="@Model.UserName">Username</label>
+                <input class="form-control " autocomplete="username" aria-required="true" value="@Model.UserName" asp-for="@Model.UserName" />
+                <span asp-validation-for="@Model.UserName" class="text-danger"></span>
+            </div>
+            <div class="text-center mb-3">
+                <label asp-for="@Model.FirstName">First Name</label>
+                <input class="form-control" aria-required="true" value="@Model.FirstName" asp-for="@Model.FirstName" />
+                <span asp-validation-for="@Model.FirstName" class="text-danger"></span>
+            </div>
+            <div class="text-center mb-3">
+                <label asp-for="@Model.LastName">Last Name</label>
+                <input class="form-control" aria-required="true" value="@Model.LastName" asp-for="@Model.LastName" />
+                <span asp-validation-for="@Model.LastName" class="text-danger"></span>
+            </div>
+            <div class="text-center mb-3">
+                <label asp-for="@Model.Description">Description</label>
+                <textarea class="form-control" aria-required="true" asp-for="@Model.Description">@Model.Description</textarea>
+                <span asp-validation-for="@Model.Description" class="text-danger"></span>
+            </div>
+            @*<div class="text-center mb-3">
+                <label asp-for="@Model.Email">Email</label>
+                <input class="form-control " autocomplete="username" aria-required="true" asp-for="@Model.Email" disabled/>
+                <span asp-validation-for="@Model.Email" class="text-danger"></span>
+            </div>*@
+            @*<div class="text-center mb-3">
+                <label asp-for="@Model.Password">Password</label>
+                <input class="form-control" type="password" autocomplete="new-password" aria-required="true" asp-for="@Model.Password" disabled/>
+                <span asp-validation-for="@Model.Password" class="text-danger"></span>
+            </div>*@
+            <div class="text-center">
+                <button id="registerSubmit" type="submit" class="btn btn-primary">Edit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

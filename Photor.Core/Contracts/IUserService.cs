@@ -14,6 +14,8 @@ namespace Photor.Core.Contracts
 
         public Task<ApplicationUser> GetUserByIdAsync(string userId);
 
+        public Task EditAccountAsync(UserViewModel model);
+
         public ApplicationUser GetUserById(string userId);
     }
 }

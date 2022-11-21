@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Photor.Core.Parsers
 {
-    public static class UserModelExtensions
+    public static class ApplicationUserExtensions
     {
         public static UserViewModel ParseToViewModel(this ApplicationUser applicationUser)
         {
@@ -16,6 +16,9 @@ namespace Photor.Core.Parsers
             {
                 Id = applicationUser.Id,
                 UserName = applicationUser.UserName,
+                FirstName = applicationUser.FirstName,
+                LastName = applicationUser.LastName,
+                Description = applicationUser.Description,
             };
         }
     }

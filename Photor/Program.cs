@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Photor.Core.Contracts;
 using Photor.Core.Services;
 using Photor.Infrastructure.Data;
+using Photor.Infrastructure.Data.Common;
 using Photor.Infrastructure.Data.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LoginPath = "/User/Login";
 });
 
+builder.Services.AddScoped<IRepository, Repository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IFriendService, FriendService>();
 

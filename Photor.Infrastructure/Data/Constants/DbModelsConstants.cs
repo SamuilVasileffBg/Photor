@@ -19,5 +19,11 @@
             public const int DescriptionMinLength = 0;
             public const int DescriptionMaxLength = 1000;
         }
+
+        public static class Post
+        {
+            public const int DescriptionMinLength = 0;
+            public const int DescriptionMaxLength = 500;
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using static Photor.Infrastructure.Data.Constants.DbModelsConstants.Post;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -19,8 +20,10 @@ namespace Photor.Infrastructure.Data.Models
 
         public ApplicationUser ApplicationUser { get; set; } = null!;
 
-        [StringLength(200)]
-        [Column(TypeName = "NVARCHAR(200)")]
+        [Required]
+        public string ImageUrl { get; set; } = null!;
+
+        [StringLength(DescriptionMaxLength), MinLength(DescriptionMinLength)]
         public string? Description { get; set; }
 
         //photo

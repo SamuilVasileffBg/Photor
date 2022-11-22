@@ -1,0 +1,34 @@
+﻿@model AddPostViewModel
+
+@{
+    ViewData["Title"] = "Add Post";
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+
+
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <form id="registerForm" method="post">
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="text-center mb-3">
+                <label asp-for="@Model.ImageUrl">Image Url</label>
+                <input class="form-control " autocomplete="username" aria-required="true" asp-for="@Model.ImageUrl" />
+                <span asp-validation-for="@Model.ImageUrl" class="text-danger"></span>
+            </div>
+            <div class="text-center mb-3">
+                <label asp-for="@Model.Description">Description</label>
+                <input class="form-control" aria-required="true" asp-for="@Model.Description" />
+                <span asp-validation-for="@Model.Description" class="text-danger"></span>
+            </div>
+            <div class="text-center">
+                <button id="addPostSubmit" type="submit" class="btn btn-primary">Add Post</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

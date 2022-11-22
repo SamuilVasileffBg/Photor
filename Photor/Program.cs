@@ -26,6 +26,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddScoped<IRepository, Repository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IFriendService, FriendService>();
+builder.Services.AddScoped<IPostService, PostService>();
 
 var app = builder.Build();
 

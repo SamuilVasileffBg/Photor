@@ -13,6 +13,8 @@ namespace Photor.Infrastructure.Data
 
         //public DbSet<FriendInvitation> FriendsInvitations { get; set; }
 
+        //public DbSet<Image> Images { get; set; }
+
         public DbSet<UserFriend> UsersFriends { get; set; }
 
         public DbSet<Post> Posts { get; set; }

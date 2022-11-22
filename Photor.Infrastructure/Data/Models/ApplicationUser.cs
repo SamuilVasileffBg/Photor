@@ -50,5 +50,10 @@ namespace Photor.Infrastructure.Data.Models
         //public List<FriendInvitation> FriendInvitations { get; set; } = new List<FriendInvitation>();
 
         public List<UserSavedPost> UserSavedPosts { get; set; } = new List<UserSavedPost>();
+
+        //[ForeignKey(nameof(Image))]
+        //public Guid ImageId { get; set; }
+        //
+        //public byte[] Image { get; set; }
     }
 }

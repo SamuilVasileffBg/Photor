@@ -1,4 +1,4 @@
-﻿using Photor.Core.Models;
+﻿using Photor.Core.Models.Post;
 using Photor.Infrastructure.Data;
 using Photor.Infrastructure.Data.Models;
 using System;
@@ -13,6 +13,8 @@ namespace Photor.Core.Contracts
     {
         public Task<Guid> AddPostAsync(AddPostViewModel model);
 
-        public Task<Post> GetPostAsync(string id);
+        public Task<Post?> GetPostAsync(string id);
+
+        public Task EditPostAsync(EditPostViewModel model);
     }
 }

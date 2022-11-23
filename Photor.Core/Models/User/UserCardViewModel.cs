@@ -1,4 +1,4 @@
-﻿namespace Photor.Core.Models
+﻿namespace Photor.Core.Models.User
 {
     public class UserCardViewModel
     {

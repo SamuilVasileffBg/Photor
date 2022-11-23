@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Photor.Core.Models.User;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Photor.Core.Models
+namespace Photor.Core.Models.Post
 {
     public class ViewPostViewModel
     {

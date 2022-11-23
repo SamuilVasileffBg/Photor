@@ -1,4 +1,4 @@
-﻿using Photor.Core.Models;
+﻿using Photor.Core.Models.User;
 using Photor.Infrastructure.Data.Models;
 using System;
 using System.Collections.Generic;

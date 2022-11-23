@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Photor.Core.Contracts;
-using Photor.Core.Models;
+using Photor.Core.Models.Friend;
 using Photor.Core.Parsers;
 using Photor.Infrastructure.Data;
 using Photor.Infrastructure.Data.Models;

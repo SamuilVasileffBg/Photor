@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Photor.Core.Contracts;
-using Photor.Core.Models;
+using Photor.Core.Models.User;
 using Photor.Infrastructure.Data;
 using Photor.Infrastructure.Data.Models;
 using System;

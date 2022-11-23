@@ -1,8 +1,8 @@
 ﻿@using Photor.Core.Models.Post
-@model AddPostViewModel
+@model EditPostViewModel
 
 @{
-    ViewData["Title"] = "Add Post";
+    ViewData["Title"] = "Edit Post";
 }
 
 <h1 class="text-center">@ViewData["Title"]</h1>
@@ -10,14 +10,11 @@
 
 <div class="row">
     <div class="col-md-4 offset-md-4">
-        <form id="addPost" method="post">
+        <form id="editPost" method="post">
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="text-center mb-3">
-                <label asp-for="@Model.ImageUrl">Image Url</label>
-                <input class="form-control " autocomplete="username" aria-required="true" asp-for="@Model.ImageUrl" />
-                <span asp-validation-for="@Model.ImageUrl" class="text-danger"></span>
-            </div>
+            <input type="hidden" asp-for="@Model.Id"></input>
+            <input type="hidden" asp-for="@Model.UserId"></input>
             <div class="text-center mb-3">
                 <label asp-for="@Model.Description">Description</label>
                 <input class="form-control" aria-required="true" asp-for="@Model.Description" />
@@ -30,7 +27,7 @@
                 </label>
             </div>
             <div class="text-center">
-                <button id="addPostSubmit" type="submit" class="btn btn-primary">Add Post</button>
+                <button id="addPostSubmit" type="submit" class="btn btn-primary">Edit Post</button>
             </div>
         </form>
     </div>

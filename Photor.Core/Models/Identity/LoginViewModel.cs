@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Photor.Core.Models
+namespace Photor.Core.Models.Identity
 {
     public class LoginViewModel
     {

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Photor.Core.Models
+namespace Photor.Core.Models.Post
 {
     public class AddPostViewModel
     {
@@ -17,6 +17,8 @@ namespace Photor.Core.Models
 
         [StringLength(DescriptionMaxLength), MinLength(DescriptionMinLength)]
         public string? Description { get; set; }
+
+        public bool FriendsOnly { get; set; }
 
     }
 }

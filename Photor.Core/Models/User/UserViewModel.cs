@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static Photor.Infrastructure.Data.Constants.DbModelsConstants.ApplicationUser;
 
-namespace Photor.Core.Models
+namespace Photor.Core.Models.User
 {
     public class UserViewModel
     {

@@ -1,5 +1,6 @@
-﻿using Photor.Core.Contracts;
-using Photor.Core.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Photor.Core.Contracts;
+using Photor.Core.Models.Post;
 using Photor.Infrastructure.Data;
 using Photor.Infrastructure.Data.Common;
 using Photor.Infrastructure.Data.Models;
@@ -27,7 +28,7 @@ namespace Photor.Core.Services
             Post post = new Post()
             {
                 Description = model.Description,
-                FriendsOnly = false,
+                FriendsOnly = model.FriendsOnly,
                 IsDeleted = false,
                 ImageUrl = model.ImageUrl,
                 UserId = model.UserId,
@@ -42,10 +43,30 @@ namespace Photor.Core.Services
             return post.Id;
         }
 
-        public async Task<Post> GetPostAsync(string id)
+        public async Task EditPostAsync(EditPostViewModel model)
+        {
+            var post = await repository
+                .All<Post>()
+                .FirstOrDefaultAsync(p => p.Id == model.Id);
+
+            if (post == null)
+            {
+                throw new Exception("Cannot find such post.");
+            }
+
+            post.Description = model.Description;
+            post.FriendsOnly = model.FriendsOnly;
+
+            await repository
+                .SaveChangesAsync();
+        }
+
+        public async Task<Post?> GetPostAsync(string id)
         {
             return await repository
-                .GetByIdAsync<Post>(id);
+                .AllReadonly<Post>()
+                .Include(p => p.ApplicationUser)
+                .FirstOrDefaultAsync(p => p.Id.ToString() == id && p.IsDeleted == false);
         }
     }
 }

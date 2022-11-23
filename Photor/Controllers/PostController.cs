@@ -89,6 +89,27 @@ namespace Photor.Controllers
             return RedirectToAction("View", "Post", new { id = model.Id });
         }
 
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var post = await postService
+                .GetPostAsync(id.ToString());
+
+            if (post == null)
+            {
+                throw new Exception("Cannot find such post.");
+            }
+
+            if (User.Id() != post.UserId)
+            {
+                throw new Exception("Cannot delete a post which isn't yours.");
+            }
+
+            await postService
+                .DeletePostAsync(id);
+
+            return RedirectToAction("Index", "Home");
+        }
+
         public async Task<IActionResult> View(string id)
         {
             var post = await postService.GetPostAsync(id);

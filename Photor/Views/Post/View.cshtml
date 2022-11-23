@@ -19,5 +19,8 @@
         <form>
             <button asp-action="Edit" asp-controller="Post" asp-route-id="@Model.Id" class="btn btn-primary">Edit your post</button>
         </form>
+        <form>
+            <button asp-action="Delete" asp-controller="Post" asp-route-id="@Model.Id" class="btn btn-primary">Delete your post</button>
+        </form>
     }
 </div>

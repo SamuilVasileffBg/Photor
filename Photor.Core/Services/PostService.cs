@@ -43,6 +43,21 @@ namespace Photor.Core.Services
             return post.Id;
         }
 
+        public async Task DeletePostAsync(Guid id)
+        {
+            var post = await GetPostAsync(id.ToString());
+
+            if (post == null)
+            {
+                throw new Exception("Cannot find such post.");
+            }
+
+            post.IsDeleted = true;
+
+            await repository
+                .SaveChangesAsync();
+        }
+
         public async Task EditPostAsync(EditPostViewModel model)
         {
             var post = await repository
@@ -64,7 +79,7 @@ namespace Photor.Core.Services
         public async Task<Post?> GetPostAsync(string id)
         {
             return await repository
-                .AllReadonly<Post>()
+                .All<Post>()
                 .Include(p => p.ApplicationUser)
                 .FirstOrDefaultAsync(p => p.Id.ToString() == id && p.IsDeleted == false);
         }

@@ -40,11 +40,11 @@ namespace Photor.Infrastructure.Data
             //builder.Entity<UserFriend>()
             //    .HasKey(f => new { f.UserId, f.FriendId });
 
-            builder.Entity<UserLikedPost>()
-                .HasKey(upl => new { upl.UserId, upl.PostId });
+            //builder.Entity<UserLikedPost>()
+            //    .HasKey(upl => new { upl.UserId, upl.PostId });
 
-            builder.Entity<UserSavedPost>()
-                .HasKey(usp => new { usp.UserId, usp.PostId });
+            //builder.Entity<UserSavedPost>()
+            //    .HasKey(usp => new { usp.UserId, usp.PostId });
 
             builder
                 .Entity<ApplicationUser>()

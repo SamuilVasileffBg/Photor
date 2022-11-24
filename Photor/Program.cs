@@ -27,6 +27,7 @@ builder.Services.AddScoped<IRepository, Repository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IFriendService, FriendService>();
 builder.Services.AddScoped<IPostService, PostService>();
+builder.Services.AddScoped<ILikeService, LikeService>();
 
 var app = builder.Build();
 

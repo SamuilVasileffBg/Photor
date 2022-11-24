@@ -11,6 +11,9 @@ namespace Photor.Infrastructure.Data.Models
 {
     public class UserLikedPost
     {
+        [Key]
+        public Guid Id { get; set; }
+
         [Required]
         [ForeignKey(nameof(User))]
         public string UserId { get; set; } = null!;
@@ -22,6 +25,9 @@ namespace Photor.Infrastructure.Data.Models
         public Guid PostId { get; set; }
 
         public Post Post { get; set; } = null!;
+
+        [Required]
+        public DateTime DateTime { get; set; }
 
         [DefaultValue("false")]
         public bool IsDeleted { get; set; }

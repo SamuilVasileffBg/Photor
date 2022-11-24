@@ -1,5 +1,6 @@
 ﻿@using Photor.Core.Models.Post
 @using Photor.Extensions
+@inject ILikeService likeService;
 @model ViewPostViewModel
 
 @*
@@ -14,6 +15,19 @@
                 asp-route-id="@Model.User.Id">@Model.User.UserName</a>'s post</h1>
     <img src="@Model.ImageUrl"></img>
     <p>@Model.Description</p>
+    @if (await likeService.FindLikeAsync(Model.Id, User.Id()) != null)
+    {
+        <form>
+            <button asp-action="DeleteLike" asp-controller="Like" asp-route-id="@Model.Id" class="btn btn-primary">Unlike</button>
+        </form>
+    }
+    else
+    {
+        <form>
+            <button asp-action="Add" asp-controller="Like" asp-route-id="@Model.Id" class="btn btn-primary">Like</button>
+        </form>
+    }
+
     @if (User.Id() == Model.User.Id)
     {
         <form>

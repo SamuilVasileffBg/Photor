@@ -11,6 +11,9 @@ namespace Photor.Infrastructure.Data.Models
 {
     public class UserSavedPost
     {
+        [Key]
+        public Guid Id { get; set; }
+
         [Required]
         [ForeignKey(nameof(User))]
         public string UserId { get; set; } = null!;

@@ -25,5 +25,11 @@
             public const int DescriptionMinLength = 0;
             public const int DescriptionMaxLength = 500;
         }
+
+        public static class UserPostComment
+        {
+            public const int CommentMinLength = 1;
+            public const int CommentMaxLength = 1000;
+        }
     }
 }

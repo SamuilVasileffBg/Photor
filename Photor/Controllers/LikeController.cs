@@ -32,7 +32,8 @@ namespace Photor.Controllers
             var userId = User.Id();
 
             if (post.FriendsOnly == true &&
-                await friendService.FindUserFriendAsync(User.Id(), post.UserId) == null)
+                post.UserId != userId &&
+                await friendService.FindUserFriendAsync(userId, post.UserId) == null)
             {
                 throw new Exception("User has no right to like this post.");
             }

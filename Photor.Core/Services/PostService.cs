@@ -88,7 +88,7 @@ namespace Photor.Core.Services
         {
             return await repository
                 .All<Post>()
-                .Where(p => p.UserId == userId)
+                .Where(p => p.UserId == userId && p.IsDeleted == false)
                 .ToListAsync();
         }
     }

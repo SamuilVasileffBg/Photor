@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Photor.Core.Contracts;
+using Photor.Core.Models.Post;
 using Photor.Extensions;
 
 namespace Photor.Controllers
@@ -19,10 +20,10 @@ namespace Photor.Controllers
             this.friendService = friendService;
         }
 
-        public async Task<IActionResult> Add(Guid id)
+        public async Task<IActionResult> Add(ViewPostViewModel model)
         {
             var post = await postService
-                .GetPostAsync(id.ToString());
+                .GetPostAsync(model.Id.ToString());
 
             if (post == null)
             {
@@ -39,17 +40,17 @@ namespace Photor.Controllers
             }
 
             await likeService
-                .AddLikeAsync(id, userId);
+                .AddLikeAsync(model.Id, userId);
 
-            return RedirectToAction("View", "Post", new { id });
+            return View("../Post/View", model);
         }
 
-        public async Task<IActionResult> DeleteLike(Guid id)
+        public async Task<IActionResult> DeleteLike(ViewPostViewModel model)
         {
             await likeService
-                .DeleteLikeAsync(id, User.Id());
+                .DeleteLikeAsync(model.Id, User.Id());
 
-            return RedirectToAction("View", "Post", new { id });
+            return View("../Post/View", model);
         }
     }
 }

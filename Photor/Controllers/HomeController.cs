@@ -20,29 +20,6 @@ namespace Photor.Controllers
 
         public IActionResult Index()
         {
-            //context.UsersFriends.Add(new UserFriend
-            //{
-            //    UserId = "6af41298-9c9f-4239-a9a8-42b7e00ee7ae",
-            //    FriendId = "6af5244d-16c0-4d31-a9d6-9799a62bb2f6",
-            //});
-            //
-            //context.SaveChanges();
-
-            var firstUser = context
-                .Users
-                .FirstOrDefault(u => u.Id == "6af41298-9c9f-4239-a9a8-42b7e00ee7ae");
-
-            var secondUser = context
-                .Users
-                .FirstOrDefault(u => u.Id == "6af5244d-16c0-4d31-a9d6-9799a62bb2f6");
-
-            var usersFriends = context
-                .UsersFriends
-                .ToList();
-
-            Console.WriteLine($"User {firstUser.UserName} has {firstUser.UsersFriends.Count} friends");
-            Console.WriteLine($"User {secondUser.UserName} has {secondUser.UsersFriends.Count} friends");
-
             return View();
         }
 

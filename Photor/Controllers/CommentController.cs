@@ -26,6 +26,12 @@ namespace Photor.Controllers
                 return View("../Post/View", model);
             }
 
+            if (model.CommentValue.Length > 1000)
+            {
+                ModelState.AddModelError("", "Your comment shouldn't be longer than 1000 characters.");
+                return View("../Post/View", model);
+            }
+
             //if (ModelState.IsValid == false)
             //{
             //    return View("View", model);

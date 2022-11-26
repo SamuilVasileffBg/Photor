@@ -83,5 +83,13 @@ namespace Photor.Core.Services
                 .Include(p => p.ApplicationUser)
                 .FirstOrDefaultAsync(p => p.Id.ToString() == id && p.IsDeleted == false);
         }
+
+        public async Task<List<Post>> GetUserPostsAsync(string userId)
+        {
+            return await repository
+                .All<Post>()
+                .Where(p => p.UserId == userId)
+                .ToListAsync();
+        }
     }
 }

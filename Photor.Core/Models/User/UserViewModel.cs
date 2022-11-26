@@ -21,5 +21,7 @@ namespace Photor.Core.Models.User
         [Required]
         [StringLength(FirstAndLastNameMaxLength), MinLength(FirstAndLastNameMinLength)]
         public string LastName { get; set; } = null!;
+
+        public List<Photor.Infrastructure.Data.Models.Post>? Posts { get; set; }
     }
 }

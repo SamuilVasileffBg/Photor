@@ -18,16 +18,22 @@ namespace Photor.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly ApplicationDbContext context;
         private readonly IUserService userService;
+        private readonly IPostService postService;
+        private readonly IFriendService friendService;
 
         public UserController(SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
             ApplicationDbContext context,
-            IUserService userService)
+            IUserService userService,
+            IPostService postService,
+            IFriendService friendService)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.context = context;
             this.userService = userService;
+            this.postService = postService;
+            this.friendService = friendService;
         }
 
         [HttpGet]
@@ -155,6 +161,13 @@ namespace Photor.Controllers
         public async Task<IActionResult> Account(string id)
         {
             var model = (await userService.GetUserByIdAsync(id)).ParseToViewModel();
+
+            var usersAreFriends = await friendService.FindUserFriendAsync(id, User.Id()) != null ? true : false;
+
+            model.Posts = (await postService.GetUserPostsAsync(id))
+                .Where(p => p.FriendsOnly == false ||
+                (p.FriendsOnly == true && usersAreFriends))
+                .ToList();
 
             return View(model);
         }

@@ -18,5 +18,7 @@ namespace Photor.Core.Contracts
         public Task EditPostAsync(EditPostViewModel model);
 
         public Task DeletePostAsync(Guid id);
+
+        public Task<List<Post>> GetUserPostsAsync(string userId);
     }
 }

@@ -26,5 +26,27 @@
                 <button asp-action="Edit" asp-controller="User" asp-route-id="@Model.Id" class="btn btn-primary">Edit</button>
             </form>
         }
+
+        @if ((Model?.Posts?.Count ?? 0) == 0)
+        {
+            <h2 class="mt-5">No posts available</h2>
+        }
+        else
+        {
+
+            <div class="text-center row">
+                @foreach (var post in Model.Posts)
+                {
+                    <div class="card col-4" style="width: 20rem; ">
+                        <img class="card-img-top" style="width: 18rem;"
+                         src="@post.ImageUrl" alt="Book Image">
+                        <div class="card-body">
+
+                            <h5 class="card-title mt-1">@post.Description</h5>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
     </div>
 </form>

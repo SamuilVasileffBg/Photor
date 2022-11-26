@@ -13,10 +13,12 @@ namespace Photor.Core.Services
     public class LikeService : ILikeService
     {
         private readonly IRepository repository;
+        private readonly IPostService postService;
 
-        public LikeService(IRepository repository)
+        public LikeService(IRepository repository, IPostService postService)
         {
             this.repository = repository;
+            this.postService = postService;
         }
 
         public async Task<Guid> AddLikeAsync(Guid postId, string userId)
@@ -65,6 +67,15 @@ namespace Photor.Core.Services
                 .FirstOrDefaultAsync(ulp => ulp.UserId == userId && ulp.PostId == postId && ulp.IsDeleted == false);
 
             return userLikedPost;
+        }
+
+        public async Task<int> GetPostLikesCountAsync(Guid postId)
+        {
+            return (await repository
+                .AllReadonly<UserLikedPost>()
+                .Where(ulp => ulp.PostId == postId && ulp.IsDeleted == false)
+                .ToListAsync())
+                .Count;
         }
     }
 }

@@ -14,5 +14,7 @@ namespace Photor.Core.Contracts
         public Task DeleteLikeAsync(Guid postId, string userId);
 
         public Task<UserLikedPost?> FindLikeAsync(Guid postId, string userId);
+
+        public Task<int> GetPostLikesCountAsync(Guid postId);
     }
 }

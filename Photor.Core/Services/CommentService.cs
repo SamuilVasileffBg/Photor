@@ -1,4 +1,5 @@
-﻿using Photor.Core.Contracts;
+﻿using Microsoft.EntityFrameworkCore;
+using Photor.Core.Contracts;
 using Photor.Infrastructure.Data.Common;
 using Photor.Infrastructure.Data.Models;
 using System;
@@ -39,6 +40,15 @@ namespace Photor.Core.Services
         public Task DeleteTaskAsync(Guid postId, string userId)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<List<UserPostComment>> GetPostCommentsAsync(Guid postId)
+        {
+            return await repository
+                .All<UserPostComment>()
+                .Where(upc => upc.PostId == postId)
+                .Include(upc => upc.User)
+                .ToListAsync();
         }
     }
 }

@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Photor.Infrastructure.Data.Models;
 
 namespace Photor.Core.Models.Post
 {
@@ -20,5 +21,7 @@ namespace Photor.Core.Models.Post
         public string? Description { get; set; }
 
         public string? CommentValue { get; set; }
+
+        public List<UserPostComment> Comments { get; set; } = new List<UserPostComment>();
     }
 }

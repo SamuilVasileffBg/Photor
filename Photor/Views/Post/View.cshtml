@@ -1,6 +1,7 @@
 ﻿@using Photor.Core.Models.Post
 @using Photor.Extensions
 @inject ILikeService likeService;
+@inject ICommentService commentService;
 @model ViewPostViewModel
 
 @*
@@ -13,7 +14,7 @@
             <h1><a asp-action="Account" 
                 asp-controller="User"
                 asp-route-id="@Model.User.Id">@Model.User.UserName</a>'s post</h1>
-    <img src="@Model.ImageUrl" style="max-width:50%; max-height:10%;"></img>
+    <img src="@Model.ImageUrl" style="max-width:50%; max-height:400px;"></img>
     <p>@Model.Description</p>
 
     <form>
@@ -23,6 +24,7 @@
         <input type="hidden" asp-for="@Model.User.Id"></input>
         <input type="hidden" asp-for="@Model.User.UserName"></input>
         <div class="text-center mb-3">
+            <p style="font-size:50px;">&#128077; @await likeService.GetPostLikesCountAsync(Model.Id)</p>
             @if (await likeService.FindLikeAsync(Model.Id, User.Id()) != null)
             {
                 <button asp-action="DeleteLike" asp-controller="Like" asp-route-id="@Model.Id" class="btn btn-primary">Unlike</button>
@@ -50,6 +52,24 @@
                 </div>
         </div>
     </form>
+
+    @foreach (var comment in await commentService.GetPostCommentsAsync(Model.Id))
+    {
+        <div class="text-center mb-3">
+            <div class="card" style="width: 90%;">
+                <div class="card-body">
+                    <h5 class="card-title">@comment.User.UserName</h5>
+                    <p class="card-text">@comment.Content</p>
+                        @if (User.Id() == comment.UserId)
+                        {
+                            <a href="#" class="card-link">Delete Comment</a>
+                            <a href=\"#" class="card-link">Edit Comment</a>
+                        }
+                </div>
+            </div>
+        </div>
+        
+    }
 </div>
 
 @section Scripts {

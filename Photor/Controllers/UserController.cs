@@ -60,6 +60,8 @@ namespace Photor.Controllers
             {
                 Email = model.Email,
                 UserName = model.UserName,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
             };
 
             var result = await userManager.CreateAsync(user, model.Password);
@@ -162,11 +164,11 @@ namespace Photor.Controllers
         {
             var model = (await userService.GetUserByIdAsync(id)).ParseToViewModel();
 
-            var usersAreFriends = await friendService.FindUserFriendAsync(id, User.Id()) != null ? true : false;
+            var friendOnlyAccess = (await friendService.FindUserFriendAsync(id, User.Id()) != null ? true : false) || User.Id() == id;
 
             model.Posts = (await postService.GetUserPostsAsync(id))
                 .Where(p => p.FriendsOnly == false ||
-                (p.FriendsOnly == true && usersAreFriends))
+                (p.FriendsOnly == true && friendOnlyAccess))
                 .ToList();
 
             return View(model);

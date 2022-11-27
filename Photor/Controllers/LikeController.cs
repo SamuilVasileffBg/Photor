@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Photor.Core.Contracts;
 using Photor.Core.Models.Post;
 using Photor.Extensions;
 
 namespace Photor.Controllers
 {
+    [Authorize]
     public class LikeController : Controller
     {
         private readonly ILikeService likeService;

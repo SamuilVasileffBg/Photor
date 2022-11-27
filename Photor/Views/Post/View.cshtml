@@ -60,11 +60,17 @@
                 <div class="card-body">
                     <h5 class="card-title">@comment.User.UserName</h5>
                     <p class="card-text">@comment.Content</p>
-                        @if (User.Id() == comment.UserId)
-                        {
-                            <a href="#" class="card-link">Delete Comment</a>
-                            <a href=\"#" class="card-link">Edit Comment</a>
-                        }
+                    @if (User.Id() == comment.UserId || User.Id() == comment.Post.UserId)
+                    {
+                        <form>
+                            <button type="submit" asp-action="Delete" asp-controller="Comment" asp-route-id="@comment.Id" class="btn btn-primary">Delete Comment</button>
+                        </form>
+                    }
+                    @if (User.Id() == comment.UserId)
+                    {
+                        
+                        <a href=\"#" class="card-link">Edit Comment</a>
+                    }
                 </div>
             </div>
         </div>

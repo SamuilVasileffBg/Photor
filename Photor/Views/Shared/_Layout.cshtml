@@ -1,5 +1,6 @@
 ﻿@using System.Security.Claims
 @using IdentityModel
+@using Photor.Extensions
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,6 +36,12 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Friend" asp-action="Invitations">Received friend invitations</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Account" asp-route-id="@User.Id()">My Account</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Post" asp-action="Add">Add a new post</a>
                         </li>
                         @if (@User?.Identity?.IsAuthenticated ?? false)
                         {

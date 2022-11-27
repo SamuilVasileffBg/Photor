@@ -52,6 +52,16 @@ namespace Photor.Core.Services
                 throw new Exception("Cannot find such post.");
             }
 
+            foreach (var like in post.PostLikes)
+            {
+                like.IsDeleted = true;
+            }
+
+            foreach (var comment in post.PostComments)
+            {
+                comment.IsDeleted = true;
+            }
+
             post.IsDeleted = true;
 
             await repository
@@ -81,6 +91,8 @@ namespace Photor.Core.Services
             return await repository
                 .All<Post>()
                 .Include(p => p.ApplicationUser)
+                .Include(p => p.PostLikes)
+                .Include(p => p.PostComments)
                 .FirstOrDefaultAsync(p => p.Id.ToString() == id && p.IsDeleted == false);
         }
 

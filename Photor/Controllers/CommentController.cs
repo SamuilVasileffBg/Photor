@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Photor.Core.Contracts;
 using Photor.Core.Models.Post;
 using Photor.Extensions;
 
 namespace Photor.Controllers
 {
+    [Authorize]
     public class CommentController : Controller
     {
         private readonly IFriendService friendService;
@@ -57,6 +59,25 @@ namespace Photor.Controllers
                 .AddCommentAsync(post.Id, userId, model.CommentValue);
 
             return RedirectToAction("View", "Post", new { id = model.Id });
+        }
+
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var comment = await commentService.GetCommentAsync(id);
+
+            if (comment == null)
+            {
+                throw new Exception("Comment not found.");
+            }
+
+            if (comment.UserId != User.Id() && comment.Post.UserId != User.Id())
+            {
+                throw new Exception("You have no right to delete this comment.");
+            }
+
+            await commentService.DeleteCommentAsync(id);
+
+            return RedirectToAction("View", "Post", new { id = comment.PostId });
         }
     }
 }

@@ -22,5 +22,13 @@ namespace Photor.Core.Models.Identity
         [Compare(nameof(Password))]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; } = null!;
+
+        [Required]
+        [StringLength(FirstAndLastNameMaxLength), MinLength(FirstAndLastNameMinLength)]
+        public string FirstName { get; set; } = null!;
+
+        [Required]
+        [StringLength(FirstAndLastNameMaxLength), MinLength(FirstAndLastNameMinLength)]
+        public string LastName { get; set; } = null!;
     }
 }

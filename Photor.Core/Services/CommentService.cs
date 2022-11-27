@@ -37,18 +37,38 @@ namespace Photor.Core.Services
             return comment.Id;
         }
 
-        public Task DeleteTaskAsync(Guid postId, string userId)
+        public async Task DeleteCommentAsync(Guid commentId)
         {
-            throw new NotImplementedException();
+            var comment = await GetCommentAsync(commentId);
+
+            if (comment == null)
+            {
+                throw new Exception("Comment not found");
+            }
+
+            comment.IsDeleted = true;
+
+            await repository
+                .SaveChangesAsync();
         }
 
         public async Task<List<UserPostComment>> GetPostCommentsAsync(Guid postId)
         {
             return await repository
                 .All<UserPostComment>()
-                .Where(upc => upc.PostId == postId)
+                .Where(upc => upc.PostId == postId && upc.IsDeleted == false)
                 .Include(upc => upc.User)
+                .Include(upc => upc.Post)
                 .ToListAsync();
+        }
+
+        public async Task<UserPostComment?> GetCommentAsync(Guid commentId)
+        {
+            return await repository
+                .All<UserPostComment>()
+                .Include(upc => upc.User)
+                .Include(upc => upc.Post)
+                .FirstOrDefaultAsync(upc => upc.Id == commentId && upc.IsDeleted == false);
         }
     }
 }

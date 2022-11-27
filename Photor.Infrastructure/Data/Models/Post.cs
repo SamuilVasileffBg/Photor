@@ -33,7 +33,9 @@ namespace Photor.Infrastructure.Data.Models
         [Required]
         public bool FriendsOnly { get; set; }
 
-        public List<UserLikedPost> PostLikedUsers { get; set; } = new List<UserLikedPost>();
+        public List<UserLikedPost> PostLikes { get; set; } = new List<UserLikedPost>();
+
+        public List<UserPostComment> PostComments { get; set; } = new List<UserPostComment>();
 
         [DefaultValue("false")]
         public bool IsDeleted { get; set; }

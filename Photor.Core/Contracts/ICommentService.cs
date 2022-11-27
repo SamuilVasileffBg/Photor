@@ -11,8 +11,10 @@ namespace Photor.Core.Contracts
     {
         public Task<Guid> AddCommentAsync(Guid postId, string userId, string commentContent);
 
-        public Task DeleteTaskAsync(Guid postId, string userId);
+        public Task DeleteCommentAsync(Guid commentId);
 
         public Task<List<UserPostComment>> GetPostCommentsAsync(Guid postId);
+
+        public Task<UserPostComment?> GetCommentAsync(Guid commentId);
     }
 }

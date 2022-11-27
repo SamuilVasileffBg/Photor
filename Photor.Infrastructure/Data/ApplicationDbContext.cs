@@ -55,7 +55,7 @@ namespace Photor.Infrastructure.Data
 
             builder
                 .Entity<Post>()
-                .HasMany(u => u.PostLikedUsers)
+                .HasMany(u => u.PostLikes)
                 .WithOne(f => f.Post)
                 .HasForeignKey(f => f.PostId)
                 .OnDelete(DeleteBehavior.NoAction);

@@ -69,7 +69,9 @@
                     @if (User.Id() == comment.UserId)
                     {
                         
-                        <a href=\"#" class="card-link">Edit Comment</a>
+                       <form>
+                            <button type="submit" asp-action="Edit" asp-controller="Comment" asp-route-id="@comment.Id" class="btn btn-primary">Edit Comment</button>
+                        </form>
                     }
                 </div>
             </div>

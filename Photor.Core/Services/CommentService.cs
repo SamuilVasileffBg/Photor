@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Photor.Core.Contracts;
+using Photor.Core.Models.Comment;
 using Photor.Infrastructure.Data.Common;
 using Photor.Infrastructure.Data.Models;
 using System;
@@ -69,6 +70,21 @@ namespace Photor.Core.Services
                 .Include(upc => upc.User)
                 .Include(upc => upc.Post)
                 .FirstOrDefaultAsync(upc => upc.Id == commentId && upc.IsDeleted == false);
+        }
+
+        public async Task EditCommentAsync(EditCommentViewModel model)
+        {
+            var comment = await GetCommentAsync(model.Id);
+
+            if (comment == null)
+            {
+                throw new Exception("Comment not found.");
+            }
+
+            comment.Content = model.Content;
+
+            await repository
+                .SaveChangesAsync();
         }
     }
 }

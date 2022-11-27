@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Photor.Core.Contracts;
+using Photor.Core.Models.Comment;
 using Photor.Core.Models.Post;
 using Photor.Extensions;
 
@@ -78,6 +79,51 @@ namespace Photor.Controllers
             await commentService.DeleteCommentAsync(id);
 
             return RedirectToAction("View", "Post", new { id = comment.PostId });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var comment = await commentService.GetCommentAsync(id);
+
+            if (comment == null)
+            {
+                throw new Exception("Comment not found.");
+            }
+
+            if (comment.UserId != User.Id())
+            {
+                throw new Exception("You have no right to edit this comment.");
+            }
+
+            var model = new EditCommentViewModel()
+            {
+                Id = comment.Id,
+                PostId = comment.PostId,
+                UserId = comment.UserId,
+                Content = comment.Content,
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditCommentViewModel model)
+        {
+            if (ModelState.IsValid == false)
+            {
+                return View(model);
+            }
+
+            if (model.UserId != User.Id())
+            {
+                throw new Exception("You have no right to edit this comment.");
+            }
+
+            await commentService
+                .EditCommentAsync(model);
+
+            return RedirectToAction("View", "Post", new { id = model.PostId });
         }
     }
 }

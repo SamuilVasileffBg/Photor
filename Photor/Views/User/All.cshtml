@@ -33,7 +33,9 @@
                 }
                 else if (await friendService.FindUserFriendAsync(User.Id(), user.Id) == null)
                 {
-                    <button class="btn btn-primary" asp-action="SendFriendInvitation" asp-controller="Friend" asp-route-receiverId="@user.Id" class="card-link">Send friend invitation</button>
+                    <form>
+                        <button class="btn btn-primary" asp-action="SendFriendInvitation" asp-controller="Friend" asp-route-receiverId="@user.Id" class="card-link">Send friend invitation</button>
+                    </form>
                 }
                 else
                 {

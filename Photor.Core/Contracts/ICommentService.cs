@@ -1,4 +1,5 @@
-﻿using Photor.Infrastructure.Data.Models;
+﻿using Photor.Core.Models.Comment;
+using Photor.Infrastructure.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace Photor.Core.Contracts
         public Task<Guid> AddCommentAsync(Guid postId, string userId, string commentContent);
 
         public Task DeleteCommentAsync(Guid commentId);
+
+        public Task EditCommentAsync(EditCommentViewModel model);
 
         public Task<List<UserPostComment>> GetPostCommentsAsync(Guid postId);
 

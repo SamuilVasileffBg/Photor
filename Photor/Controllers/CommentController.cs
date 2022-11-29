@@ -56,7 +56,6 @@ namespace Photor.Controllers
             //    return View("View", model);
             //}
 
-
             await commentService
                 .AddCommentAsync(post.Id, userId, model.CommentValue);
 

@@ -133,6 +133,8 @@ namespace Photor.Controllers
                 .Select(u => u.ParseToViewModel())
                 .ToListAsync();
 
+            ViewBag.ReturnUrl = "/User/All";
+
             return View(data);
         }
 
@@ -149,6 +151,8 @@ namespace Photor.Controllers
             {
                 model.Users = users.ToList();
             }
+
+            ViewBag.ReturnUrl = $"/User/Search?searchValue={searchValue}";
 
             return View(model);
         }
@@ -170,6 +174,8 @@ namespace Photor.Controllers
                 .Where(p => p.FriendsOnly == false ||
                 (p.FriendsOnly == true && friendOnlyAccess))
                 .ToList();
+
+            ViewBag.ReturnUrl = $"User/Account/{id}";
 
             return View(model);
         }

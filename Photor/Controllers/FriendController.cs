@@ -25,7 +25,7 @@ namespace Photor.Controllers
             return View();
         }
 
-        public async Task<IActionResult> SendFriendInvitation(string receiverId)
+        public async Task<IActionResult> SendFriendInvitation(string receiverId, string? returnUrl)
         {
             string? senderId = GetUserId();
 
@@ -36,17 +36,27 @@ namespace Photor.Controllers
 
             await friendService.SendFriendInvitationAsync(senderId, receiverId);
 
+            if (returnUrl != null)
+            {
+                return Redirect(returnUrl);
+            }
+
             return RedirectToAction("Search", "User");
         }
 
-        public async Task<IActionResult> DeleteFriendInvitation(string id)
+        public async Task<IActionResult> DeleteFriendInvitation(string id, string? returnUrl)
         {
             await friendService.DeleteFriendInvitationAsync(User.Id(), id);
+
+            if (returnUrl != null)
+            {
+                return Redirect(returnUrl);
+            }
 
             return RedirectToAction("Index", "Home");
         }
 
-        public async Task<IActionResult> DeleteFriendship(string id)
+        public async Task<IActionResult> DeleteFriendship(string id, string? returnUrl)
         {
             string? userId = GetUserId();
 
@@ -56,6 +66,11 @@ namespace Photor.Controllers
             }
 
             await friendService.RemoveUserFriendAsync(userId, id);
+
+            if (returnUrl != null)
+            {
+                return Redirect(returnUrl);
+            }
 
             return RedirectToAction(nameof(FriendList), new { id = userId });
         }
@@ -74,21 +89,31 @@ namespace Photor.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> AcceptFriendInvitation(string senderId)
+        public async Task<IActionResult> AcceptFriendInvitation(string senderId, string? returnUrl)
         {
             await friendService.AcceptFriendInvitationAsync(senderId, GetUserId());
 
+            if (returnUrl != null)
+            {
+                return Redirect(returnUrl);
+            }
+
             return RedirectToAction(nameof(Invitations));
         }
 
-        public async Task<IActionResult> RejectFriendInvitation(string senderId)
+        public async Task<IActionResult> RejectFriendInvitation(string senderId, string? returnUrl)
         {
             await friendService.RejectFriendInvitationAsync(senderId, GetUserId());
 
+            if (returnUrl != null)
+            {
+                return Redirect(returnUrl);
+            }
+
             return RedirectToAction(nameof(Invitations));
         }
 
-        public async Task<IActionResult> FriendList(string id)
+        public async Task<IActionResult> FriendList(string id, string? returnUrl)
         {
             var user = await userService.GetUserByIdAsync(id);
 
@@ -103,6 +128,11 @@ namespace Photor.Controllers
                 .GetUserFriendsAsync(id))
                 .Select(u => u.ParseToViewModel())
                 .ToList();
+
+            if (returnUrl != null)
+            {
+                return Redirect(returnUrl);
+            }
 
             return View(model);
         }

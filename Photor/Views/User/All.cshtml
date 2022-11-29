@@ -23,7 +23,7 @@
                 {
                     @if ((await friendService.FindFriendInvitationAsync(User.Id(), user.Id)).SenderId == User.Id())
                     {
-                        <a class="btn btn-primary" asp-action="DeleteFriendInvitation" asp-controller="Friend" asp-route-id="@user.Id" class="card-link">Delete friend invitation</a>
+                        <a class="btn btn-primary" asp-action="DeleteFriendInvitation" asp-controller="Friend" asp-route-id="@user.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="card-link">Delete friend invitation</a>
                     }
                     else
                     {
@@ -33,10 +33,10 @@
                                 data-bs-toggle="dropdown">Sent you a friend invitation &#128317;</button>
                                 <ul class="dropdown-menu">
                                     <li class="nav-item">
-                                        <a class="dropdown-item" asp-action="AcceptFriendInvitation" asp-controller="Friend" asp-route-senderId="@user.Id" class="card-link">Accept Invitation</a>
+                                        <a class="dropdown-item" asp-action="AcceptFriendInvitation" asp-controller="Friend" asp-route-senderId="@user.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="card-link">Accept Invitation</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="dropdown-item" asp-action="RejectFriendInvitation" asp-controller="Friend" asp-route-senderId="@user.Id" class="card-link">Reject Invitation</a>
+                                        <a class="dropdown-item" asp-action="RejectFriendInvitation" asp-controller="Friend" asp-route-senderId="@user.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="card-link">Reject Invitation</a>
                                     </li>
                                 </ul>
                             </div>
@@ -46,12 +46,12 @@
                 else if (await friendService.FindUserFriendAsync(User.Id(), user.Id) == null)
                 {
                     <form>
-                        <a class="btn btn-primary" asp-action="SendFriendInvitation" asp-controller="Friend" asp-route-receiverId="@user.Id" class="card-link">Send friend invitation</a>
+                        <a class="btn btn-primary" asp-action="SendFriendInvitation" asp-controller="Friend" asp-route-receiverId="@user.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="card-link">Send friend invitation</a>
                     </form>
                 }
                 else
                 {
-                    <a class="btn btn-primary" asp-action="DeleteFriendship" asp-controller="Friend" asp-route-id="@user.Id" class="card-link">Delete friend</a>
+                    <a class="btn btn-primary" asp-action="DeleteFriendship" asp-controller="Friend" asp-route-id="@user.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="card-link">Delete friend</a>
                 }
             </div>
         </div>

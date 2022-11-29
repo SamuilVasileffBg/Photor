@@ -16,15 +16,47 @@
         <input type="hidden" asp-for="@Model.LastName" value="@Model.LastName"/>
         <h1>@Model.UserName</h1>
         <h2>@Model.FirstName @Model.LastName</h2>
-        @if (@Model.Description != null)
-        {
-            <p>@Model.Description</p>
-        }
+        
+        
+
         @if (User.Id() == Model.Id)
         {
             <form>
                 <button asp-action="Edit" asp-controller="User" asp-route-id="@Model.Id" class="btn btn-primary">Edit</button>
             </form>
+        }
+        else if (await friendService.FindUserFriendAsync(User.Id(), Model.Id) != null)
+        {
+            <p>&#129303; You are friends</p>
+            <a class="btn btn-primary" asp-action="DeleteFriendship" asp-controller="Friend" asp-route-id="@Model.Id" class="card-link">Delete friend</a>
+        }
+        else if (await friendService.FindFriendInvitationAsync(User.Id(), Model.Id) != null)
+        {
+            <div class="nav-item dropdown">
+                 <div class="dropdown">
+                     <button class="btn btn-primary" type="button"
+                     data-bs-toggle="dropdown">Sent you a friend invitation &#128317;</button>
+                     <ul class="dropdown-menu">
+                         <li class="nav-item">
+                             <a class="dropdown-item" asp-action="AcceptFriendInvitation" asp-controller="Friend" asp-route-senderId="@Model.Id" class="card-link">Accept Invitation</a>
+                         </li>
+                         <li class="nav-item">
+                             <a class="dropdown-item" asp-action="RejectFriendInvitation" asp-controller="Friend" asp-route-senderId="@Model.Id" class="card-link">Reject Invitation</a>
+                         </li>
+                     </ul>
+                 </div>
+             </div>
+        }
+        else
+        {
+            
+        }
+
+        @if (@Model.Description != null)
+        {
+            <hr />
+            <p>@Model.Description</p>
+            <hr />
         }
 
         @if ((Model?.Posts?.Count ?? 0) == 0)

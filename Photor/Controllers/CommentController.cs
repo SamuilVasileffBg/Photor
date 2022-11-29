@@ -23,6 +23,22 @@ namespace Photor.Controllers
 
         public async Task<IActionResult> Add(ViewPostViewModel model)
         {
+            var post = await postService.GetPostAsync(model.Id.ToString());
+
+            if (post == null)
+            {
+                throw new Exception("Cannot comment an unexisting post");
+            }
+
+            var userId = User.Id();
+
+            if (post.FriendsOnly == true &&
+                post.UserId != userId &&
+                (await friendService.FindUserFriendAsync(post.UserId, userId)) == null)
+            {
+                throw new Exception("No right to comment this post.");
+            }
+
             if (model.CommentValue == null)
             {
                 ModelState.AddModelError("", "Commend field is required.");
@@ -40,21 +56,6 @@ namespace Photor.Controllers
             //    return View("View", model);
             //}
 
-            var post = await postService.GetPostAsync(model.Id.ToString());
-
-            if (post == null)
-            {
-                throw new Exception("Cannot comment an unexisting post");
-            }
-
-            var userId = User.Id();
-
-            if (post.FriendsOnly == true &&
-                post.UserId != userId &&
-                (await friendService.FindUserFriendAsync(post.UserId, userId)) == null)
-            {
-                throw new Exception("No right to comment this post.");
-            }
 
             await commentService
                 .AddCommentAsync(post.Id, userId, model.CommentValue);

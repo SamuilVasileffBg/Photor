@@ -12,10 +12,12 @@ namespace Photor.Controllers
     public class PostController : Controller
     {
         private readonly IPostService postService;
+        private readonly IFriendService friendService;
 
-        public PostController(IPostService postService)
+        public PostController(IPostService postService, IFriendService friendService)
         {
             this.postService = postService;
+            this.friendService = friendService;
         }
 
         [HttpGet]
@@ -117,6 +119,15 @@ namespace Photor.Controllers
             if (post == null)
             {
                 return NotFound();
+            }
+
+            var userId = User.Id();
+
+            if (post.FriendsOnly == true &&
+                post.UserId != userId &&
+                (await friendService.FindUserFriendAsync(post.UserId, userId)) == null)
+            {
+                throw new Exception("Cannot access this post.");
             }
 
             var model = new ViewPostViewModel()

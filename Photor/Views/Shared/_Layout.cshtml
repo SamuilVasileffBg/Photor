@@ -43,6 +43,26 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Post" asp-action="Add">Add a new post</a>
                         </li>
+                        <li class="nav-item dropdown">
+                            <div class="dropdown">
+                                <button class="btn dropdown-toggle" type="button"
+                                data-bs-toggle="dropdown">Dropdown</button>
+                                <ul class="dropdown-menu">
+                                    <li class="nav-item">
+                                        <a class="dropdown-item" asp-controller="Products" asp-action="My-Products">All</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item" asp-controller="Products" asp-action="AllAsJson">All (JSON)</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item" asp-controller="Products" asp-action="AllAsText">All (Plain Text)</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item" asp-controller="Products" asp-action="AllAsTextFile">All (Text File)</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
                         @if (@User?.Identity?.IsAuthenticated ?? false)
                         {
                             <li class="nav-item">

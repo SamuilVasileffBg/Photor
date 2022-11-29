@@ -20,6 +20,7 @@ namespace Photor.Core.Models.Post
 
         public string? Description { get; set; }
 
+        [StringLength(CommentMaxLength), MinLength(CommentMinLength)]
         public string? CommentValue { get; set; }
 
         public List<UserPostComment> Comments { get; set; } = new List<UserPostComment>();

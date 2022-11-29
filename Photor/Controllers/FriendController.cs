@@ -46,6 +46,18 @@ namespace Photor.Controllers
 
         public async Task<IActionResult> DeleteFriendInvitation(string id, string? returnUrl)
         {
+            var friendInvitation = await friendService.FindFriendInvitationAsync(User.Id(), id);
+
+            if (friendInvitation == null)
+            {
+                throw new Exception("Friend invitation now found.");
+            }
+
+            if (friendInvitation.SenderId != User.Id())
+            {
+                throw new Exception("No access.");
+            }
+
             await friendService.DeleteFriendInvitationAsync(User.Id(), id);
 
             if (returnUrl != null)
@@ -58,7 +70,7 @@ namespace Photor.Controllers
 
         public async Task<IActionResult> DeleteFriendship(string id, string? returnUrl)
         {
-            string? userId = GetUserId();
+            string? userId = User.Id();
 
             if (userId == null)
             {
@@ -91,7 +103,19 @@ namespace Photor.Controllers
 
         public async Task<IActionResult> AcceptFriendInvitation(string senderId, string? returnUrl)
         {
-            await friendService.AcceptFriendInvitationAsync(senderId, GetUserId());
+            var friendInvitation = await friendService.FindFriendInvitationAsync(senderId, User.Id());
+
+            if (friendInvitation == null)
+            {
+                throw new Exception("Friend invitation now found.");
+            }
+
+            if (friendInvitation.ReceiverId != User.Id())
+            {
+                throw new Exception("No access.");
+            }
+
+            await friendService.AcceptFriendInvitationAsync(senderId, User.Id());
 
             if (returnUrl != null)
             {
@@ -103,7 +127,19 @@ namespace Photor.Controllers
 
         public async Task<IActionResult> RejectFriendInvitation(string senderId, string? returnUrl)
         {
-            await friendService.RejectFriendInvitationAsync(senderId, GetUserId());
+            var friendInvitation = await friendService.FindFriendInvitationAsync(senderId, User.Id());
+
+            if (friendInvitation == null)
+            {
+                throw new Exception("Friend invitation now found.");
+            }
+
+            if (friendInvitation.ReceiverId != User.Id())
+            {
+                throw new Exception("No access.");
+            }
+
+            await friendService.RejectFriendInvitationAsync(senderId, User.Id());
 
             if (returnUrl != null)
             {

@@ -175,7 +175,7 @@ namespace Photor.Controllers
                 (p.FriendsOnly == true && friendOnlyAccess))
                 .ToList();
 
-            ViewBag.ReturnUrl = $"User/Account/{id}";
+            ViewBag.ReturnUrl = $"/User/Account/{id}";
 
             return View(model);
         }

@@ -58,8 +58,7 @@ namespace Photor.Core.Services
             var invitation = await context
                 .FriendInvitations
                 .Where(fi => fi.IsDeleted == false)
-                .FirstOrDefaultAsync(f => (f.SenderId == senderId && f.ReceiverId == receiverId)
-                                       || (f.SenderId == receiverId && f.ReceiverId == senderId));
+                .FirstOrDefaultAsync(f => f.SenderId == senderId && f.ReceiverId == receiverId);
 
             return invitation;
         }

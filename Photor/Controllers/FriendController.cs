@@ -39,8 +39,6 @@ namespace Photor.Controllers
                 throw new ArgumentNullException(nameof(receiverId));
             }
 
-            var previousInvitation = await friendService.FindFriendInvitationAsync();
-
             await friendService.SendFriendInvitationAsync(senderId, receiverId);
 
             if (returnUrl != null)

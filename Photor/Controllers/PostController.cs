@@ -112,7 +112,7 @@ namespace Photor.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public async Task<IActionResult> View(string id)
+        public async Task<IActionResult> View(string id, string? commentFieldValue, string? errorMessage)
         {
             var post = await postService.GetPostAsync(id);
 
@@ -137,6 +137,16 @@ namespace Photor.Controllers
                 Id = post.Id,
                 User = post.ApplicationUser.ParseToViewModel(),
             };
+
+            if (String.IsNullOrEmpty(commentFieldValue) == false)
+            {
+                model.CommentValue = commentFieldValue;
+            }
+
+            if (String.IsNullOrEmpty(errorMessage) == false)
+            {
+                ModelState.AddModelError("", errorMessage);
+            }
 
             return View(model);
         }

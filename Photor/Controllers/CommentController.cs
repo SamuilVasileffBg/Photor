@@ -32,6 +32,11 @@ namespace Photor.Controllers
 
             var userId = User.Id();
 
+            if (userId == null)
+            {
+                throw new Exception("No right to comment this post.");
+            }
+
             if (post.FriendsOnly == true &&
                 post.UserId != userId &&
                 (await friendService.FindUserFriendAsync(post.UserId, userId)) == null)
@@ -41,15 +46,13 @@ namespace Photor.Controllers
 
             if (model.CommentValue == null)
             {
-                ModelState.AddModelError("", "Commend field is required.");
-                return View("../Post/View", model);
+                return RedirectToAction("View", "Post", new { id = model.Id, errorMessage = "Commend field is required." });
             }
 
             if (model.CommentValue.Length > 1000)
             {
-                ModelState.AddModelError("", "Your comment shouldn't be longer than 1000 characters.");
-                return View("../Post/View", model);
-            }
+                return RedirectToAction("View", "Post", new { id = model.Id, commentFieldValue = model.CommentValue, errorMessage = "Your comment shouldn't be longer than 1000 characters." });
+                }
 
             //if (ModelState.IsValid == false)
             //{

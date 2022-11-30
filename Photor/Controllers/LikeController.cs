@@ -44,7 +44,7 @@ namespace Photor.Controllers
             await likeService
                 .AddLikeAsync(model.Id, userId);
 
-            return View("../Post/View", model);
+            return RedirectToAction("View", "Post", new { id = model.Id, commentFieldValue = model.CommentValue });
         }
 
         public async Task<IActionResult> DeleteLike(ViewPostViewModel model)
@@ -52,7 +52,7 @@ namespace Photor.Controllers
             await likeService
                 .DeleteLikeAsync(model.Id, User.Id());
 
-            return View("../Post/View", model);
+            return RedirectToAction("View", "Post", new { id = model.Id, commentFieldValue = model.CommentValue });
         }
     }
 }

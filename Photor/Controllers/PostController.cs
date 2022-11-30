@@ -42,7 +42,7 @@ namespace Photor.Controllers
 
             Console.WriteLine(id);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("View", "Post", new { id });
         }
 
         [HttpGet]
@@ -109,7 +109,7 @@ namespace Photor.Controllers
             await postService
                 .DeletePostAsync(id);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Account", "User", new { id = User.Id() });
         }
 
         public async Task<IActionResult> View(string id, string? commentFieldValue, string? errorMessage)

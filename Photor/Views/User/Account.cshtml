@@ -21,14 +21,34 @@
 
         @if (User.Id() == Model.Id)
         {
-            <form>
-                <button asp-action="Edit" asp-controller="User" asp-route-id="@Model.Id" class="btn btn-primary">Edit</button>
-            </form>
+            <div class="nav-item dropdown">
+                 <div class="dropdown">
+                     <button class="btn btn-primary" type="button"
+                     data-bs-toggle="dropdown">This is your account &#128317;</button>
+                     <ul class="dropdown-menu">
+                         <li class="nav-item">
+                             <a class="dropdown-item" asp-action="Add" asp-controller="Post" class="card-link">Add Post</a>
+                         </li>
+                         <li class="nav-item">
+                             <a class="dropdown-item" asp-action="Edit" asp-controller="User" asp-route-id="@Model.Id" class="card-link">Edit Account</a>
+                         </li>
+                     </ul>
+                 </div>
+             </div>
         }
         else if (await friendService.FindUserFriendAsync(User.Id(), Model.Id) != null)
         {
-            <p>&#129303; You are friends</p>
-            <a class="btn btn-primary" asp-action="DeleteFriendship" asp-controller="Friend" asp-route-id="@Model.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="card-link">Delete friend</a>
+            <div class="nav-item dropdown">
+                 <div class="dropdown">
+                     <button class="btn btn-primary" type="button"
+                     data-bs-toggle="dropdown">&#129303; You are friends &#128317;</button>
+                     <ul class="dropdown-menu">
+                         <li class="nav-item">
+                             <a class="dropdown-item" asp-action="DeleteFriendship" asp-controller="Friend" asp-route-id="@Model.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="card-link">Delete friend</a>
+                         </li>
+                     </ul>
+                 </div>
+             </div>
         }
         else if (await friendService.FindFriendInvitationAsync(Model.Id, User.Id()) != null)
         {

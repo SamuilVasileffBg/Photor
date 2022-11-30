@@ -113,6 +113,11 @@ namespace Photor.Core.Services
                 throw new ArgumentException("There is already an existing invitation.");
             }
 
+            if (await FindFriendInvitationAsync(receiverId, senderId) != null)
+            {
+                throw new ArgumentException("There is already an existing invitation.");
+            }
+
             if (await context.Users.FirstOrDefaultAsync(u => u.Id == receiverId) == null)
             {
                 throw new ArgumentNullException(nameof(receiverId));

@@ -56,9 +56,10 @@
             <a class="btn btn-primary" asp-action="SendFriendInvitation" asp-controller="Friend" asp-route-receiverId="@Model.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="card-link">Send friend invitation</a>
         }
 
+        <hr />
+
         @if (@Model.Description != null)
         {
-            <hr />
             <p>@Model.Description</p>
             <hr />
         }

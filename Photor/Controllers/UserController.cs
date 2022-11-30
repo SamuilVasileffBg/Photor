@@ -159,7 +159,7 @@ namespace Photor.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult SearchUsersById(UserSearchViewModel model)
+        public IActionResult Search(UserSearchViewModel model)
         {
             return RedirectToAction(nameof(Search), nameof(User), new { searchValue = model.SearchValue });
         }

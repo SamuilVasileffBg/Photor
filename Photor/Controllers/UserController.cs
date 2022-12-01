@@ -140,19 +140,31 @@ namespace Photor.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> Search(string? searchValue)
+        public async Task<IActionResult> Search(string? searchValue, int? page)
         {
             var model = new UserSearchViewModel();
             model.SearchValue = searchValue;
+            model.Page = page;
+            model.AllMatchesCount = await userService.SearchUsersCountAsync(searchValue);
 
-            var users = await userService.SearchUsersAsync(searchValue);
+            if (page == null || page < 1)
+            {
+                return RedirectToAction(nameof(Search), new { searchValue, page = 1 });
+            }
+
+            var users = await userService.SearchUsersAsync(searchValue, page.Value);
+
+            if ((users?.Count() ?? 0) == 0 && page.Value > 1)
+            {
+                return RedirectToAction(nameof(Search), new { searchValue, page = page.Value - 1 });
+            }
 
             if (users != null)
             {
                 model.Users = users.ToList();
             }
 
-            ViewBag.ReturnUrl = $"/User/Search?searchValue={searchValue}";
+            ViewBag.ReturnUrl = $"/User/Search?searchValue={searchValue}&page={page}";
 
             return View(model);
         }

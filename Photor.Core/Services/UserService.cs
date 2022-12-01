@@ -71,5 +71,42 @@ namespace Photor.Core.Services
 
             return data;
         }
+
+        public async Task<IEnumerable<UserViewModel>?> SearchUsersAsync(string searchValue, int page)
+        {
+            if (string.IsNullOrEmpty(searchValue))
+            {
+                return null;
+            }
+
+            var data = await context
+                .Users
+                .Where(u => u.UserName.ToUpper().Contains(searchValue.ToUpper()))
+                .Skip((page - 1) * 5)
+                .Take(5)
+                .Select(u => new UserViewModel
+                {
+                    UserName = u.UserName,
+                    Id = u.Id
+                })
+                .ToListAsync();
+
+            return data;
+        }
+
+        public async Task<int> SearchUsersCountAsync(string searchValue)
+        {
+            if (string.IsNullOrEmpty(searchValue))
+            {
+                return 0;
+            }
+
+            var count = await context
+                .Users
+                .Where(u => u.UserName.ToUpper().Contains(searchValue.ToUpper()))
+                .CountAsync();
+
+            return count;
+        }
     }
 }

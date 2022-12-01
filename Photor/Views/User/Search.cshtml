@@ -7,6 +7,8 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    ViewBag.PreviousPage = Model.Page - 1;
+    ViewBag.NextPage = Model.Page + 1;
 }
 
 <form method="post">
@@ -16,6 +18,38 @@
     </div>
     <button type="submit" class="btn btn-primary" asp-controller="User" asp-action="Search">Search</button>
 </form>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+        @if (Model.Page == 1)
+        {
+            <li class="page-item disabled">
+                <a class="page-link" asp-action="Search" asp-controller="User" asp-route-searchValue="@Model.SearchValue" asp-route-page="@ViewBag.PreviousPage">Previous</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item">
+                <a class="page-link" asp-action="Search" asp-controller="User" asp-route-searchValue="@Model.SearchValue" asp-route-page="@ViewBag.PreviousPage">Previous</a>
+            </li>
+        }
+        @*<li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>*@
+        @if (Model.AllMatchesCount <= Model.Page * 5)
+        {
+            <li class="page-item disabled">
+              <a class="page-link" asp-action="Search" asp-controller="User" asp-route-searchValue="@Model.SearchValue" asp-route-page="@ViewBag.NextPage">Next</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item">
+              <a class="page-link" asp-action="Search" asp-controller="User" asp-route-searchValue="@Model.SearchValue" asp-route-page="@ViewBag.NextPage">Next</a>
+            </li>
+        }
+    </ul>
+</nav>
 
 @if (Model.Users.Count == 0 && Model.SearchValue != null){
     <p class="text-center">No matches found</p>

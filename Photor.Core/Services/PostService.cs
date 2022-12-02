@@ -4,11 +4,6 @@ using Photor.Core.Models.Post;
 using Photor.Infrastructure.Data;
 using Photor.Infrastructure.Data.Common;
 using Photor.Infrastructure.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Photor.Core.Services
 {

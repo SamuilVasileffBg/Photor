@@ -26,6 +26,9 @@ namespace Photor.Infrastructure.Data.Models
 
         public Post Post { get; set; } = null!;
 
+        [Required]
+        public DateTime DateTime { get; set; }
+
         [DefaultValue("false")]
         public bool IsDeleted { get; set; }
     }

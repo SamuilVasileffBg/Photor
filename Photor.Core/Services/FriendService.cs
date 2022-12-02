@@ -1,16 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Photor.Core.Contracts;
 using Photor.Core.Models.Friend;
 using Photor.Core.Parsers;
 using Photor.Infrastructure.Data;
 using Photor.Infrastructure.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Photor.Core.Services
 {

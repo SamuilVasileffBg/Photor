@@ -11,33 +11,5 @@
 
 @foreach (var user in Model)
 {
-    <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">@user.UserName</h5>
-                @if (User.Id() == user.Id)
-                {
-                    <p>This is your account</p>
-                }
-                else if (await friendService.FindFriendInvitationAsync(User.Id(), user.Id) != null)
-                {
-                    @if ((await friendService.FindFriendInvitationAsync(User.Id(), user.Id)).SenderId == User.Id())
-                    {
-                        <a asp-action="DeleteFriendInvitation" asp-controller="Friend" asp-route-id="@user.Id" class="card-link">Delete friend invitation</a>
-                    }
-                    else
-                    {
-                        <a asp-action="AcceptFriendInvitation" asp-controller="Friend" asp-route-senderId="@user.Id" class="card-link">Accept Invitation</a>
-                        <a asp-action="RejectFriendInvitation" asp-controller="Friend" asp-route-senderId="@user.Id" class="card-link">Reject Invitation</a>
-                    }
-                }
-                else if (await friendService.FindUserFriendAsync(User.Id(), user.Id) == null)
-                {
-                    <a asp-action="SendFriendInvitation" asp-controller="Friend" asp-route-receiverId="@user.Id" class="card-link">Add friend</a>
-                }
-                else
-                {
-                    <a asp-action="DeleteFriendship" asp-controller="Friend" asp-route-id="@user.Id" class="card-link">Delete friend</a>
-                }
-            </div>
-        </div>
+    <partial name="_UserPreviewPartial" model="@user"/>
 }

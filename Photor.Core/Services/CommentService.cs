@@ -3,11 +3,6 @@ using Photor.Core.Contracts;
 using Photor.Core.Models.Comment;
 using Photor.Infrastructure.Data.Common;
 using Photor.Infrastructure.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Photor.Core.Services
 {

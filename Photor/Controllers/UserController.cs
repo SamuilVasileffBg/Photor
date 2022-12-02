@@ -12,6 +12,7 @@ using Photor.Infrastructure.Data.Models;
 
 namespace Photor.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly SignInManager<ApplicationUser> signInManager;
@@ -36,6 +37,7 @@ namespace Photor.Controllers
             this.friendService = friendService;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Register()
         {
@@ -49,6 +51,8 @@ namespace Photor.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
+        [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid == false)
@@ -79,6 +83,7 @@ namespace Photor.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Login()
         {
@@ -92,6 +97,7 @@ namespace Photor.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
@@ -176,6 +182,7 @@ namespace Photor.Controllers
             return RedirectToAction(nameof(Search), nameof(User), new { searchValue = model.SearchValue });
         }
 
+        [Authorize]
         public async Task<IActionResult> Account(string id)
         {
             var model = (await userService.GetUserByIdAsync(id)).ParseToViewModel();
@@ -192,6 +199,7 @@ namespace Photor.Controllers
             return View(model);
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {

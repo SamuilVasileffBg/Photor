@@ -1,0 +1,18 @@
+﻿@using Photor.Infrastructure.Data.Models
+@model Post
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="card col-4" style="width: 20rem; ">
+    <a asp-action="View" asp-controller="Post" asp-route-id="@Model.Id">
+        <img class="card-img-top" style="width: 18rem;" src="@Model.ImageUrl" alt="Book Image">
+    </a>
+    <div class="card-body">
+
+        <h5 class="card-title mt-1">@Model.Description</h5>
+    </div>
+</div>

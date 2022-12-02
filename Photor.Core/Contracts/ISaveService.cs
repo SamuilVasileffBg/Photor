@@ -14,5 +14,7 @@ namespace Photor.Core.Contracts
         public Task DeleteSaveAsync(Guid postId, string userId);
 
         public Task<UserSavedPost?> FindSaveAsync(Guid postId, string userId);
+
+        public Task<IEnumerable<UserSavedPost>> GetSavedPostsAsync(string userId);
     }
 }

@@ -94,15 +94,7 @@
             <div class="text-center row">
                 @foreach (var post in Model.Posts)
                 {
-                    <div class="card col-4" style="width: 20rem; ">
-                        <a asp-action="View" asp-controller="Post" asp-route-id="@post.Id">
-                            <img class="card-img-top" style="width: 18rem;" src="@post.ImageUrl" alt="Book Image">
-                        </a>
-                        <div class="card-body">
-
-                            <h5 class="card-title mt-1">@post.Description</h5>
-                        </div>
-                    </div>
+                    <partial name="_PostPreviewPartial" model="@post"/>
                 }
             </div>
         }

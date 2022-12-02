@@ -38,7 +38,7 @@ namespace Photor.Controllers
                 post.UserId != userId &&
                 await friendService.FindUserFriendAsync(userId, post.UserId) == null)
             {
-                throw new Exception("User has no right to like this post.");
+                throw new Exception("User has no right to save this post.");
             }
 
             await saveService
@@ -52,7 +52,7 @@ namespace Photor.Controllers
             return RedirectToAction("View", "Post", new { id = model.Id, commentFieldValue = model.CommentValue });
         }
 
-        public async Task<IActionResult> DeleteLike(ViewPostViewModel model, string? returnUrl)
+        public async Task<IActionResult> Delete(ViewPostViewModel model, string? returnUrl)
         {
             await saveService
                 .DeleteSaveAsync(model.Id, User.Id());
@@ -63,6 +63,18 @@ namespace Photor.Controllers
             }
 
             return RedirectToAction("View", "Post", new { id = model.Id, commentFieldValue = model.CommentValue });
+        }
+
+        public async Task<IActionResult> List()
+        {
+            var userId = User.Id();
+
+            var model = (await saveService
+                .GetSavedPostsAsync(userId))
+                .Select(usp => usp.Post)
+                .ToList();
+
+            return View(model);
         }
     }
 }

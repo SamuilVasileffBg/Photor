@@ -2,6 +2,7 @@
 @using Photor.Extensions
 @inject ILikeService likeService;
 @inject ICommentService commentService;
+@inject ISaveService saveService;
 @model ViewPostViewModel
 
 @*
@@ -25,6 +26,15 @@
         <input type="hidden" asp-for="@Model.User.UserName"></input>
         <div class="text-center mb-3">
             <p style="font-size:50px;">&#128077; @await likeService.GetPostLikesCountAsync(Model.Id)</p>
+            @if (await saveService.FindSaveAsync(@Model.Id, User.Id()) == null)
+            {
+                <button asp-action="Add" asp-controller="Save" asp-route-id="@Model.Id" class="btn btn-primary">Save Post</button>
+            }
+            else
+            {
+                <button asp-action="Delete" asp-controller="Save" asp-route-id="@Model.Id" class="btn btn-primary">Unsave Post</button>
+            }
+
             @if (await likeService.FindLikeAsync(Model.Id, User.Id()) != null)
             {
                 <button asp-action="DeleteLike" asp-controller="Like" asp-route-id="@Model.Id" class="btn btn-primary">Unlike</button>

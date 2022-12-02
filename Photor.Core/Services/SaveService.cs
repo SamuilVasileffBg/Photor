@@ -5,7 +5,7 @@ using Photor.Infrastructure.Data.Models;
 
 namespace Photor.Core.Services
 {
-    internal class SaveService : ISaveService
+    public class SaveService : ISaveService
     {
         private readonly IRepository repository;
 
@@ -44,7 +44,7 @@ namespace Photor.Core.Services
 
             if (userSavedPost == null)
             {
-                throw new Exception("Like not found");
+                throw new Exception("Save not found");
             }
 
             userSavedPost.IsDeleted = true;
@@ -60,6 +60,15 @@ namespace Photor.Core.Services
                 .FirstOrDefaultAsync(ulp => ulp.UserId == userId && ulp.PostId == postId && ulp.IsDeleted == false);
 
             return userSavedPost;
+        }
+
+        public async Task<IEnumerable<UserSavedPost>> GetSavedPostsAsync(string userId)
+        {
+            return await repository
+                .All<UserSavedPost>()
+                .Where(usp => usp.IsDeleted == false && usp.UserId == userId)
+                .Include(usp => usp.Post)
+                .ToListAsync();
         }
     }
 }

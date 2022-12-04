@@ -52,7 +52,7 @@ namespace Photor.Controllers
             if (model.CommentValue.Length > 1000)
             {
                 return RedirectToAction("View", "Post", new { id = model.Id, commentFieldValue = model.CommentValue, errorMessage = "Your comment shouldn't be longer than 1000 characters." });
-                }
+            }
 
             //if (ModelState.IsValid == false)
             //{
@@ -65,7 +65,7 @@ namespace Photor.Controllers
             return RedirectToAction("View", "Post", new { id = model.Id });
         }
 
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id, string? returnUrl)
         {
             var comment = await commentService.GetCommentAsync(id);
 
@@ -80,6 +80,11 @@ namespace Photor.Controllers
             }
 
             await commentService.DeleteCommentAsync(id);
+
+            if (String.IsNullOrEmpty(returnUrl) == false)
+            {
+                return Redirect(returnUrl);
+            }
 
             return RedirectToAction("View", "Post", new { id = comment.PostId });
         }
@@ -111,7 +116,7 @@ namespace Photor.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(EditCommentViewModel model)
+        public async Task<IActionResult> Edit(EditCommentViewModel model, string? returnUrl)
         {
             if (ModelState.IsValid == false)
             {
@@ -126,7 +131,55 @@ namespace Photor.Controllers
             await commentService
                 .EditCommentAsync(model);
 
+            if (String.IsNullOrEmpty(returnUrl) == false)
+            {
+                return Redirect(returnUrl);
+            }
+
             return RedirectToAction("View", "Post", new { id = model.PostId });
+        }
+
+        public async Task<IActionResult> List(Guid postId, int? page)
+        {
+            var post = await postService.GetPostAsync(postId.ToString());
+
+            if (post == null)
+            {
+                throw new Exception("Post not found.");
+            }
+
+            if (post.FriendsOnly && await friendService.FindUserFriendAsync(User.Id(), post.UserId) == null && User.Id() != post.UserId)
+            {
+                throw new Exception("No access to post comments.");
+            }
+
+            if (page == null || page < 1)
+            {
+                return RedirectToAction(nameof(List), new { postId, page = 1 });
+            }
+
+            var model = new CommentListViewModel();
+            model.Page = page.Value;
+            model.AllCommentsCount = await commentService.GetPostCommentsCountAsync(postId);
+            model.PostId = postId;
+
+            var comments = await commentService.GetPostCommentsAsync(postId, page.Value);
+
+            ViewBag.LastPage = Math.Ceiling((double)model.AllCommentsCount / 5);
+
+            if ((comments?.Count() ?? 0) == 0 && page.Value > 1)
+            {
+                return RedirectToAction(nameof(List), new { postId, page = Math.Ceiling((double)model.AllCommentsCount / 5) });
+            }
+
+            if (comments != null)
+            {
+                model.Comments = comments.ToList();
+            }
+
+            ViewBag.ReturnUrl = $"/Comment/List?postId={postId}&page={page}";
+
+            return View(model);
         }
     }
 }

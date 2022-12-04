@@ -12,7 +12,14 @@
         <img class="card-img-top" style="width: 18rem;" src="@Model.ImageUrl" alt="Book Image">
     </a>
     <div class="card-body">
-
-        <h5 class="card-title mt-1">@Model.Description</h5>
+        @if (String.IsNullOrEmpty(Model.Description) == false)
+        {
+            <h5 class="card-title mt-1">@Model.Description</h5>
+        }
+        else
+        {
+            <h5>No description</h5>
+        }
     </div>
+    <a id="unsavePost" asp-action="View" asp-controller="Post" asp-route-id="@Model.Id" class="btn btn-primary">View Post</a>
 </div>

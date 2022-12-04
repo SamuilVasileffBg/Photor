@@ -18,6 +18,10 @@ namespace Photor.Core.Contracts
 
         public Task<List<UserPostComment>> GetPostCommentsAsync(Guid postId);
 
+        public Task<List<UserPostComment>> GetPostCommentsAsync(Guid postId, int page);
+
+        public Task<int> GetPostCommentsCountAsync(Guid postId);
+
         public Task<UserPostComment?> GetCommentAsync(Guid commentId);
     }
 }

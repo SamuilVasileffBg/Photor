@@ -22,6 +22,8 @@ namespace Photor.Core.Services
                 PostId = postId,
                 UserId = userId,
                 Content = commentContent,
+                DateTimeOfCreation = DateTime.UtcNow,
+                DateTimeOfLastEdit = null,
             };
 
             await repository
@@ -77,9 +79,31 @@ namespace Photor.Core.Services
             }
 
             comment.Content = model.Content;
+            comment.DateTimeOfLastEdit = DateTime.UtcNow;
 
             await repository
                 .SaveChangesAsync();
+        }
+
+        public async Task<List<UserPostComment>> GetPostCommentsAsync(Guid postId, int page)
+        {
+            return await repository
+                .All<UserPostComment>()
+                .Where(upc => upc.PostId == postId && upc.IsDeleted == false)
+                .OrderByDescending(upc => upc.DateTimeOfCreation)
+                .Skip((page - 1) * 5)
+                .Take(5)
+                .Include(upc => upc.User)
+                .Include(upc => upc.Post)
+                .ToListAsync();
+        }
+
+        public async Task<int> GetPostCommentsCountAsync(Guid postId)
+        {
+            return await repository
+                .All<UserPostComment>()
+                .Where(upc => upc.PostId == postId && upc.IsDeleted == false)
+                .CountAsync();
         }
     }
 }

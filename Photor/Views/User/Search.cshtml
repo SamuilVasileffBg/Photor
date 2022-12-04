@@ -9,7 +9,10 @@
 @{
     ViewBag.PreviousPage = Model.Page - 1;
     ViewBag.NextPage = Model.Page + 1;
+    ViewBag.LastPage = Math.Ceiling((double)Model.AllMatchesCount / 5);
 }
+
+<h1>Find friends &#129303;</h1>
 
 <form method="post">
     <div class="form-group">
@@ -19,8 +22,18 @@
     <button type="submit" class="btn btn-primary" asp-controller="User" asp-action="Search">Search</button>
 </form>
 
-<nav aria-label="Page navigation example">
+
+
+@if (Model.Users.Count == 0 && String.IsNullOrEmpty(Model.SearchValue) == false){
+    <p class="text-center">No matches found</p>
+}
+else if (String.IsNullOrEmpty(Model.SearchValue) == false) {
+    <nav aria-label="Page navigation">
   <ul class="pagination justify-content-center">
+        <li class="page-item">
+        <a class="page-link" asp-action="Search" asp-controller="User" asp-route-searchValue="@Model.SearchValue" asp-route-page="1">First Page</a>
+        </li>
+
         @if (Model.Page == 1)
         {
             <li class="page-item disabled">
@@ -33,9 +46,12 @@
                 <a class="page-link" asp-action="Search" asp-controller="User" asp-route-searchValue="@Model.SearchValue" asp-route-page="@ViewBag.PreviousPage">Previous</a>
             </li>
         }
-        @*<li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>*@
+        
+        <form>
+          <input type="number" min="1" max="@ViewBag.LastPage" asp-for="@Model.Page" class="form-control"  placeholder="Page" >
+          <input type="hidden" asp-for="@Model.SearchValue" value="@Model.SearchValue"></input>
+          <button type="submit" asp-action="Search" asp-controller="User" class="btn btn-primary">Go</button>
+      </form>
         @if (Model.AllMatchesCount <= Model.Page * 5)
         {
             <li class="page-item disabled">
@@ -48,13 +64,12 @@
               <a class="page-link" asp-action="Search" asp-controller="User" asp-route-searchValue="@Model.SearchValue" asp-route-page="@ViewBag.NextPage">Next</a>
             </li>
         }
+
+        <li class="page-item">
+            <a class="page-link" asp-action="Search" asp-controller="User" asp-route-searchValue="@Model.SearchValue" asp-route-page="@ViewBag.LastPage">Last Page</a>
+        </li>
     </ul>
 </nav>
-
-@if (Model.Users.Count == 0 && Model.SearchValue != null){
-    <p class="text-center">No matches found</p>
-}
-else {
     @foreach (var user in Model.Users) {
         <partial name="_UserPreviewPartial" model="@user"/> 
     }

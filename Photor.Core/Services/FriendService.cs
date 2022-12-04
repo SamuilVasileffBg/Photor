@@ -218,5 +218,32 @@ namespace Photor.Core.Services
 
             await context.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<ApplicationUser>> GetUserFriendsAsync(string userId, int page)
+        {
+            return await context
+                .UsersFriends
+                .Include(uf => uf.User)
+                .Include(uf => uf.Friend)
+                .Where(uf => uf.IsDeleted == false)
+                .Where(uf => uf.UserId == userId || uf.FriendId == userId)
+                .OrderBy(uf => uf.UserId == userId ? uf.FriendId : uf.UserId)
+                .Skip((page - 1) * 5)
+                .Take(5)
+                .Select(uf => uf.UserId == userId ? uf.Friend
+                : uf.User)
+                .ToListAsync();
+        }
+
+        public async Task<int> GetUserFriendsCountAsync(string userId)
+        {
+            return await context
+                .UsersFriends
+                .Include(uf => uf.User)
+                .Include(uf => uf.Friend)
+                .Where(uf => uf.IsDeleted == false)
+                .Where(uf => uf.UserId == userId || uf.FriendId == userId)
+                .CountAsync();
+        }
     }
 }

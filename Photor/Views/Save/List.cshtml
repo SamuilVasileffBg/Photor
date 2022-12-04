@@ -18,7 +18,15 @@ else
     <div class="text-center row">
         @foreach (var post in Model)
         {
-            <partial name="_PostPreviewPartial" model="@post"/>
+            <div class="card col-4" style="width: 20rem; ">
+                <a asp-action="View" asp-controller="Post" asp-route-id="@post.Id">
+                    <img class="card-img-top" style="width: 18rem;" src="@post.ImageUrl" alt="Book Image">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title mt-1">@post.Description</h5>
+                </div>
+                    <a id="unsavePost" asp-action="Delete" asp-controller="Save" asp-route-id="@post.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="btn btn-primary">Unsave Post</a>
+            </div>
         }
     </div>
 }

@@ -162,7 +162,7 @@ namespace Photor.Controllers
 
             if ((users?.Count() ?? 0) == 0 && page.Value > 1)
             {
-                return RedirectToAction(nameof(Search), new { searchValue, page = page.Value - 1 });
+                return RedirectToAction(nameof(Search), new { searchValue, page = Math.Ceiling((double)model.AllMatchesCount / 5) });
             }
 
             if (users != null)
@@ -179,7 +179,7 @@ namespace Photor.Controllers
         [HttpPost]
         public IActionResult Search(UserSearchViewModel model)
         {
-            return RedirectToAction(nameof(Search), nameof(User), new { searchValue = model.SearchValue });
+            return RedirectToAction(nameof(Search), nameof(User), new { searchValue = model.SearchValue, page = model.Page });
         }
 
         [Authorize]

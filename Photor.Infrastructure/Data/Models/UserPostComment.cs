@@ -31,6 +31,12 @@ namespace Photor.Infrastructure.Data.Models
         [StringLength(CommentMaxLength), MinLength(CommentMinLength)]
         public string Content { get; set; } = null!;
 
+        [Required]
+        [DefaultValue("2000-01-01T01:01:01")]
+        public DateTime DateTimeOfCreation { get; set; }
+
+        public DateTime? DateTimeOfLastEdit { get; set; }
+
         [DefaultValue("false")]
         public bool IsDeleted { get; set; }
     }

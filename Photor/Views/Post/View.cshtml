@@ -63,7 +63,7 @@
         </div>
     </form>
 
-    @foreach (var comment in await commentService.GetPostCommentsAsync(Model.Id))
+    @foreach (var comment in await commentService.GetPostCommentsAsync(Model.Id, 1))
     {
         <div class="text-center mb-3">
             <div class="card" style="width: 90%;">
@@ -86,8 +86,8 @@
                 </div>
             </div>
         </div>
-        
     }
+    <a asp-action="List" style="width:50%;" asp-controller="Comment" asp-route-postId="@Model.Id" class="btn btn-primary">More comments</a>
 </div>
 
 @section Scripts {

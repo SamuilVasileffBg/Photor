@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Photor.Core.Contracts;
 using Photor.Core.Models.Post;
 using Photor.Extensions;
+using Photor.Infrastructure.Data.Models;
 
 namespace Photor.Controllers
 {
@@ -69,10 +70,30 @@ namespace Photor.Controllers
         {
             var userId = User.Id();
 
-            var model = (await saveService
+            var savedPosts = (await saveService
                 .GetSavedPostsAsync(userId))
                 .Select(usp => usp.Post)
                 .ToList();
+
+            List<Post> model = new List<Post>();
+
+            foreach (var post in savedPosts)
+            {
+                if (post.FriendsOnly == false)
+                {
+                    model.Add(post);
+                    continue;
+                }
+
+                var friendOnlyAccess = (await friendService.FindUserFriendAsync(post.UserId, User.Id()) != null ? true : false) || User.Id() == post.UserId;
+
+                if (friendOnlyAccess == true)
+                {
+                    model.Add(post);
+                }
+            }
+
+            ViewBag.ReturnUrl = "/Save/List";
 
             return View(model);
         }

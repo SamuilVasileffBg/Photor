@@ -30,5 +30,9 @@ namespace Photor.Core.Contracts
 
         public Task<IEnumerable<ApplicationUser>> GetUserFriendsAsync(string userId);
 
+        public Task<IEnumerable<ApplicationUser>> GetUserFriendsAsync(string userId, int page);
+
+        public Task<int> GetUserFriendsCountAsync(string userId);
+
     }
 }

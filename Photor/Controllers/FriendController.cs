@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Photor.Core.Contracts;
+using Photor.Core.Models.Friend;
 using Photor.Core.Parsers;
 using Photor.Extensions;
 using System.Security.Claims;
@@ -89,7 +90,7 @@ namespace Photor.Controllers
                 return Redirect(returnUrl);
             }
 
-            return RedirectToAction(nameof(FriendList), new { id = userId });
+            return RedirectToAction(nameof(List), new { id = userId });
         }
 
         public async Task<IActionResult> Invitations()
@@ -154,7 +155,7 @@ namespace Photor.Controllers
             return RedirectToAction(nameof(Invitations));
         }
 
-        public async Task<IActionResult> FriendList(string id, string? returnUrl)
+        public async Task<IActionResult> List(string id, int? page)
         {
             var user = await userService.GetUserByIdAsync(id);
 
@@ -165,15 +166,33 @@ namespace Photor.Controllers
 
             ViewBag.Title = $"Friends of {user.UserName}";
 
-            var model = (await friendService
-                .GetUserFriendsAsync(id))
+            var model = new FriendListViewModel();
+            model.UserId = id;
+            model.Page = page;
+            model.AllFriendsCount = await friendService.GetUserFriendsCountAsync(id);
+
+            if (page == null || page < 1)
+            {
+                return RedirectToAction(nameof(List), new { id, page = 1 });
+            }
+
+            var friends = (await friendService
+                .GetUserFriendsAsync(id, page.Value))
                 .Select(u => u.ParseToViewModel())
                 .ToList();
 
-            if (returnUrl != null)
+            if ((friends?.Count() ?? 0) == 0 && page.Value > 1)
             {
-                return Redirect(returnUrl);
+                return RedirectToAction(nameof(List), new { id, page = Math.Ceiling((double)model.AllFriendsCount / 5) });
             }
+
+            if (friends != null)
+            {
+                model.Friends = friends.ToList();
+            }
+
+            ViewBag.ReturnUrl = $"/Friend/List/{id}?page={page}";
+            ViewBag.LastPage = Math.Ceiling((double)model.AllFriendsCount / 5);
 
             return View(model);
         }

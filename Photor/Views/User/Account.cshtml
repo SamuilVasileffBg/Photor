@@ -32,6 +32,12 @@
                          <li class="nav-item">
                              <a class="dropdown-item" asp-action="Edit" asp-controller="User" asp-route-id="@Model.Id" class="card-link">Edit Account</a>
                          </li>
+                         <li class="nav-item">
+                             <a class="dropdown-item" asp-action="List" asp-controller="Save" asp-route-id="@Model.Id" class="card-link">Saved Posts</a>
+                         </li>
+                         <li class="nav-item">
+                             <a class="dropdown-item" asp-action="List" asp-controller="Friend" asp-route-id="@Model.Id" class="card-link">My Friends</a>
+                         </li>
                      </ul>
                  </div>
              </div>

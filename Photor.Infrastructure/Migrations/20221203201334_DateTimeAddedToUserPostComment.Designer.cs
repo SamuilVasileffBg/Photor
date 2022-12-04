@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Photor.Infrastructure.Data;
 
@@ -11,9 +12,10 @@ using Photor.Infrastructure.Data;
 namespace Photor.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221203201334_DateTimeAddedToUserPostComment")]
+    partial class DateTimeAddedToUserPostComment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -360,10 +362,7 @@ namespace Photor.Infrastructure.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<DateTime>("DateTimeOfCreation")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DateTimeOfLastEdit")
+                    b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")

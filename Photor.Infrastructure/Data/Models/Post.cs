@@ -33,6 +33,12 @@ namespace Photor.Infrastructure.Data.Models
         [Required]
         public bool FriendsOnly { get; set; }
 
+        [Required]
+        [DefaultValue("")]
+        public DateTime DateTimeOfCreation { get; set; }
+
+        public DateTime? DateTimeOfLastEdit { get; set; }
+
         public List<UserLikedPost> PostLikes { get; set; } = new List<UserLikedPost>();
 
         public List<UserPostComment> PostComments { get; set; } = new List<UserPostComment>();

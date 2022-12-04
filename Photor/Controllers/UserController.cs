@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Photor.Core.Contracts;
 using Photor.Core.Models.Identity;
+using Photor.Core.Models.Post;
 using Photor.Core.Models.User;
 using Photor.Core.Parsers;
 using Photor.Extensions;
 using Photor.Infrastructure.Data;
 using Photor.Infrastructure.Data.Models;
+using static Photor.Infrastructure.Data.Constants.PaginationConstants;
 
 namespace Photor.Controllers
 {
@@ -183,25 +185,49 @@ namespace Photor.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Account(string id)
+        public async Task<IActionResult> Account(string id, int? page)
         {
             var model = (await userService.GetUserByIdAsync(id)).ParseToViewModel();
 
-            //var friendOnlyAccess = (await friendService.FindUserFriendAsync(id, User.Id()) != null ? true : false) || User.Id() == id;
+            if (page == null || page < 1)
+            {
+                return RedirectToAction(nameof(Account), new { id, page = 1 });
+            }
 
-            model.Posts = (await postService.GetUserPostsAsync(id))
-                //.Where(p => p.FriendsOnly == false ||
-                //(p.FriendsOnly == true && friendOnlyAccess))
+            var paginationModel = new PostsPaginationViewModel();
+            paginationModel.UserId = id;
+            paginationModel.Page = page.Value;
+            paginationModel.AllPostsCount = await postService.GetUserPostsCountAsync(id);
+
+            var posts = (await postService.GetUserPostsAsync(id, page.Value))
                 .ToList();
 
-            ViewBag.ReturnUrl = $"/User/Account/{id}";
+            var lastPage = Math.Ceiling((double)paginationModel.AllPostsCount / PostsPerPage);
+
+            if ((posts?.Count() ?? 0) == 0 && page.Value > 1)
+            {
+                return RedirectToAction(nameof(Account), new { id, page = lastPage });
+            }
+
+            if (posts != null)
+            {
+                paginationModel.Posts = posts.ToList();
+            }
+
+            ViewBag.ReturnUrl = $"/User/Account/{id}?page={page}";
+            ViewBag.LastPage = lastPage;
+            ViewBag.PaginationModel = paginationModel;
+            ViewBag.PreviousPage = page - 1;
+            ViewBag.NextPage = page + 1;
+            ViewBag.Action = nameof(Account);
+            ViewBag.Controller = "User";
 
             return View(model);
         }
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(string id, string? returnUrl)
         {
             var model = (await userService
                 .GetUserByIdAsync(id))
@@ -212,11 +238,13 @@ namespace Photor.Controllers
                 throw new Exception("Cannot edit someone else' account.");
             }
 
+            ViewBag.ReturnUrl = returnUrl;
+
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(UserViewModel model)
+        public async Task<IActionResult> Edit(UserViewModel model, string? returnUrl)
         {
             if (User.Id() != model.Id)
             {
@@ -229,6 +257,11 @@ namespace Photor.Controllers
             }
 
             await userService.EditAccountAsync(model);
+
+            if (String.IsNullOrEmpty(returnUrl) == false)
+            {
+                return Redirect(returnUrl);
+            }
 
             return RedirectToAction(nameof(Account), nameof(User), new { id = model.Id });
         }

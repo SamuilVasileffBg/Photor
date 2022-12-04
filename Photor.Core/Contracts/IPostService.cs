@@ -21,6 +21,10 @@ namespace Photor.Core.Contracts
 
         public Task<List<Post>> GetUserPostsAsync(string userId);
 
+        public Task<List<Post>> GetUserPostsAsync(string userId, int page);
+
+        public Task<int> GetUserPostsCountAsync(string userId);
+
         public Task<bool> Accessible(Post post, string userId);
     }
 }

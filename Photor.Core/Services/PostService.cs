@@ -4,6 +4,7 @@ using Photor.Core.Models.Post;
 using Photor.Infrastructure.Data;
 using Photor.Infrastructure.Data.Common;
 using Photor.Infrastructure.Data.Models;
+using static Photor.Infrastructure.Data.Constants.PaginationConstants;
 
 namespace Photor.Core.Services
 {
@@ -49,6 +50,7 @@ namespace Photor.Core.Services
                 IsDeleted = false,
                 ImageUrl = model.ImageUrl,
                 UserId = model.UserId,
+                DateTimeOfCreation = DateTime.UtcNow
             };
 
             await repository
@@ -98,6 +100,7 @@ namespace Photor.Core.Services
 
             post.Description = model.Description;
             post.FriendsOnly = model.FriendsOnly;
+            post.DateTimeOfLastEdit = DateTime.UtcNow;
 
             await repository
                 .SaveChangesAsync();
@@ -119,6 +122,25 @@ namespace Photor.Core.Services
                 .All<Post>()
                 .Where(p => p.UserId == userId && p.IsDeleted == false)
                 .ToListAsync();
+        }
+
+        public async Task<List<Post>> GetUserPostsAsync(string userId, int page)
+        {
+            return await repository
+                .All<Post>()
+                .Where(p => p.UserId == userId && p.IsDeleted == false)
+                .OrderByDescending(p => p.DateTimeOfCreation)
+                .Skip((page - 1) * PostsPerPage)
+                .Take(PostsPerPage)
+                .ToListAsync();
+        }
+
+        public async Task<int> GetUserPostsCountAsync(string userId)
+        {
+            return await repository
+                .All<Post>()
+                .Where(p => p.UserId == userId && p.IsDeleted == false)
+                .CountAsync();
         }
     }
 }

@@ -187,11 +187,11 @@ namespace Photor.Controllers
         {
             var model = (await userService.GetUserByIdAsync(id)).ParseToViewModel();
 
-            var friendOnlyAccess = (await friendService.FindUserFriendAsync(id, User.Id()) != null ? true : false) || User.Id() == id;
+            //var friendOnlyAccess = (await friendService.FindUserFriendAsync(id, User.Id()) != null ? true : false) || User.Id() == id;
 
             model.Posts = (await postService.GetUserPostsAsync(id))
-                .Where(p => p.FriendsOnly == false ||
-                (p.FriendsOnly == true && friendOnlyAccess))
+                //.Where(p => p.FriendsOnly == false ||
+                //(p.FriendsOnly == true && friendOnlyAccess))
                 .ToList();
 
             ViewBag.ReturnUrl = $"/User/Account/{id}";

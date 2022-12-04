@@ -20,5 +20,7 @@ namespace Photor.Core.Contracts
         public Task DeletePostAsync(Guid id);
 
         public Task<List<Post>> GetUserPostsAsync(string userId);
+
+        public Task<bool> Accessible(Post post, string userId);
     }
 }

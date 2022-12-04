@@ -16,5 +16,9 @@ namespace Photor.Core.Contracts
         public Task<UserSavedPost?> FindSaveAsync(Guid postId, string userId);
 
         public Task<IEnumerable<UserSavedPost>> GetSavedPostsAsync(string userId);
+
+        public Task<IEnumerable<UserSavedPost>> GetSavedPostsAsync(string userId, int page);
+
+        public Task<int> GetSavedPostsCountAsync(string userId);
     }
 }

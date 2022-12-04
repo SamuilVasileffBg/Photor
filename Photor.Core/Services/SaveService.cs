@@ -2,6 +2,7 @@
 using Photor.Core.Contracts;
 using Photor.Infrastructure.Data.Common;
 using Photor.Infrastructure.Data.Models;
+using static Photor.Infrastructure.Data.Constants.PaginationConstants;
 
 namespace Photor.Core.Services
 {
@@ -69,6 +70,26 @@ namespace Photor.Core.Services
                 .Where(usp => usp.IsDeleted == false && usp.UserId == userId)
                 .Include(usp => usp.Post)
                 .ToListAsync();
+        }
+
+        public async Task<IEnumerable<UserSavedPost>> GetSavedPostsAsync(string userId, int page)
+        {
+            return await repository
+                .All<UserSavedPost>()
+                .Where(usp => usp.IsDeleted == false && usp.UserId == userId)
+                .OrderByDescending(usp => usp.DateTime)
+                .Skip((page - 1) * PostsPerPage)
+                .Take(4)
+                .Include(usp => usp.Post)
+                .ToListAsync();
+        }
+
+        public async Task<int> GetSavedPostsCountAsync(string userId)
+        {
+            return await repository
+                .All<UserSavedPost>()
+                .Where(usp => usp.IsDeleted == false && usp.UserId == userId)
+                .CountAsync();
         }
     }
 }

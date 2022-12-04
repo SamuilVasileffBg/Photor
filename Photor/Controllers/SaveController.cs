@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Photor.Core.Contracts;
 using Photor.Core.Models.Post;
 using Photor.Extensions;
+using static Photor.Infrastructure.Data.Constants.PaginationConstants;
 using Photor.Infrastructure.Data.Models;
 
 namespace Photor.Controllers
@@ -66,34 +67,44 @@ namespace Photor.Controllers
             return RedirectToAction("View", "Post", new { id = model.Id, commentFieldValue = model.CommentValue });
         }
 
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List(int? page)
         {
             var userId = User.Id();
 
-            var savedPosts = (await saveService
-                .GetSavedPostsAsync(userId))
+            ViewBag.ReturnUrl = "/Save/List";
+
+            //return View(model);
+
+
+            if (page == null || page < 1)
+            {
+                return RedirectToAction(nameof(List), new { page = 1 });
+            }
+
+            var model = new PostsPaginationViewModel();
+            model.UserId = userId;
+            model.Page = page.Value;
+            model.AllPostsCount = await saveService.GetSavedPostsCountAsync(userId);
+
+            var posts = (await saveService
+                .GetSavedPostsAsync(userId, page.Value))
                 .Select(usp => usp.Post)
                 .ToList();
 
-            List<Post> model = new List<Post>();
+            var lastPage = Math.Ceiling((double)model.AllPostsCount / PostsPerPage);
 
-            foreach (var post in savedPosts)
+            if ((posts?.Count() ?? 0) == 0 && page.Value > 1)
             {
-                if (post.FriendsOnly == false)
-                {
-                    model.Add(post);
-                    continue;
-                }
-
-                var friendOnlyAccess = (await friendService.FindUserFriendAsync(post.UserId, User.Id()) != null ? true : false) || User.Id() == post.UserId;
-
-                if (friendOnlyAccess == true)
-                {
-                    model.Add(post);
-                }
+                return RedirectToAction(nameof(List), new { page = lastPage });
             }
 
-            ViewBag.ReturnUrl = "/Save/List";
+            if (posts != null)
+            {
+                model.Posts = posts.ToList();
+            }
+
+            ViewBag.ReturnUrl = $"/Save/List?page={page}";
+            ViewBag.LastPage = lastPage;
 
             return View(model);
         }

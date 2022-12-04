@@ -5,6 +5,11 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    if (await postService.Accessible(Model, User.Id()) == false)
+    {
+        Model.ImageUrl = "https://www.keysigns.co.uk/images/no-access-signs-p1310-40478_zoom.jpg";
+        Model.Description = "This post is for friends only.";
+    }
 }
 
 <div class="card col-4" style="width: 20rem; ">
@@ -21,5 +26,12 @@
             <h5>No description</h5>
         }
     </div>
-    <a id="unsavePost" asp-action="View" asp-controller="Post" asp-route-id="@Model.Id" class="btn btn-primary">View Post</a>
+    @if (ViewBag.CardButton == "Unsave")
+    {
+        <a id="unsavePostButton" asp-action="Delete" asp-controller="Save" asp-route-id="@Model.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="btn btn-primary">Unsave Post</a>
+    }
+    else
+    {
+        <a id="viewPostButton" asp-action="View" asp-controller="Post" asp-route-id="@Model.Id" class="btn btn-primary">View Post</a>
+    }
 </div>

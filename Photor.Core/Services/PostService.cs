@@ -11,11 +11,33 @@ namespace Photor.Core.Services
     {
         private readonly ApplicationDbContext context;
         private readonly IRepository repository;
+        private readonly IFriendService friendService;
 
-        public PostService(ApplicationDbContext context, IRepository repository)
+        public PostService(ApplicationDbContext context, IRepository repository, IFriendService friendService)
         {
             this.context = context;
             this.repository = repository;
+            this.friendService = friendService;
+        }
+
+        public async Task<bool> Accessible(Post post, string userId)
+        {
+            if (post.FriendsOnly == false)
+            {
+                return true;
+            }
+
+            if (post.UserId == userId)
+            {
+                return true;
+            }
+
+            if ((await friendService.FindUserFriendAsync(post.UserId, userId)) == null)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public async Task<Guid> AddPostAsync(AddPostViewModel model)

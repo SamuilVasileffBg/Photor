@@ -31,5 +31,11 @@
             public const int CommentMinLength = 1;
             public const int CommentMaxLength = 1000;
         }
+
+        public static class UserPostReport
+        {
+            public const int ReasonMinLength = 10;
+            public const int ReasonMaxLength = 1000;
+        }
     }
 }

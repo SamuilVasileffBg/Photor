@@ -43,6 +43,8 @@ namespace Photor.Infrastructure.Data.Models
 
         public List<UserPostComment> PostComments { get; set; } = new List<UserPostComment>();
 
+        public List<UserSavedPost> PostSaves { get; set; } = new List<UserSavedPost>();
+
         [DefaultValue("false")]
         public bool IsDeleted { get; set; }
     }

@@ -1,0 +1,34 @@
+﻿@using Photor.Core.Models.Report
+@model ReportPostViewModel
+
+@{
+    ViewData["Title"] = "Report Post";
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+
+
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <form id="reportPost" method="post">
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="@Model.PostId" value="@ViewBag.Post.Id"></input>
+            <div class="text-center mb-3">
+                <partial name="_PostPreviewPartial" model="@ViewBag.Post"/>
+            </div>
+            <div class="text-center mb-3">
+                <label asp-for="@Model.Reason">Reason</label>
+                <input class="form-control" aria-required="true" asp-for="@Model.Reason" />
+                <span asp-validation-for="@Model.Reason" class="text-danger"></span>
+            </div>
+            <div class="text-center">
+                <button id="reportPostSubmit" type="submit" class="btn btn-primary">Report Post</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

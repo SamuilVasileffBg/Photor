@@ -81,6 +81,11 @@ namespace Photor.Core.Services
                 comment.IsDeleted = true;
             }
 
+            foreach (var save in post.PostSaves)
+            {
+                save.IsDeleted = true;
+            }
+
             post.IsDeleted = true;
 
             await repository
@@ -113,6 +118,7 @@ namespace Photor.Core.Services
                 .Include(p => p.ApplicationUser)
                 .Include(p => p.PostLikes)
                 .Include(p => p.PostComments)
+                .Include(p => p.PostSaves)
                 .FirstOrDefaultAsync(p => p.Id.ToString() == id && p.IsDeleted == false);
         }
 

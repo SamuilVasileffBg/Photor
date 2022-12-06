@@ -45,6 +45,8 @@ namespace Photor.Infrastructure.Data.Models
 
         public List<UserSavedPost> PostSaves { get; set; } = new List<UserSavedPost>();
 
+        public List<UserPostReport> PostReports { get; set; } = new List<UserPostReport>();
+
         [DefaultValue("false")]
         public bool IsDeleted { get; set; }
     }

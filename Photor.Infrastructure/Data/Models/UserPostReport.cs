@@ -33,5 +33,9 @@ namespace Photor.Infrastructure.Data.Models
         [Required]
         [DefaultValue("")]
         public DateTime DateTime { get; set; }
+
+        [Required]
+        [DefaultValue("false")]
+        public bool IsDeleted { get; set; }
     }
 }

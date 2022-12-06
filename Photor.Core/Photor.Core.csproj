@@ -15,8 +15,4 @@
     <ProjectReference Include="..\Photor.Infrastructure\Photor.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\Report\" />
-  </ItemGroup>
-
 </Project>

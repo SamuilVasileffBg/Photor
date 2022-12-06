@@ -19,10 +19,34 @@ namespace Photor.Core.Services
             this.repository = repository;
         }
 
+        public async Task<int> AllReportsCountAsync()
+        {
+            return await repository
+                .All<UserPostReport>()
+                .Where(r => r.IsDeleted == false)
+                .CountAsync();
+        }
+
+        public async Task DeleteReportAsync(Guid id)
+        {
+            var report = await GetReportAsync(id);
+
+            if (report == null)
+            {
+                throw new Exception("Post not found");
+            }
+
+            report.IsDeleted = true;
+
+            await repository
+                .SaveChangesAsync();
+        }
+
         public async Task<UserPostReport?> GetReportAsync(int page, bool newestFirst)
         {
             var reports = repository
-                .All<UserPostReport>();
+                .All<UserPostReport>()
+                .Where(r => r.IsDeleted == false);
 
             if (newestFirst == true)
             {
@@ -38,7 +62,16 @@ namespace Photor.Core.Services
             return await reports
                 .Skip(page - 1)
                 .Take(1)
+                .Include(r => r.Post)
+                .Include(r => r.User)
                 .FirstOrDefaultAsync();
+        }
+
+        public async Task<UserPostReport?> GetReportAsync(Guid id)
+        {
+            return await repository
+                .All<UserPostReport>()
+                .FirstOrDefaultAsync(r => r.Id == id);
         }
 
         public async Task<Guid> ReportPost(Guid postId, string userId, string description)
@@ -48,6 +81,7 @@ namespace Photor.Core.Services
                 PostId = postId,
                 UserId = userId,
                 Reason = description,
+                DateTime = DateTime.UtcNow,
             };
 
             await repository

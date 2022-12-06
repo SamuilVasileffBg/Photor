@@ -19,7 +19,14 @@
     <div class="card-body">
         @if (String.IsNullOrEmpty(Model.Description) == false)
         {
-            <h5 class="card-title mt-1">@Model.Description</h5>
+            @if (Model.Description.Length > 40)
+            {
+                <h5 class="card-title mt-1">@Model.Description.Substring(0, 40)...</h5>
+            }
+            else
+            {
+                <h5 class="card-title mt-1">@Model.Description</h5>
+            }
         }
         else
         {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Photor.Infrastructure.Data.Configuration;
 using Photor.Infrastructure.Data.Models;
 
 namespace Photor.Infrastructure.Data
@@ -81,6 +82,9 @@ namespace Photor.Infrastructure.Data
                 .HasForeignKey(usp => usp.UserId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            builder.ApplyConfiguration(new RoleConfiguration());
+            builder.ApplyConfiguration(new UserConfiguration());
+            builder.ApplyConfiguration(new UserRoleConfiguration());
             //builder
             //    .Entity<ApplicationUser>()
             //    .HasMany(u => u.UserFriends)

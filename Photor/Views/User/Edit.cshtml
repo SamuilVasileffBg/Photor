@@ -16,7 +16,8 @@
             <input type="hidden" asp-for="@Model.Id" value="@Model.Id"/>
             <div class="text-center mb-3">
                 <label asp-for="@Model.UserName">Username</label>
-                <input class="form-control " autocomplete="username" aria-required="true" value="@Model.UserName" asp-for="@Model.UserName" />
+                <input type="hidden" class="form-control " autocomplete="username" aria-required="true" value="@Model.UserName" asp-for="@Model.UserName"/>
+                <input class="form-control " autocomplete="username" aria-required="true" value="@Model.UserName" asp-for="@Model.UserName" disabled/>
                 <span asp-validation-for="@Model.UserName" class="text-danger"></span>
             </div>
             <div class="text-center mb-3">

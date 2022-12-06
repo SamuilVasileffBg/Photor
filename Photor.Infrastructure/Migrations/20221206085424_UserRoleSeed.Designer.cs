@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Photor.Infrastructure.Data;
 
@@ -11,9 +12,10 @@ using Photor.Infrastructure.Data;
 namespace Photor.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221206085424_UserRoleSeed")]
+    partial class UserRoleSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,7 +54,7 @@ namespace Photor.Infrastructure.Migrations
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "5aaf3d3a-707b-464f-af63-da9590a3021e",
+                            ConcurrencyStamp = "8b88ae38-d80b-464d-89bc-b5ac99002a33",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -258,7 +260,7 @@ namespace Photor.Infrastructure.Migrations
                         {
                             Id = "dea12856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "17aaa7e1-f5e2-4c3a-a5e1-11cd03b8171f",
+                            ConcurrencyStamp = "2bb4e660-4c2b-4e97-9d1c-38f9287cb19c",
                             Email = "samiadmin@mail.com",
                             EmailConfirmed = false,
                             FirstName = "Samuil",
@@ -266,9 +268,9 @@ namespace Photor.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "SAMIADMIN@MAIL.COM",
                             NormalizedUserName = "SAMIADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFFWK/Z7+4MFqm9+j6aishgZGsC5UZLFvJs8HG0yWZyIgl6oa4xT1JWevOp8lMSbEw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEH6fy+iKSnH8DAA+j3MZYdHm7FcKJ4fGf1N4qb32u8hXxe9j+A+fTE38B8xs9h5HUw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2b2c6760-b5c8-4848-83c7-59b3b1fd486a",
+                            SecurityStamp = "dbf4da2a-9cd8-4392-b563-79b294c5f1a7",
                             TwoFactorEnabled = false,
                             UserName = "SamiAdmin"
                         });
@@ -432,9 +434,6 @@ namespace Photor.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("PostId")
                         .HasColumnType("uniqueidentifier");

@@ -6,6 +6,7 @@ using static Photor.Infrastructure.Data.Constants.DbModelsConstants.UserPostRepo
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace Photor.Infrastructure.Data.Models
 {
@@ -28,5 +29,9 @@ namespace Photor.Infrastructure.Data.Models
         [Required]
         [StringLength(ReasonMaxLength), MinLength(ReasonMinLength)]
         public string Reason { get; set; } = null!;
+
+        [Required]
+        [DefaultValue("")]
+        public DateTime DateTime { get; set; }
     }
 }

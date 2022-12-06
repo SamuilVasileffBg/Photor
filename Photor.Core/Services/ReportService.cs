@@ -1,4 +1,5 @@
-﻿using Photor.Core.Contracts;
+﻿using Microsoft.EntityFrameworkCore;
+using Photor.Core.Contracts;
 using Photor.Infrastructure.Data.Common;
 using Photor.Infrastructure.Data.Models;
 using System;
@@ -16,6 +17,28 @@ namespace Photor.Core.Services
         public ReportService(IRepository repository)
         {
             this.repository = repository;
+        }
+
+        public async Task<UserPostReport?> GetReportAsync(int page, bool newestFirst)
+        {
+            var reports = repository
+                .All<UserPostReport>();
+
+            if (newestFirst == true)
+            {
+                reports = reports
+                    .OrderByDescending(r => r.DateTime);
+            }
+            else
+            {
+                reports = reports
+                    .OrderBy(r => r.DateTime);
+            }
+
+            return await reports
+                .Skip(page - 1)
+                .Take(1)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<Guid> ReportPost(Guid postId, string userId, string description)

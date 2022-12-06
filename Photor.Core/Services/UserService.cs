@@ -24,7 +24,6 @@ namespace Photor.Core.Services
                 throw new ArgumentNullException(nameof(model), "Cannot find user with such id.");
             }
 
-            user.UserName = model.UserName;
             user.FirstName = model.FirstName;
             user.LastName = model.LastName;
             user.Description = model.Description;

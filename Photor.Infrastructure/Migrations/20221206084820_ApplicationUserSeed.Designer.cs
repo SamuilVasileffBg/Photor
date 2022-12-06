@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Photor.Infrastructure.Data;
 
@@ -11,9 +12,10 @@ using Photor.Infrastructure.Data;
 namespace Photor.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221206084820_ApplicationUserSeed")]
+    partial class ApplicationUserSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,7 +54,7 @@ namespace Photor.Infrastructure.Migrations
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "5aaf3d3a-707b-464f-af63-da9590a3021e",
+                            ConcurrencyStamp = "4e214686-5046-4972-82a8-0d8536533e59",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -145,13 +147,6 @@ namespace Photor.Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "dea12856-c198-4129-b3f3-b893d8395082",
-                            RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7210"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -258,7 +253,7 @@ namespace Photor.Infrastructure.Migrations
                         {
                             Id = "dea12856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "17aaa7e1-f5e2-4c3a-a5e1-11cd03b8171f",
+                            ConcurrencyStamp = "9b2f43e4-e624-4401-bab0-4e69dedbd365",
                             Email = "samiadmin@mail.com",
                             EmailConfirmed = false,
                             FirstName = "Samuil",
@@ -266,9 +261,9 @@ namespace Photor.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "SAMIADMIN@MAIL.COM",
                             NormalizedUserName = "SAMIADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFFWK/Z7+4MFqm9+j6aishgZGsC5UZLFvJs8HG0yWZyIgl6oa4xT1JWevOp8lMSbEw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEH/pj6HatsXV60C3p/WqH+tTwsiQ6N4wPM7OwvtmQsxpIoq1zKoUhBuHBuTCSjbIbg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2b2c6760-b5c8-4848-83c7-59b3b1fd486a",
+                            SecurityStamp = "b1cb9af0-2805-483a-ac9d-f6633900141e",
                             TwoFactorEnabled = false,
                             UserName = "SamiAdmin"
                         });
@@ -432,9 +427,6 @@ namespace Photor.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("PostId")
                         .HasColumnType("uniqueidentifier");

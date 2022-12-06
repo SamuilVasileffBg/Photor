@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Photor.Infrastructure.Data;
 
@@ -11,9 +12,10 @@ using Photor.Infrastructure.Data;
 namespace Photor.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221206083523_AdminRoleSeed")]
+    partial class AdminRoleSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,7 +54,7 @@ namespace Photor.Infrastructure.Migrations
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "5aaf3d3a-707b-464f-af63-da9590a3021e",
+                            ConcurrencyStamp = "bb79a713-2457-43c7-a58e-c365d9aa7a40",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -145,13 +147,6 @@ namespace Photor.Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "dea12856-c198-4129-b3f3-b893d8395082",
-                            RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7210"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -252,26 +247,6 @@ namespace Photor.Infrastructure.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "dea12856-c198-4129-b3f3-b893d8395082",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "17aaa7e1-f5e2-4c3a-a5e1-11cd03b8171f",
-                            Email = "samiadmin@mail.com",
-                            EmailConfirmed = false,
-                            FirstName = "Samuil",
-                            LastName = "Vasilev",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "SAMIADMIN@MAIL.COM",
-                            NormalizedUserName = "SAMIADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFFWK/Z7+4MFqm9+j6aishgZGsC5UZLFvJs8HG0yWZyIgl6oa4xT1JWevOp8lMSbEw==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "2b2c6760-b5c8-4848-83c7-59b3b1fd486a",
-                            TwoFactorEnabled = false,
-                            UserName = "SamiAdmin"
-                        });
                 });
 
             modelBuilder.Entity("Photor.Infrastructure.Data.Models.FriendInvitation", b =>
@@ -432,9 +407,6 @@ namespace Photor.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("PostId")
                         .HasColumnType("uniqueidentifier");

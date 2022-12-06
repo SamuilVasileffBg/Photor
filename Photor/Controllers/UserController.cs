@@ -116,6 +116,11 @@ namespace Photor.Controllers
 
                 if (result.Succeeded)
                 {
+                    if (user != null && await userManager.IsInRoleAsync(user, "Administrator"))
+                    {
+                        return RedirectToAction("Index", "Base", new { Area = "Administrator" });
+                    }
+
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -221,6 +226,7 @@ namespace Photor.Controllers
             ViewBag.NextPage = page + 1;
             ViewBag.Action = nameof(Account);
             ViewBag.Controller = "User";
+            ViewBag.NoDataText = "User has no posts.";
 
             return View(model);
         }

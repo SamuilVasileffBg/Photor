@@ -13,12 +13,14 @@ namespace Photor.Core.Services
         private readonly ApplicationDbContext context;
         private readonly IRepository repository;
         private readonly IFriendService friendService;
+        private readonly IGoogleDriveService googleDriveService;
 
-        public PostService(ApplicationDbContext context, IRepository repository, IFriendService friendService)
+        public PostService(ApplicationDbContext context, IRepository repository, IFriendService friendService, IGoogleDriveService googleDriveService)
         {
             this.context = context;
             this.repository = repository;
             this.friendService = friendService;
+            this.googleDriveService = googleDriveService;
         }
 
         public async Task<bool> Accessible(Post post, string userId)
@@ -43,12 +45,14 @@ namespace Photor.Core.Services
 
         public async Task<Guid> AddPostAsync(AddPostViewModel model)
         {
+            var imageUrl = await googleDriveService.UploadImageAsync(model.Image);
+
             Post post = new Post()
             {
                 Description = model.Description,
                 FriendsOnly = model.FriendsOnly,
                 IsDeleted = false,
-                ImageUrl = model.ImageUrl,
+                ImageUrl = imageUrl,
                 UserId = model.UserId,
                 DateTimeOfCreation = DateTime.UtcNow
             };

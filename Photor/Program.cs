@@ -32,6 +32,7 @@ builder.Services.AddScoped<ILikeService, LikeService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<ISaveService, SaveService>();
 builder.Services.AddScoped<IReportService, ReportService>();
+builder.Services.AddScoped<IGoogleDriveService, GoogleDriveService>();
 
 var app = builder.Build();
 

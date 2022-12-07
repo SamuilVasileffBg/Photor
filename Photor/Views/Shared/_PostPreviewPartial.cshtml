@@ -5,7 +5,7 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    if (await postService.Accessible(Model, User.Id()) == false)
+    if (await postService.Accessible(Model, User.Id()) == false && User.IsInRole("Administrator") == false)
     {
         Model.ImageUrl = "https://www.keysigns.co.uk/images/no-access-signs-p1310-40478_zoom.jpg";
         Model.Description = "This post is for friends only.";
@@ -14,7 +14,7 @@
 
 <div class="card col-4" style="width: 20rem; ">
     <a asp-action="View" asp-controller="Post" asp-route-id="@Model.Id">
-        <img class="card-img-top" style="width: 18rem;" src="@Model.ImageUrl" alt="Book Image">
+        <img class="card-img-top" style="width: 18rem;" src="@Model.ImageUrl" alt="Post Image">
     </a>
     <div class="card-body">
         @if (String.IsNullOrEmpty(Model.Description) == false)

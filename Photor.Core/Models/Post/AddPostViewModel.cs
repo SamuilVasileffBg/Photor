@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace Photor.Core.Models.Post
 {
@@ -13,7 +14,7 @@ namespace Photor.Core.Models.Post
         public string? UserId { get; set; }
 
         [Required]
-        public string ImageUrl { get; set; } = null!;
+        public IFormFile Image { get; set; } = null!;
 
         [StringLength(DescriptionMaxLength), MinLength(DescriptionMinLength)]
         public string? Description { get; set; }

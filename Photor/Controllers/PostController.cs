@@ -122,12 +122,21 @@ namespace Photor.Controllers
             }
 
             var userId = User.Id();
+            var userIsAdmin = User.IsInRole("Administrator");
+            var areFriends = (await friendService.FindUserFriendAsync(post.UserId, userId)) != null;
 
             if (post.FriendsOnly == true &&
                 post.UserId != userId &&
-                (await friendService.FindUserFriendAsync(post.UserId, userId)) == null)
+                areFriends == false &&
+                userIsAdmin == false)
             {
                 throw new Exception("Cannot access this post.");
+            }
+
+            ViewBag.Disabled = false;
+            if (areFriends == false && userIsAdmin == true)
+            {
+                ViewBag.Disabled = true;
             }
 
             var model = new ViewPostViewModel()

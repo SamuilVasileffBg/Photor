@@ -40,18 +40,18 @@
             <p style="font-size:50px;">&#128077; @await likeService.GetPostLikesCountAsync(Model.Id)</p>
             @if (await likeService.FindLikeAsync(Model.Id, User.Id()) != null)
             {
-                <button asp-action="DeleteLike" asp-controller="Like" asp-route-id="@Model.Id" class="btn btn-primary">Unlike</button>
+                <button asp-action="DeleteLike" asp-controller="Like" asp-route-id="@Model.Id" class="btn btn-primary" disabled="@ViewBag.Disabled">Unlike</button>
             }
             else
             {
-                <button asp-action="Add" asp-controller="Like" asp-route-id="@Model.Id" class="btn btn-primary">Like</button>
+                <button asp-action="Add" asp-controller="Like" asp-route-id="@Model.Id" class="btn btn-primary" disabled="@ViewBag.Disabled">Like</button>
             }
         </div>
 
         <div class="nav-item dropdown">
                  <div class="dropdown">
                      <button class="btn btn-primary" type="button"
-                     data-bs-toggle="dropdown">More &#128317;</button>
+                     data-bs-toggle="dropdown" disabled="@ViewBag.Disabled">More &#128317;</button>
                      <ul class="dropdown-menu">
                          @if (User.Id() == Model.User.Id)
                          {
@@ -84,10 +84,10 @@
 
         <div class="text-center mb-3">
                 <label asp-for="@Model.CommentValue">Write your comment here:</label>
-                <textarea class="form-control" aria-required="true" asp-for="@Model.CommentValue"></textarea>
+                <textarea class="form-control" aria-required="true" asp-for="@Model.CommentValue" disabled="@ViewBag.Disabled"></textarea>
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="text-center mt-3">
-                    <button asp-action="Add" asp-controller="Comment" asp-route-id="@Model.Id" class="btn btn-primary">Add Comment</button>
+                    <button asp-action="Add" asp-controller="Comment" asp-route-id="@Model.Id" class="btn btn-primary" disabled="@ViewBag.Disabled">Add Comment</button>
                 </div>
         </div>
     </form>

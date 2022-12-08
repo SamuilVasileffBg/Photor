@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 using static Photor.Infrastructure.Data.Constants.DbModelsConstants.ApplicationUser;
 
 namespace Photor.Core.Models.User
@@ -21,6 +22,11 @@ namespace Photor.Core.Models.User
         [Required]
         [StringLength(FirstAndLastNameMaxLength), MinLength(FirstAndLastNameMinLength)]
         public string LastName { get; set; } = null!;
+
+        [Required]
+        public string ImageUrl { get; set; } = null!;
+
+        public IFormFile? Image { get; set; }
 
         public List<Photor.Infrastructure.Data.Models.Post>? Posts { get; set; }
     }

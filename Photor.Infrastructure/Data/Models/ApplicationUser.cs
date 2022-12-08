@@ -51,9 +51,8 @@ namespace Photor.Infrastructure.Data.Models
 
         public List<UserSavedPost> UserSavedPosts { get; set; } = new List<UserSavedPost>();
 
-        //[ForeignKey(nameof(Image))]
-        //public Guid ImageId { get; set; }
-        //
-        //public byte[] Image { get; set; }
+        [Required]
+        [DefaultValue(@"https://lh3.googleusercontent.com/d/1Lf2T40cLdGd8GuGPEBuFCoPCPNQHz_ey")]
+        public string ImageUrl { get; set; } = null!;
     }
 }

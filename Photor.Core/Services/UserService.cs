@@ -9,10 +9,12 @@ namespace Photor.Core.Services
     public class UserService : IUserService
     {
         private readonly ApplicationDbContext context;
+        private readonly IGoogleDriveService googleDriveService;
 
-        public UserService(ApplicationDbContext context)
+        public UserService(ApplicationDbContext context, IGoogleDriveService googleDriveService)
         {
             this.context = context;
+            this.googleDriveService = googleDriveService;
         }
 
         public async Task EditAccountAsync(UserViewModel model)
@@ -22,6 +24,24 @@ namespace Photor.Core.Services
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(model), "Cannot find user with such id.");
+            }
+
+
+            if (model.Image != null)
+            {
+                string? imageUrl = null;
+
+                if (model.Image != null)
+                {
+                    imageUrl = await googleDriveService.UploadImageAsync(model.Image);
+                }
+
+                if (String.IsNullOrEmpty(imageUrl))
+                {
+                    throw new Exception("Upload unsuccessful");
+                }
+
+                user.ImageUrl = imageUrl;
             }
 
             user.FirstName = model.FirstName;

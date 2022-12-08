@@ -14,7 +14,7 @@
 
 <div class="card col-4" style="width: 20rem; ">
     <a asp-action="View" asp-controller="Post" asp-route-id="@Model.Id">
-        <img class="card-img-top" style="width: 18rem;" src="@Model.ImageUrl" alt="Post Image">
+        <img referrerpolicy="no-referrer" class="card-img-top" style="width: 18rem;" src="@Model.ImageUrl" alt="Post Image">
     </a>
     <div class="card-body">
         @if (String.IsNullOrEmpty(Model.Description) == false)

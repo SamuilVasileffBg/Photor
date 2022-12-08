@@ -31,6 +31,7 @@ namespace Photor.Infrastructure.Data.Configuration
                 NormalizedUserName = "SAMIADMIN",
                 Email = "samiadmin@mail.com",
                 NormalizedEmail = "samiadmin@mail.com".ToUpper(),
+                ImageUrl = @"https://lh3.googleusercontent.com/d/1Lf2T40cLdGd8GuGPEBuFCoPCPNQHz_ey",
             };
 
             user.PasswordHash =

@@ -68,6 +68,7 @@ namespace Photor.Controllers
                 UserName = model.UserName,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
+                ImageUrl = "https://lh3.googleusercontent.com/d/1Lf2T40cLdGd8GuGPEBuFCoPCPNQHz_ey",
             };
 
             var result = await userManager.CreateAsync(user, model.Password);

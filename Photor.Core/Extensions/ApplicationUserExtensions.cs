@@ -19,6 +19,7 @@ namespace Photor.Core.Parsers
                 FirstName = applicationUser.FirstName,
                 LastName = applicationUser.LastName,
                 Description = applicationUser.Description,
+                ImageUrl = applicationUser.ImageUrl,
             };
         }
     }

@@ -118,14 +118,30 @@ namespace Photor.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(EditCommentViewModel model, string? returnUrl)
         {
+            var userId = User.Id();
+
             if (ModelState.IsValid == false)
             {
                 return View(model);
             }
 
-            if (model.UserId != User.Id())
+            if (model.UserId != userId)
             {
                 throw new Exception("You have no right to edit this comment.");
+            }
+
+            var comment = await commentService.GetCommentAsync(model.Id);
+
+            if (comment == null)
+            {
+                throw new Exception("Comment not found.");
+            }
+
+            var postAccessible = await postService.Accessible(comment.Post, userId);
+
+            if (postAccessible == false)
+            {
+                throw new Exception("You have no access to edit this comment.");
             }
 
             await commentService

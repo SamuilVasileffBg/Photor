@@ -14,6 +14,8 @@
         <input type="hidden" asp-for="@Model.UserName" value="@Model.UserName"/>
         <input type="hidden" asp-for="@Model.FirstName" value="@Model.FirstName"/>
         <input type="hidden" asp-for="@Model.LastName" value="@Model.LastName"/>
+        <img referrerpolicy="no-referrer" class="rounded-circle" src="@Model.ImageUrl"></img>
+
         <h1>@Model.UserName</h1>
         <h2>@Model.FirstName @Model.LastName</h2>
         

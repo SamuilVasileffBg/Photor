@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Photor.Core.Contracts;
+using Photor.Core.Extensions;
 using Photor.Core.Models.Identity;
 using Photor.Core.Models.Post;
 using Photor.Core.Models.User;
@@ -11,6 +12,7 @@ using Photor.Extensions;
 using Photor.Infrastructure.Data;
 using Photor.Infrastructure.Data.Models;
 using static Photor.Infrastructure.Data.Constants.PaginationConstants;
+using static Photor.Infrastructure.Data.Constants.Image;
 
 namespace Photor.Controllers
 {
@@ -236,8 +238,15 @@ namespace Photor.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(string id, string? returnUrl)
         {
-            var model = (await userService
-                .GetUserByIdAsync(id))
+            var user = await userService
+                .GetUserByIdAsync(id);
+
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+
+            var model = user
                 .ParseToViewModel();
 
             if (User.Id() != id)
@@ -256,6 +265,11 @@ namespace Photor.Controllers
             if (User.Id() != model.Id)
             {
                 throw new Exception("Cannot edit someone else' account.");
+            }
+
+            if ((model.Image?.ImageFormatIsValid() ?? true) == false)
+            {
+                ModelState.AddModelError("Image", $"{AllowedFormats} extensions are allowed.");
             }
 
             if (ModelState.IsValid == false)

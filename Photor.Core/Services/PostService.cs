@@ -10,14 +10,12 @@ namespace Photor.Core.Services
 {
     public class PostService : IPostService
     {
-        private readonly ApplicationDbContext context;
         private readonly IRepository repository;
         private readonly IFriendService friendService;
         private readonly IGoogleDriveService googleDriveService;
 
-        public PostService(ApplicationDbContext context, IRepository repository, IFriendService friendService, IGoogleDriveService googleDriveService)
+        public PostService(IRepository repository, IFriendService friendService, IGoogleDriveService googleDriveService)
         {
-            this.context = context;
             this.repository = repository;
             this.friendService = friendService;
             this.googleDriveService = googleDriveService;

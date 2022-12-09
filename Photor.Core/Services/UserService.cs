@@ -1,20 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Photor.Core.Contracts;
 using Photor.Core.Models.User;
+using Photor.Core.Parsers;
 using Photor.Infrastructure.Data;
+using Photor.Infrastructure.Data.Common;
 using Photor.Infrastructure.Data.Models;
 
 namespace Photor.Core.Services
 {
     public class UserService : IUserService
     {
-        private readonly ApplicationDbContext context;
+        private readonly IRepository repository;
         private readonly IGoogleDriveService googleDriveService;
 
-        public UserService(ApplicationDbContext context, IGoogleDriveService googleDriveService)
+        public UserService(IGoogleDriveService googleDriveService, IRepository repository)
         {
-            this.context = context;
             this.googleDriveService = googleDriveService;
+            this.repository = repository;
         }
 
         public async Task EditAccountAsync(UserViewModel model)
@@ -31,10 +33,7 @@ namespace Photor.Core.Services
             {
                 string? imageUrl = null;
 
-                if (model.Image != null)
-                {
-                    imageUrl = await googleDriveService.UploadImageAsync(model.Image);
-                }
+                imageUrl = await googleDriveService.UploadImageAsync(model.Image);
 
                 if (String.IsNullOrEmpty(imageUrl))
                 {
@@ -48,21 +47,21 @@ namespace Photor.Core.Services
             user.LastName = model.LastName;
             user.Description = model.Description;
 
-            await context.SaveChangesAsync();
+            await repository.SaveChangesAsync();
         }
 
         public ApplicationUser? GetUserById(string userId)
         {
-            return context
-                .Users
+            return repository
+                .All<ApplicationUser>()
                 .ToList()
                 .FirstOrDefault(u => u.Id == userId);
         }
 
         public async Task<ApplicationUser?> GetUserByIdAsync(string userId)
         {
-            return await context
-                .Users
+            return await repository
+                .All<ApplicationUser>()
                 .FirstOrDefaultAsync(u => u.Id == userId);
         }
 
@@ -73,8 +72,8 @@ namespace Photor.Core.Services
                 return null;
             }
 
-            var data = await context
-                .Users
+            var data = await repository
+                .All<ApplicationUser>()
                 .Where(u => u.UserName.ToUpper().Contains(searchValue.ToUpper()))
                 .Select(u => new UserViewModel
                 {
@@ -93,16 +92,12 @@ namespace Photor.Core.Services
                 return null;
             }
 
-            var data = await context
-                .Users
+            var data = await repository
+                .All<ApplicationUser>()
                 .Where(u => u.UserName.ToUpper().Contains(searchValue.ToUpper()))
                 .Skip((page - 1) * 5)
                 .Take(5)
-                .Select(u => new UserViewModel
-                {
-                    UserName = u.UserName,
-                    Id = u.Id
-                })
+                .Select(u => u.ParseToViewModel())
                 .ToListAsync();
 
             return data;
@@ -115,8 +110,8 @@ namespace Photor.Core.Services
                 return 0;
             }
 
-            var count = await context
-                .Users
+            var count = await repository
+                .All<ApplicationUser>()
                 .Where(u => u.UserName.ToUpper().Contains(searchValue.ToUpper()))
                 .CountAsync();
 

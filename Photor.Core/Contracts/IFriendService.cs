@@ -16,9 +16,9 @@ namespace Photor.Core.Contracts
 
         public Task<IEnumerable<FriendInvitationViewModel>> GetReceivedFriendInvitationsAsync(string receiverId);
 
-        public Task<FriendInvitation> FindFriendInvitationAsync(string senderId, string receiverId);
+        public Task<FriendInvitation?> FindFriendInvitationAsync(string senderId, string receiverId);
 
-        public Task<UserFriend> FindUserFriendAsync(string id1, string id2);
+        public Task<UserFriend?> FindUserFriendAsync(string id1, string id2);
 
         public Task AcceptFriendInvitationAsync(string senderId, string receiverId);
 

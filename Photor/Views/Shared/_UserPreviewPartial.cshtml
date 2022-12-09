@@ -8,43 +8,113 @@
 @{
 }
 
-<div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <a asp-action="Account" asp-controller="User" asp-route-id="@Model.Id">
-                    <h5 class="card-title">@Model.UserName</h5>
-                </a>
-                @if (User.Id() == Model.Id)
-                {
-                    <p>This is your account</p>
-                }
-                else if ((await friendService.FindFriendInvitationAsync(User.Id(), Model.Id)) != null)
-                {
-                    <a class="btn btn-primary" asp-action="DeleteFriendInvitation" asp-controller="Friend" asp-route-id="@Model.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="card-link">Delete friend invitation</a>
-                }
-                else if ((await friendService.FindFriendInvitationAsync(Model.Id, User.Id())) != null)
-                {
-                    <div class="nav-item dropdown">
-                        <div class="dropdown">
-                            <button class="btn btn-primary" type="button"
-                            data-bs-toggle="dropdown">Sent you a friend invitation &#128317;</button>
-                            <ul class="dropdown-menu">
-                                <li class="nav-item">
-                                    <a class="dropdown-item" asp-action="AcceptFriendInvitation" asp-controller="Friend" asp-route-senderId="@Model.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="card-link">Accept Invitation</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="dropdown-item" asp-action="RejectFriendInvitation" asp-controller="Friend" asp-route-senderId="@Model.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="card-link">Reject Invitation</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                }
-                else if (await friendService.FindUserFriendAsync(User.Id(), Model.Id) == null)
-                {
-                    <a class="btn btn-primary" asp-action="SendFriendInvitation" asp-controller="Friend" asp-route-receiverId="@Model.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="card-link">Send friend invitation</a>
-                }
-                else
-                {
-                    <a class="btn btn-primary" asp-action="DeleteFriendship" asp-controller="Friend" asp-route-id="@Model.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="card-link">Delete friend</a>
-                }
+@*<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <a asp-action="Account" asp-controller="User" asp-route-id="@Model.Id">
+            <h5 class="card-title">@Model.UserName</h5>
+        </a>
+        @if (User.Id() == Model.Id)
+        {
+            <p>This is your account</p>
+        }
+        else if ((await friendService.FindFriendInvitationAsync(User.Id(), Model.Id)) != null)
+        {
+            <a class="btn btn-primary" asp-action="DeleteFriendInvitation" asp-controller="Friend" asp-route-id="@Model.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="card-link">Delete friend invitation</a>
+        }
+        else if ((await friendService.FindFriendInvitationAsync(Model.Id, User.Id())) != null)
+        {
+            <div class="nav-item dropdown">
+                <div class="dropdown">
+                    <button class="btn btn-primary" type="button"
+                    data-bs-toggle="dropdown">Sent you a friend invitation &#128317;</button>
+                    <ul class="dropdown-menu">
+                        <li class="nav-item">
+                            <a class="dropdown-item" asp-action="AcceptFriendInvitation" asp-controller="Friend" asp-route-senderId="@Model.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="card-link">Accept Invitation</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="dropdown-item" asp-action="RejectFriendInvitation" asp-controller="Friend" asp-route-senderId="@Model.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="card-link">Reject Invitation</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
+        }
+        else if (await friendService.FindUserFriendAsync(User.Id(), Model.Id) == null)
+        {
+            <a class="btn btn-primary" asp-action="SendFriendInvitation" asp-controller="Friend" asp-route-receiverId="@Model.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="card-link">Send friend invitation</a>
+        }
+        else
+        {
+            <a class="btn btn-primary" asp-action="DeleteFriendship" asp-controller="Friend" asp-route-id="@Model.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="card-link">Delete friend</a>
+        }
+    </div>
+</div>*@
+
+
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col col-md-9 col-lg-7 col-xl-5">
+        <div class="card" style="border-radius: 15px;">
+          <div class="card-body p-4">
+            <div class="d-flex text-black">
+              <div class="flex-shrink-0">
+                <img referrerpolicy="no-referrer" src="@Model.ImageUrl"
+                  alt="Generic placeholder image" class="img-fluid"
+                  style="width: 180px; border-radius: 10px;">
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h5 class="mb-1">@Model.UserName</h5>
+                <p class="mb-2 pb-1" style="color: #2b2a2a;">@Model.FirstName @Model.LastName</p>
+                <div class="d-flex justify-content-start rounded-3 p-2 mb-2"
+                  style="background-color: #efefef;">
+                  <div>
+                    <p class="small text-muted mb-1">Friends</p>
+                    <p class="mb-0">@(await friendService.GetUserFriendsCountAsync(Model.Id))</p>
+                  </div>
+                  <div class="px-3">
+                    <p class="small text-muted mb-1">Posts</p>
+                    <p class="mb-0">@(await postService.GetUserPostsCountAsync(Model.Id))</p>
+                  </div>
+                </div>
+                <div class="d-flex pt-1">
+                  <a asp-action="Account" asp-controller="User" asp-route-id="@Model.Id" type="button" class="btn btn-outline-primary me-1 flex-grow-1">View Account</a>
+                  @if (User.Id() == Model.Id)
+                  {
+                      <a class="btn btn-outline-primary me-1 flex-grow-1" disabled>This is your account</a>
+                  }
+                  else if ((await friendService.FindFriendInvitationAsync(User.Id(), Model.Id)) != null)
+                  {
+                      <a class="btn btn-primary flex-grow-1" asp-action="DeleteFriendInvitation" asp-controller="Friend" asp-route-id="@Model.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="card-link">Delete friend invitation</a>
+                  }
+                  else if ((await friendService.FindFriendInvitationAsync(Model.Id, User.Id())) != null)
+                  {
+                      <div class="nav-item dropdown">
+                          <div class="dropdown">
+                              <button class="btn btn-primary" type="button"
+                              data-bs-toggle="dropdown">Sent you a friend invitation &#128317;</button>
+                              <ul class="dropdown-menu">
+                                  <li class="nav-item">
+                                      <a class="dropdown-item flex-grow-1" asp-action="AcceptFriendInvitation" asp-controller="Friend" asp-route-senderId="@Model.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="card-link">Accept Invitation</a>
+                                  </li>
+                                  <li class="nav-item">
+                                      <a class="dropdown-item flex-grow-1" asp-action="RejectFriendInvitation" asp-controller="Friend" asp-route-senderId="@Model.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="card-link">Reject Invitation</a>
+                                  </li>
+                              </ul>
+                          </div>
+                      </div>
+                  }
+                  else if (await friendService.FindUserFriendAsync(User.Id(), Model.Id) == null)
+                  {
+                      <a class="btn btn-primary flex-grow-1" asp-action="SendFriendInvitation" asp-controller="Friend" asp-route-receiverId="@Model.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="card-link">Send friend invitation</a>
+                  }
+                  else
+                  {
+                      <a class="btn btn-primary flex-grow-1" asp-action="DeleteFriendship" asp-controller="Friend" asp-route-id="@Model.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="card-link">Delete friend</a>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+    </div>
+  </div>

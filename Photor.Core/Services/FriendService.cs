@@ -3,19 +3,20 @@ using Photor.Core.Contracts;
 using Photor.Core.Models.Friend;
 using Photor.Core.Parsers;
 using Photor.Infrastructure.Data;
+using Photor.Infrastructure.Data.Common;
 using Photor.Infrastructure.Data.Models;
 
 namespace Photor.Core.Services
 {
     public class FriendService : IFriendService
     {
-        private readonly ApplicationDbContext context;
         private readonly IUserService userService;
+        private readonly IRepository repository;
 
-        public FriendService(ApplicationDbContext context, IUserService userService)
+        public FriendService(IUserService userService, IRepository repository)
         {
-            this.context = context;
             this.userService = userService;
+            this.repository = repository;
         }
 
         public async Task AcceptFriendInvitationAsync(string senderId, string receiverId)
@@ -31,7 +32,7 @@ namespace Photor.Core.Services
 
             await AddUserFriendAsync(senderId, receiverId);
 
-            await context.SaveChangesAsync();
+            await repository.SaveChangesAsync();
         }
         public async Task RejectFriendInvitationAsync(string senderId, string receiverId)
         {
@@ -43,13 +44,13 @@ namespace Photor.Core.Services
             }
 
             friendInvitation.IsDeleted = true;
-            await context.SaveChangesAsync();
+            await repository.SaveChangesAsync();
         }
 
         public async Task<FriendInvitation?> FindFriendInvitationAsync(string senderId, string receiverId)
         {
-            var invitation = await context
-                .FriendInvitations
+            var invitation = await repository
+                .All<FriendInvitation>()
                 .Where(fi => fi.IsDeleted == false)
                 .FirstOrDefaultAsync(f => f.SenderId == senderId && f.ReceiverId == receiverId);
 
@@ -58,8 +59,8 @@ namespace Photor.Core.Services
 
         public async Task<UserFriend?> FindUserFriendAsync(string id1, string id2)
         {
-            var userFriend = await context
-                .UsersFriends
+            var userFriend = await repository
+                .All<UserFriend>()
                 .Where(uf => uf.IsDeleted == false)
                 .FirstOrDefaultAsync(f => (f.UserId == id1 && f.FriendId == id2)
                                        || (f.UserId == id2 && f.FriendId == id1));
@@ -69,13 +70,13 @@ namespace Photor.Core.Services
 
         public async Task<IEnumerable<FriendInvitationViewModel>> GetReceivedFriendInvitationsAsync(string receiverId)
         {
-            if (await context.Users.FirstOrDefaultAsync(u => u.Id == receiverId) == null)
+            if (await repository.All<ApplicationUser>().FirstOrDefaultAsync(u => u.Id == receiverId) == null)
             {
                 throw new ArgumentException(nameof(receiverId));
             }
 
-            var data = await context
-                .FriendInvitations
+            var data = await repository
+                .All<FriendInvitation>()
                 .Where(fi => fi.ReceiverId == receiverId && fi.IsDeleted == false)
                 .Select(fi => new FriendInvitationViewModel
                 {
@@ -111,25 +112,24 @@ namespace Photor.Core.Services
                 throw new ArgumentException("There is already an existing invitation.");
             }
 
-            if (await context.Users.FirstOrDefaultAsync(u => u.Id == receiverId) == null)
+            if (await repository.All<ApplicationUser>().FirstOrDefaultAsync(u => u.Id == receiverId) == null)
             {
                 throw new ArgumentNullException(nameof(receiverId));
             }
 
-            if (await context.Users.FirstOrDefaultAsync(u => u.Id == senderId) == null)
+            if (await repository.All<ApplicationUser>().FirstOrDefaultAsync(u => u.Id == senderId) == null)
             {
                 throw new ArgumentNullException(nameof(senderId));
             }
 
-            await context
-                .FriendInvitations
+            await repository
                 .AddAsync(new FriendInvitation()
                 {
                     SenderId = senderId,
                     ReceiverId = receiverId,
                 });
 
-            await context.SaveChangesAsync();
+            await repository.SaveChangesAsync();
 
             return true;
         }
@@ -146,8 +146,7 @@ namespace Photor.Core.Services
                 throw new Exception("There is an already existing friendship between these users.");
             }
 
-            var userFriend = await context
-                .UsersFriends
+            await repository
                 .AddAsync(new UserFriend()
                 {
                     UserId = userId,
@@ -166,7 +165,7 @@ namespace Photor.Core.Services
 
             userFriend.IsDeleted = true;
 
-            context.SaveChangesAsync();
+            await repository.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<ApplicationUser>> GetUserFriendsAsync(string userId)
@@ -194,8 +193,8 @@ namespace Photor.Core.Services
             //    }
             //}
 
-            return await context
-                .UsersFriends
+            return await repository
+                .All<UserFriend>()
                 .Include(uf => uf.User)
                 .Include(uf => uf.Friend)
                 .Where(uf => uf.IsDeleted == false)
@@ -216,13 +215,13 @@ namespace Photor.Core.Services
 
             friendInvitation.IsDeleted = true;
 
-            await context.SaveChangesAsync();
+            await repository.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<ApplicationUser>> GetUserFriendsAsync(string userId, int page)
         {
-            return await context
-                .UsersFriends
+            return await repository
+                .All<UserFriend>()
                 .Include(uf => uf.User)
                 .Include(uf => uf.Friend)
                 .Where(uf => uf.IsDeleted == false)
@@ -237,8 +236,8 @@ namespace Photor.Core.Services
 
         public async Task<int> GetUserFriendsCountAsync(string userId)
         {
-            return await context
-                .UsersFriends
+            return await repository
+                .All<UserFriend>()
                 .Include(uf => uf.User)
                 .Include(uf => uf.Friend)
                 .Where(uf => uf.IsDeleted == false)

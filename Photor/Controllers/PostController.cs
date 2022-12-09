@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Photor.Core.Contracts;
+using Photor.Core.Extensions;
 using Photor.Core.Models;
 using Photor.Core.Models.Post;
 using Photor.Core.Parsers;
 using Photor.Extensions;
+using static Photor.Infrastructure.Data.Constants.Image;
 
 namespace Photor.Controllers
 {
@@ -31,6 +33,11 @@ namespace Photor.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(AddPostViewModel model)
         {
+            if ((model.Image?.ImageFormatIsValid() ?? true) == false)
+            {
+                ModelState.AddModelError("Image", $"{AllowedFormats} extensions are allowed.");
+            }
+
             if (ModelState.IsValid == false)
             {
                 return View(model);
@@ -125,16 +132,16 @@ namespace Photor.Controllers
             var userIsAdmin = User.IsInRole("Administrator");
             var areFriends = (await friendService.FindUserFriendAsync(post.UserId, userId)) != null;
 
-            if (post.FriendsOnly == true &&
-                post.UserId != userId &&
-                areFriends == false &&
+            var postAccess = await postService.Accessible(post, userId);
+
+            if (postAccess == false &&
                 userIsAdmin == false)
             {
                 throw new Exception("Cannot access this post.");
             }
 
             ViewBag.Disabled = false;
-            if (areFriends == false && userIsAdmin == true)
+            if (postAccess == false && userIsAdmin == true)
             {
                 ViewBag.Disabled = true;
             }

@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Photor", "Photor\Photor.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Photor.Core", "Photor.Core\Photor.Core.csproj", "{D0CC5913-F145-400F-B75A-729BECF72D99}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Photor.Infrastructure", "Photor.Infrastructure\Photor.Infrastructure.csproj", "{CE0FEF1B-BF7B-45D0-ABEA-BF8398BC7F06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Photor.Infrastructure", "Photor.Infrastructure\Photor.Infrastructure.csproj", "{CE0FEF1B-BF7B-45D0-ABEA-BF8398BC7F06}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Photor.UnitTests", "Photor.UnitTests\Photor.UnitTests.csproj", "{D329CB98-BDF8-48C3-BBC0-76F33CAF2A08}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{CE0FEF1B-BF7B-45D0-ABEA-BF8398BC7F06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE0FEF1B-BF7B-45D0-ABEA-BF8398BC7F06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE0FEF1B-BF7B-45D0-ABEA-BF8398BC7F06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D329CB98-BDF8-48C3-BBC0-76F33CAF2A08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D329CB98-BDF8-48C3-BBC0-76F33CAF2A08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D329CB98-BDF8-48C3-BBC0-76F33CAF2A08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D329CB98-BDF8-48C3-BBC0-76F33CAF2A08}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

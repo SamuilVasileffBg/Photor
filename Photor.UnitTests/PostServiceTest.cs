@@ -303,5 +303,254 @@ namespace Photor.UnitTests
 
             Assert.That(result, Is.False);
         }
+
+        [Test]
+        public async Task EditPostShouldChangeDescriptionFriendsOnlyAndDateTimeOfLastEditWhenPassedAnValidId()
+        {
+            var postId = Guid.Parse("8db8180c-0108-4899-b37e-20c68620603a");
+
+            var post = new Post()
+            {
+                Id = postId,
+                UserId = "Pesho",
+                FriendsOnly = false,
+                DateTimeOfCreation = DateTime.Now,
+                ImageUrl = "https://lh3.googleusercontent.com/d/1Lf2T40cLdGd8GuGPEBuFCoPCPNQHz_ey",
+                Description = "descriptiondescriptiondescription",
+            };
+
+            var postList = new List<Post>()
+            {
+                post,
+            };
+
+            var mockRepository = new Mock<IRepository>();
+            mockRepository
+                .Setup(r => r.All<Post>())
+                .Returns(postList.BuildMock());
+
+            var mockFriendService = new Mock<IFriendService>();
+
+            var mockGoogleDriveService = new Mock<IGoogleDriveService>();
+
+            var postService = new PostService(mockRepository.Object, mockFriendService.Object, mockGoogleDriveService.Object);
+
+            var editedDescription = "editedDescription";
+            var editedFriendsOnly = true;
+
+            var editPostViewModel = new EditPostViewModel()
+            {
+                Id = postId,
+                Description = editedDescription,
+                FriendsOnly = editedFriendsOnly,
+                UserId = "Pesho",
+            };
+
+            await postService.EditPostAsync(editPostViewModel);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(post.FriendsOnly, Is.EqualTo(editedFriendsOnly));
+                Assert.That(post.Description, Is.EqualTo(editedDescription));
+                Assert.That(post.DateTimeOfLastEdit, Is.Not.EqualTo(null));
+            });
+        }
+
+        [Test]
+        public async Task EditPostShouldThrowAnExceptionWhenPassedAnInvalidPostId()
+        {
+            var postId = Guid.Parse("8db8180c-0108-1234-b37e-20c68620603a");
+            var invalidPostId = Guid.Parse("8db8180c-0108-1111-b37e-20c68620603a");
+
+            var post = new Post()
+            {
+                Id = invalidPostId,
+                UserId = "Pesho",
+                FriendsOnly = false,
+                DateTimeOfCreation = DateTime.Now,
+                ImageUrl = "https://lh3.googleusercontent.com/d/1Lf2T40cLdGd8GuGPEBuFCoPCPNQHz_ey",
+                Description = "descriptiondescriptiondescription",
+            };
+
+            var postList = new List<Post>()
+            {
+                post,
+            };
+
+            var mockRepository = new Mock<IRepository>();
+            mockRepository
+                .Setup(r => r.All<Post>())
+                .Returns(postList.BuildMock());
+
+            var mockFriendService = new Mock<IFriendService>();
+
+            var mockGoogleDriveService = new Mock<IGoogleDriveService>();
+
+            var postService = new PostService(mockRepository.Object, mockFriendService.Object, mockGoogleDriveService.Object);
+
+            var editedDescription = "editedDescription";
+            var editedFriendsOnly = true;
+
+            var editPostViewModel = new EditPostViewModel()
+            {
+                Id = postId,
+                Description = editedDescription,
+                FriendsOnly = editedFriendsOnly,
+                UserId = "Pesho",
+            };
+
+
+
+            Assert.ThrowsAsync(typeof(Exception), async () => await postService.EditPostAsync(editPostViewModel));
+        }
+
+        [Test]
+        public async Task GetUserPostsShouldWorkCorrectly()
+        {
+            var postList = new List<Post>()
+            {
+                new Post()
+                {
+                    Id = Guid.Parse("983e099b-6b96-49cc-a42c-4d5c7d5d795c"),
+                    UserId = "Gosho",
+                    ImageUrl = "https://lh3.googleusercontent.com/d/1Lf2T40cLdGd8GuGPEBuFCoPCPNQHz_ey",
+                    FriendsOnly = false,
+                },
+                new Post()
+                {
+                    Id = Guid.Parse("d5f8f25b-7c6e-403f-a70e-f540dec6db2a"),
+                    UserId = "Gosho",
+                    ImageUrl = "https://lh3.googleusercontent.com/d/1Lf2T40cLdGd8GuGPEBuFCoPCPNQHz_ey",
+                    FriendsOnly = false,
+                },
+                new Post()
+                {
+                    Id = Guid.Parse("b2621127-c055-4b4e-a989-4451954e28b5"),
+                    UserId = "Gosho",
+                    ImageUrl = "https://lh3.googleusercontent.com/d/1Lf2T40cLdGd8GuGPEBuFCoPCPNQHz_ey",
+                    FriendsOnly = false,
+                },
+                new Post()
+                {
+                    Id = Guid.Parse("2c187459-df77-4952-9642-5424ad515449"),
+                    UserId = "Gosho",
+                    ImageUrl = "https://lh3.googleusercontent.com/d/1Lf2T40cLdGd8GuGPEBuFCoPCPNQHz_ey",
+                    FriendsOnly = false,
+                },
+                new Post()
+                {
+                    Id = Guid.Parse("cc61d12a-048b-4362-907b-2cf563594a75"),
+                    UserId = "Gosho",
+                    ImageUrl = "https://lh3.googleusercontent.com/d/1Lf2T40cLdGd8GuGPEBuFCoPCPNQHz_ey",
+                    FriendsOnly = false,
+                },
+                new Post()
+                {
+                    Id = Guid.Parse("b42a2487-a008-4c6f-a11e-955dcfada736"),
+                    UserId = "Gosho",
+                    ImageUrl = "https://lh3.googleusercontent.com/d/1Lf2T40cLdGd8GuGPEBuFCoPCPNQHz_ey",
+                    FriendsOnly = false,
+                },
+                new Post()
+                {
+                    Id = Guid.Parse("2b99b2e8-63eb-4bce-b772-2919035efb2e"),
+                    UserId = "Gosho",
+                    ImageUrl = "https://lh3.googleusercontent.com/d/1Lf2T40cLdGd8GuGPEBuFCoPCPNQHz_ey",
+                    FriendsOnly = false,
+                },
+            };
+
+            var mockRepository = new Mock<IRepository>();
+            mockRepository
+                .Setup(r => r.All<Post>())
+                .Returns(postList.BuildMock());
+
+            var mockFriendService = new Mock<IFriendService>();
+            var mockGoogleDriveService = new Mock<IGoogleDriveService>();
+
+            var postService = new PostService(mockRepository.Object, mockFriendService.Object, mockGoogleDriveService.Object);
+
+            var pageOneResult = await postService.GetUserPostsAsync("Gosho", 1);
+            var pageTwoResult = await postService.GetUserPostsAsync("Gosho", 2);
+            var pageThreeResult = await postService.GetUserPostsAsync("Gosho", 3);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(pageOneResult, Has.Count.EqualTo(4));
+                Assert.That(pageTwoResult, Has.Count.EqualTo(3));
+                Assert.That(pageThreeResult, Is.Empty);
+            });
+        }
+
+        [Test]
+        public async Task GetUserPostsCountShouldWorkCorrectly()
+        {
+            var postList = new List<Post>()
+            {
+                new Post()
+                {
+                    Id = Guid.Parse("983e099b-6b96-49cc-a42c-4d5c7d5d795c"),
+                    UserId = "Gosho",
+                    ImageUrl = "https://lh3.googleusercontent.com/d/1Lf2T40cLdGd8GuGPEBuFCoPCPNQHz_ey",
+                    FriendsOnly = false,
+                },
+                new Post()
+                {
+                    Id = Guid.Parse("d5f8f25b-7c6e-403f-a70e-f540dec6db2a"),
+                    UserId = "Gosho",
+                    ImageUrl = "https://lh3.googleusercontent.com/d/1Lf2T40cLdGd8GuGPEBuFCoPCPNQHz_ey",
+                    FriendsOnly = false,
+                },
+                new Post()
+                {
+                    Id = Guid.Parse("b2621127-c055-4b4e-a989-4451954e28b5"),
+                    UserId = "Gosho",
+                    ImageUrl = "https://lh3.googleusercontent.com/d/1Lf2T40cLdGd8GuGPEBuFCoPCPNQHz_ey",
+                    FriendsOnly = false,
+                },
+                new Post()
+                {
+                    Id = Guid.Parse("2c187459-df77-4952-9642-5424ad515449"),
+                    UserId = "Gosho",
+                    ImageUrl = "https://lh3.googleusercontent.com/d/1Lf2T40cLdGd8GuGPEBuFCoPCPNQHz_ey",
+                    FriendsOnly = false,
+                },
+                new Post()
+                {
+                    Id = Guid.Parse("cc61d12a-048b-4362-907b-2cf563594a75"),
+                    UserId = "Gosho",
+                    ImageUrl = "https://lh3.googleusercontent.com/d/1Lf2T40cLdGd8GuGPEBuFCoPCPNQHz_ey",
+                    FriendsOnly = false,
+                },
+                new Post()
+                {
+                    Id = Guid.Parse("b42a2487-a008-4c6f-a11e-955dcfada736"),
+                    UserId = "Gosho",
+                    ImageUrl = "https://lh3.googleusercontent.com/d/1Lf2T40cLdGd8GuGPEBuFCoPCPNQHz_ey",
+                    FriendsOnly = false,
+                },
+                new Post()
+                {
+                    Id = Guid.Parse("2b99b2e8-63eb-4bce-b772-2919035efb2e"),
+                    UserId = "Gosho",
+                    ImageUrl = "https://lh3.googleusercontent.com/d/1Lf2T40cLdGd8GuGPEBuFCoPCPNQHz_ey",
+                    FriendsOnly = false,
+                },
+            };
+
+            var mockRepository = new Mock<IRepository>();
+            mockRepository
+                .Setup(r => r.All<Post>())
+                .Returns(postList.BuildMock());
+
+            var mockFriendService = new Mock<IFriendService>();
+            var mockGoogleDriveService = new Mock<IGoogleDriveService>();
+
+            var postService = new PostService(mockRepository.Object, mockFriendService.Object, mockGoogleDriveService.Object);
+
+            var result = await postService.GetUserPostsCountAsync("Gosho");
+
+            Assert.That(result, Is.EqualTo(postList.Count));
+        }
     }
 }

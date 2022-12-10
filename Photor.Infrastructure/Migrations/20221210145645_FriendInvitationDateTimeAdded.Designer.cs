@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Photor.Infrastructure.Data;
 
@@ -11,9 +12,10 @@ using Photor.Infrastructure.Data;
 namespace Photor.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221210145645_FriendInvitationDateTimeAdded")]
+    partial class FriendInvitationDateTimeAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,7 +54,7 @@ namespace Photor.Infrastructure.Migrations
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "da2e43b5-d1b0-4ad2-a69b-7cdfeed8f8ef",
+                            ConcurrencyStamp = "afc3caa4-74e6-4ebf-92ee-f09502a698d1",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -262,7 +264,7 @@ namespace Photor.Infrastructure.Migrations
                         {
                             Id = "dea12856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d08033c8-bd1d-47dd-a924-9b8e0379f638",
+                            ConcurrencyStamp = "b6c24ea7-6e0f-4fc3-b5f6-b0b5ccb15e53",
                             Email = "samiadmin@mail.com",
                             EmailConfirmed = false,
                             FirstName = "Samuil",
@@ -271,9 +273,9 @@ namespace Photor.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "SAMIADMIN@MAIL.COM",
                             NormalizedUserName = "SAMIADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAENJOEp5RUUHOislWN5ttjIk/DOkkICY9VrgQ5go6pRBgt96Z2BnvDcfsTOkOTzBCHw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMO1y0eN1QWHkX2LvGnkgTBNjHLmW91AuKuyfrFwDCB5TOp4NX0XtSJfPXn6x1fSvw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3143b642-3d4a-40a4-9849-bed4c972e810",
+                            SecurityStamp = "79d1d0e8-71de-456b-a6a3-0cd06432de7b",
                             TwoFactorEnabled = false,
                             UserName = "SamiAdmin"
                         });
@@ -350,9 +352,6 @@ namespace Photor.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("FriendId")
                         .IsRequired()

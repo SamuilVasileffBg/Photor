@@ -5,6 +5,7 @@ using Photor.Core.Models.Friend;
 using Photor.Core.Parsers;
 using Photor.Extensions;
 using System.Security.Claims;
+using static Photor.Infrastructure.Data.Constants.PaginationConstants;
 
 namespace Photor.Controllers
 {
@@ -93,16 +94,49 @@ namespace Photor.Controllers
             return RedirectToAction(nameof(List), new { id = userId });
         }
 
-        public async Task<IActionResult> Invitations()
+        public async Task<IActionResult> Invitations(int? page)
         {
-            var userId = GetUserId();
+            var id = User.Id();
 
-            if (userId == null)
+            var user = await userService.GetUserByIdAsync(id);
+
+            if (user == null)
             {
-                RedirectToAction("Login", "User");
+                throw new Exception("There is no user with such id.");
             }
 
-            var model = await friendService.GetReceivedFriendInvitationsAsync(userId);
+            ViewBag.Title = $"{user.UserName}'s received friend invitations";
+
+            var model = new FriendInvitationListViewModel();
+            model.UserId = id;
+            model.Page = page;
+            model.AllInvitationsCount = await friendService.GetReceivedFriendInvitationsCountAsync(id);
+
+            if (page == null || page < 1)
+            {
+                return RedirectToAction(nameof(Invitations), new { page = 1 });
+            }
+
+            var invitations = (await friendService
+                .GetReceivedFriendInvitationsAsync(id, page.Value))
+                .ToList();
+
+            var lastPage = Math.Ceiling((double)model.AllInvitationsCount / FriendsPerPage);
+
+            if (invitations.Count == 0 && page.Value > 1)
+            {
+                return RedirectToAction(nameof(Invitations), new { page = lastPage });
+            }
+
+            if (invitations != null)
+            {
+                model.Invitations = invitations.ToList();
+            }
+
+            ViewBag.ReturnUrl = $"/Friend/Invitations?page={page}";
+            ViewBag.LastPage = lastPage;
+            ViewBag.PreviousPage = page - 1;
+            ViewBag.NextPage = page + 1;
 
             return View(model);
         }

@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Http;
-using MockQueryable.Moq;
 using Photor.Core.Contracts;
 using Photor.Core.Models.Post;
 using Photor.Core.Services;

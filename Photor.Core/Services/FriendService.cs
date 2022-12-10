@@ -5,6 +5,7 @@ using Photor.Core.Parsers;
 using Photor.Infrastructure.Data;
 using Photor.Infrastructure.Data.Common;
 using Photor.Infrastructure.Data.Models;
+using static Photor.Infrastructure.Data.Constants.PaginationConstants;
 
 namespace Photor.Core.Services
 {
@@ -25,7 +26,7 @@ namespace Photor.Core.Services
 
             if (friendInvitation == null)
             {
-                throw new NullReferenceException("There is no existing invitation");
+                throw new Exception("There is no existing invitation");
             }
 
             friendInvitation.IsDeleted = true;
@@ -40,7 +41,7 @@ namespace Photor.Core.Services
 
             if (friendInvitation == null)
             {
-                throw new NullReferenceException("There is no existing invitation");
+                throw new Exception("There is no existing invitation");
             }
 
             friendInvitation.IsDeleted = true;
@@ -68,25 +69,29 @@ namespace Photor.Core.Services
             return userFriend;
         }
 
-        public async Task<IEnumerable<FriendInvitationViewModel>> GetReceivedFriendInvitationsAsync(string receiverId)
+        public async Task<IEnumerable<FriendInvitation>> GetReceivedFriendInvitationsAsync(string receiverId, int page)
         {
-            if (await repository.All<ApplicationUser>().FirstOrDefaultAsync(u => u.Id == receiverId) == null)
-            {
-                throw new ArgumentException(nameof(receiverId));
-            }
-
             var data = await repository
                 .All<FriendInvitation>()
                 .Where(fi => fi.ReceiverId == receiverId && fi.IsDeleted == false)
-                .Select(fi => new FriendInvitationViewModel
-                {
-                    Id = fi.Id,
-                    Receiver = fi.Receiver.ParseToViewModel(),
-                    Sender = fi.Sender.ParseToViewModel(),
-                })
+                .OrderBy(fi => fi.DateTime)
+                .Skip((page - 1) * FriendsPerPage)
+                .Take(FriendsPerPage)
+                .Include(i => i.Sender)
+                .Include(i => i.Receiver)
                 .ToListAsync();
 
             return data;
+        }
+
+        public async Task<int> GetReceivedFriendInvitationsCountAsync(string receiverId)
+        {
+            var count = await repository
+               .All<FriendInvitation>()
+               .Where(fi => fi.ReceiverId == receiverId && fi.IsDeleted == false)
+               .CountAsync();
+
+            return count;
         }
 
 
@@ -127,6 +132,7 @@ namespace Photor.Core.Services
                 {
                     SenderId = senderId,
                     ReceiverId = receiverId,
+                    DateTime = DateTime.UtcNow,
                 });
 
             await repository.SaveChangesAsync();
@@ -143,7 +149,7 @@ namespace Photor.Core.Services
 
             if (await FindUserFriendAsync(userId, friendId) != null)
             {
-                throw new Exception("There is an already existing friendship between these users.");
+                throw new ArgumentException("There is an already existing friendship between these users.");
             }
 
             await repository
@@ -168,41 +174,41 @@ namespace Photor.Core.Services
             await repository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<ApplicationUser>> GetUserFriendsAsync(string userId)
-        {
-            //var userFriends = context
-            //    .UsersFriends
-            //    .Include(uf => uf.User)
-            //    .Include(uf => uf.Friend)
-            //    .Where(uf => uf.IsDeleted == false)
-            //    .ToList();
-            //
-            //userFriends = userFriends.Where(uf => uf.UserId == userId || uf.FriendId == userId).ToList();
-            //
-            //var userCollection = new List<ApplicationUser>();
-            //
-            //foreach (var userFriend in userFriends)
-            //{
-            //    if (userFriend.UserId == userId)
-            //    {
-            //        userCollection.Add(userFriend.Friend);
-            //    }
-            //    else
-            //    {
-            //        userCollection.Add(userFriend.User);
-            //    }
-            //}
+        //public async Task<IEnumerable<ApplicationUser>> GetUserFriendsAsync(string userId)
+        //{
+        //    //var userFriends = context
+        //    //    .UsersFriends
+        //    //    .Include(uf => uf.User)
+        //    //    .Include(uf => uf.Friend)
+        //    //    .Where(uf => uf.IsDeleted == false)
+        //    //    .ToList();
+        //    //
+        //    //userFriends = userFriends.Where(uf => uf.UserId == userId || uf.FriendId == userId).ToList();
+        //    //
+        //    //var userCollection = new List<ApplicationUser>();
+        //    //
+        //    //foreach (var userFriend in userFriends)
+        //    //{
+        //    //    if (userFriend.UserId == userId)
+        //    //    {
+        //    //        userCollection.Add(userFriend.Friend);
+        //    //    }
+        //    //    else
+        //    //    {
+        //    //        userCollection.Add(userFriend.User);
+        //    //    }
+        //    //}
 
-            return await repository
-                .All<UserFriend>()
-                .Include(uf => uf.User)
-                .Include(uf => uf.Friend)
-                .Where(uf => uf.IsDeleted == false)
-                .Where(uf => uf.UserId == userId || uf.FriendId == userId)
-                .Select(uf => uf.UserId == userId ? uf.Friend
-                : uf.User)
-                .ToListAsync();
-        }
+        //    return await repository
+        //        .All<UserFriend>()
+        //        .Include(uf => uf.User)
+        //        .Include(uf => uf.Friend)
+        //        .Where(uf => uf.IsDeleted == false)
+        //        .Where(uf => uf.UserId == userId || uf.FriendId == userId)
+        //        .Select(uf => uf.UserId == userId ? uf.Friend
+        //        : uf.User)
+        //        .ToListAsync();
+        //}
 
         public async Task DeleteFriendInvitationAsync(string senderId, string receiverId)
         {

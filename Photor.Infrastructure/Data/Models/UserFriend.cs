@@ -24,6 +24,10 @@ namespace Photor.Infrastructure.Data.Models
 
         public ApplicationUser Friend { get; set; } = null!;
 
+        [Required]
+        [DefaultValue("")]
+        public DateTime DateTime { get; set; }
+
         [DefaultValue("false")]
         public bool IsDeleted { get; set; }
     }

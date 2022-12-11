@@ -63,14 +63,14 @@ namespace Photor.Core.Services
             return userSavedPost;
         }
 
-        public async Task<IEnumerable<UserSavedPost>> GetSavedPostsAsync(string userId)
-        {
-            return await repository
-                .All<UserSavedPost>()
-                .Where(usp => usp.IsDeleted == false && usp.UserId == userId)
-                .Include(usp => usp.Post)
-                .ToListAsync();
-        }
+        //public async Task<IEnumerable<UserSavedPost>> GetSavedPostsAsync(string userId)
+        //{
+        //    return await repository
+        //        .All<UserSavedPost>()
+        //        .Where(usp => usp.IsDeleted == false && usp.UserId == userId)
+        //        .Include(usp => usp.Post)
+        //        .ToListAsync();
+        //}
 
         public async Task<IEnumerable<UserSavedPost>> GetSavedPostsAsync(string userId, int page)
         {

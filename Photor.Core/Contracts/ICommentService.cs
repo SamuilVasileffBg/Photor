@@ -16,7 +16,7 @@ namespace Photor.Core.Contracts
 
         public Task EditCommentAsync(EditCommentViewModel model);
 
-        public Task<List<UserPostComment>> GetPostCommentsAsync(Guid postId);
+        //public Task<List<UserPostComment>> GetPostCommentsAsync(Guid postId);
 
         public Task<List<UserPostComment>> GetPostCommentsAsync(Guid postId, int page);
 

@@ -43,7 +43,7 @@ namespace Photor.Areas.Administrator.Controllers
             model.Newest = newest.Value;
             model.AllMatchesCount = await reportService.AllReportsCountAsync();
 
-            var report = await reportService.GetReportAsync(page.Value, newest.Value);
+            var report = await reportService.GetReportsAsync(page.Value, newest.Value);
 
             var lastPage = Math.Ceiling((double)model.AllMatchesCount);
 

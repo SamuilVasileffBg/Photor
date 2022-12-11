@@ -11,14 +11,15 @@ namespace Photor.Core.Contracts
     public interface IUserService
     {
         public Task<int> SearchUsersCountAsync(string searchValue);
-        public Task<IEnumerable<UserViewModel>?> SearchUsersAsync(string name);
 
-        public Task<IEnumerable<UserViewModel>?> SearchUsersAsync(string name, int page);
+        //public Task<IEnumerable<UserViewModel>?> SearchUsersAsync(string name);
+
+        public Task<IEnumerable<UserViewModel>?> SearchUsersAsync(string searchValue, int page);
 
         public Task<ApplicationUser?> GetUserByIdAsync(string userId);
 
         public Task EditAccountAsync(UserViewModel model);
 
-        public ApplicationUser? GetUserById(string userId);
+        //public ApplicationUser? GetUserById(string userId);
     }
 }

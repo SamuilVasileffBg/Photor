@@ -11,7 +11,7 @@ namespace Photor.Core.Contracts
     {
         public Task<Guid> ReportPost(Guid postId, string userId, string description);
 
-        public Task<UserPostReport?> GetReportAsync(int page, bool newestFirst);
+        public Task<UserPostReport?> GetReportsAsync(int page, bool newestFirst);
 
         public Task DeleteReportAsync(Guid id);
 

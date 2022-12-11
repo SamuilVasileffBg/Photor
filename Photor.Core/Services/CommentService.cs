@@ -50,15 +50,15 @@ namespace Photor.Core.Services
                 .SaveChangesAsync();
         }
 
-        public async Task<List<UserPostComment>> GetPostCommentsAsync(Guid postId)
-        {
-            return await repository
-                .All<UserPostComment>()
-                .Where(upc => upc.PostId == postId && upc.IsDeleted == false)
-                .Include(upc => upc.User)
-                .Include(upc => upc.Post)
-                .ToListAsync();
-        }
+        //public async Task<List<UserPostComment>> GetPostCommentsAsync(Guid postId)
+        //{
+        //    return await repository
+        //        .All<UserPostComment>()
+        //        .Where(upc => upc.PostId == postId && upc.IsDeleted == false)
+        //        .Include(upc => upc.User)
+        //        .Include(upc => upc.Post)
+        //        .ToListAsync();
+        //}
 
         public async Task<UserPostComment?> GetCommentAsync(Guid commentId)
         {

@@ -50,13 +50,13 @@ namespace Photor.Core.Services
             await repository.SaveChangesAsync();
         }
 
-        public ApplicationUser? GetUserById(string userId)
-        {
-            return repository
-                .All<ApplicationUser>()
-                .ToList()
-                .FirstOrDefault(u => u.Id == userId);
-        }
+        //public ApplicationUser? GetUserById(string userId)
+        //{
+        //    return repository
+        //        .All<ApplicationUser>()
+        //        .ToList()
+        //        .FirstOrDefault(u => u.Id == userId);
+        //}
 
         public async Task<ApplicationUser?> GetUserByIdAsync(string userId)
         {
@@ -65,27 +65,27 @@ namespace Photor.Core.Services
                 .FirstOrDefaultAsync(u => u.Id == userId);
         }
 
-        public async Task<IEnumerable<UserViewModel>?> SearchUsersAsync(string? searchValue)
-        {
-            if (string.IsNullOrEmpty(searchValue))
-            {
-                return null;
-            }
+        //public async Task<IEnumerable<UserViewModel>?> SearchUsersAsync(string? searchValue)
+        //{
+        //    if (string.IsNullOrEmpty(searchValue))
+        //    {
+        //        return null;
+        //    }
 
-            var data = await repository
-                .All<ApplicationUser>()
-                .Where(u => u.UserName.ToUpper().Contains(searchValue.ToUpper()))
-                .Select(u => new UserViewModel
-                {
-                    UserName = u.UserName,
-                    Id = u.Id
-                })
-                .ToListAsync();
+        //    var data = await repository
+        //        .All<ApplicationUser>()
+        //        .Where(u => u.UserName.ToUpper().Contains(searchValue.ToUpper()))
+        //        .Select(u => new UserViewModel
+        //        {
+        //            UserName = u.UserName,
+        //            Id = u.Id
+        //        })
+        //        .ToListAsync();
 
-            return data;
-        }
+        //    return data;
+        //}
 
-        public async Task<IEnumerable<UserViewModel>?> SearchUsersAsync(string searchValue, int page)
+        public async Task<IEnumerable<UserViewModel>?> SearchUsersAsync(string? searchValue, int page)
         {
             if (string.IsNullOrEmpty(searchValue))
             {
@@ -103,7 +103,7 @@ namespace Photor.Core.Services
             return data;
         }
 
-        public async Task<int> SearchUsersCountAsync(string searchValue)
+        public async Task<int> SearchUsersCountAsync(string? searchValue)
         {
             if (string.IsNullOrEmpty(searchValue))
             {

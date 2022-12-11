@@ -42,7 +42,7 @@ namespace Photor.Core.Services
                 .SaveChangesAsync();
         }
 
-        public async Task<UserPostReport?> GetReportAsync(int page, bool newestFirst)
+        public async Task<UserPostReport?> GetReportsAsync(int page, bool newestFirst)
         {
             var reports = repository
                 .All<UserPostReport>()

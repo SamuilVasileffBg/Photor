@@ -3,9 +3,38 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
+@{
+    if ((User?.Identity?.IsAuthenticated ?? false) == true)
+    {
+        ViewBag.User = await userService.GetUserByIdAsync(User.Id());
+    }
+}
+
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
     {
+        <li class="nav-item dropdown">
+            <div class="dropdown">
+                <button class="btn dropdown-toggle" type="button"
+                data-bs-toggle="dropdown"><img referrerpolicy="no-referrer" src="@ViewBag.User.ImageUrl" width="30" height="30" class="d-inline-block align-top" alt="">
+          @ViewBag.User.UserName</button>
+                <ul class="dropdown-menu">
+                    <li class="nav-item">
+                        <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="Account" asp-route-id="@ViewBag.User.Id">My Account</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="dropdown-item" asp-area="" asp-controller="Post" asp-action="Add">Add a new post</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="dropdown-item" asp-area="" asp-controller="Friends" asp-action="List" asp-route-id="@ViewBag.User.Id">My Friends</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="dropdown-item" asp-area="" asp-controller="Friend" asp-action="Invitations">Received friend invitations</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
         <li class="nav-item">
             <form class="form-inline" asp-controller="User" asp-action="Logout" asp-route-id="@UserManager.GetUserId(User)">
                 <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>

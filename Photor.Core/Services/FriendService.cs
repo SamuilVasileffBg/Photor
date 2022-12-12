@@ -69,6 +69,17 @@ namespace Photor.Core.Services
             return userFriend;
         }
 
+        public UserFriend? FindUserFriend(string id1, string id2)
+        {
+            var userFriend = repository
+                .All<UserFriend>()
+                .Where(uf => uf.IsDeleted == false)
+                .FirstOrDefault(f => (f.UserId == id1 && f.FriendId == id2)
+                                       || (f.UserId == id2 && f.FriendId == id1));
+
+            return userFriend;
+        }
+
         public async Task<IEnumerable<FriendInvitation>> GetReceivedFriendInvitationsAsync(string receiverId, int page)
         {
             var data = await repository
@@ -174,41 +185,42 @@ namespace Photor.Core.Services
             await repository.SaveChangesAsync();
         }
 
-        //public async Task<IEnumerable<ApplicationUser>> GetUserFriendsAsync(string userId)
-        //{
-        //    //var userFriends = context
-        //    //    .UsersFriends
-        //    //    .Include(uf => uf.User)
-        //    //    .Include(uf => uf.Friend)
-        //    //    .Where(uf => uf.IsDeleted == false)
-        //    //    .ToList();
-        //    //
-        //    //userFriends = userFriends.Where(uf => uf.UserId == userId || uf.FriendId == userId).ToList();
-        //    //
-        //    //var userCollection = new List<ApplicationUser>();
-        //    //
-        //    //foreach (var userFriend in userFriends)
-        //    //{
-        //    //    if (userFriend.UserId == userId)
-        //    //    {
-        //    //        userCollection.Add(userFriend.Friend);
-        //    //    }
-        //    //    else
-        //    //    {
-        //    //        userCollection.Add(userFriend.User);
-        //    //    }
-        //    //}
+        public IQueryable<ApplicationUser> GetUserFriendsAsync(string userId)
+        {
+            //var userFriends = context
+            //    .UsersFriends
+            //    .Include(uf => uf.User)
+            //    .Include(uf => uf.Friend)
+            //    .Where(uf => uf.IsDeleted == false)
+            //    .ToList();
+            //
+            //userFriends = userFriends.Where(uf => uf.UserId == userId || uf.FriendId == userId).ToList();
+            //
+            //var userCollection = new List<ApplicationUser>();
+            //
+            //foreach (var userFriend in userFriends)
+            //{
+            //    if (userFriend.UserId == userId)
+            //    {
+            //        userCollection.Add(userFriend.Friend);
+            //    }
+            //    else
+            //    {
+            //        userCollection.Add(userFriend.User);
+            //    }
+            //}
 
-        //    return await repository
-        //        .All<UserFriend>()
-        //        .Include(uf => uf.User)
-        //        .Include(uf => uf.Friend)
-        //        .Where(uf => uf.IsDeleted == false)
-        //        .Where(uf => uf.UserId == userId || uf.FriendId == userId)
-        //        .Select(uf => uf.UserId == userId ? uf.Friend
-        //        : uf.User)
-        //        .ToListAsync();
-        //}
+            return repository
+                .All<UserFriend>()
+                .Include(uf => uf.User)
+                .ThenInclude(uf => uf.Posts)
+                .Include(uf => uf.Friend)
+                .ThenInclude(uf => uf.Posts)
+                .Where(uf => uf.IsDeleted == false)
+                .Where(uf => uf.UserId == userId || uf.FriendId == userId)
+                .Select(uf => uf.UserId == userId ? uf.Friend
+                : uf.User);
+        }
 
         public async Task DeleteFriendInvitationAsync(string senderId, string receiverId)
         {

@@ -137,7 +137,7 @@ namespace Photor.Controllers
                 throw new Exception("Comment not found.");
             }
 
-            var postAccessible = await postService.Accessible(comment.Post, userId);
+            var postAccessible = await postService.AccessibleAsync(comment.Post, userId);
 
             if (postAccessible == false)
             {

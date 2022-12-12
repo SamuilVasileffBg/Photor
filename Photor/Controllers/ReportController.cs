@@ -27,7 +27,7 @@ namespace Photor.Controllers
                 throw new Exception("Post not found.");
             }
 
-            if (await postService.Accessible(post, userId) == false)
+            if (await postService.AccessibleAsync(post, userId) == false)
             {
                 throw new Exception("No access.");
             }
@@ -55,7 +55,7 @@ namespace Photor.Controllers
                 throw new Exception("Post not found.");
             }
 
-            if (await postService.Accessible(post, userId) == false)
+            if (await postService.AccessibleAsync(post, userId) == false)
             {
                 throw new Exception("No access.");
             }

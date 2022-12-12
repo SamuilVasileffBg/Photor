@@ -217,7 +217,7 @@ namespace Photor.UnitTests
                 FriendsOnly = false,
             };
 
-            var result = await postService.Accessible(post, "Gosho");
+            var result = await postService.AccessibleAsync(post, "Gosho");
 
             Assert.That(result, Is.True);
         }
@@ -238,7 +238,7 @@ namespace Photor.UnitTests
                 FriendsOnly = true,
             };
 
-            var result = await postService.Accessible(post, "Pesho");
+            var result = await postService.AccessibleAsync(post, "Pesho");
 
             Assert.That(result, Is.True);
         }
@@ -270,7 +270,7 @@ namespace Photor.UnitTests
                 FriendsOnly = true,
             };
 
-            var result = await postService.Accessible(post, "Gosho");
+            var result = await postService.AccessibleAsync(post, "Gosho");
 
             Assert.That(result, Is.True);
         }
@@ -298,7 +298,7 @@ namespace Photor.UnitTests
                 FriendsOnly = true,
             };
 
-            var result = await postService.Accessible(post, "Gosho");
+            var result = await postService.AccessibleAsync(post, "Gosho");
 
             Assert.That(result, Is.False);
         }

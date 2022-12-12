@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Photor.Core.Contracts;
 using Photor.Core.Models.Friend;
+using Photor.Core.Models.Post;
 using Photor.Core.Parsers;
 using Photor.Extensions;
 using System.Security.Claims;
@@ -16,10 +17,13 @@ namespace Photor.Controllers
 
         private readonly IUserService userService;
 
-        public FriendController(IFriendService friendService, IUserService userService)
+        private readonly IPostService postService;
+
+        public FriendController(IFriendService friendService, IUserService userService, IPostService postService)
         {
             this.friendService = friendService;
             this.userService = userService;
+            this.postService = postService;
         }
 
         public IActionResult Index()
@@ -29,7 +33,7 @@ namespace Photor.Controllers
 
         public async Task<IActionResult> SendFriendInvitation(string receiverId, string? returnUrl)
         {
-            string? senderId = GetUserId();
+            string? senderId = User.Id();
 
             if (senderId == null)
             {
@@ -230,7 +234,5 @@ namespace Photor.Controllers
 
             return View(model);
         }
-
-        private string? GetUserId() => User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
     }
 }

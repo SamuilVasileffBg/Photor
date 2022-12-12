@@ -7,6 +7,7 @@ using Photor.Core.Models.Post;
 using Photor.Core.Parsers;
 using Photor.Extensions;
 using static Photor.Infrastructure.Data.Constants.Image;
+using static Photor.Infrastructure.Data.Constants.PaginationConstants;
 
 namespace Photor.Controllers
 {
@@ -132,7 +133,7 @@ namespace Photor.Controllers
             var userIsAdmin = User.IsInRole("Administrator");
             var areFriends = (await friendService.FindUserFriendAsync(post.UserId, userId)) != null;
 
-            var postAccess = await postService.Accessible(post, userId);
+            var postAccess = await postService.AccessibleAsync(post, userId);
 
             if (postAccess == false &&
                 userIsAdmin == false)
@@ -165,6 +166,47 @@ namespace Photor.Controllers
             }
 
             return View(model);
+        }
+
+        public async Task<IActionResult> All(int? page)
+        {
+            if (page == null || page < 1)
+            {
+                return RedirectToAction(nameof(All), new { page = 1 });
+            }
+
+            var id = User.Id();
+
+            var paginationModel = new PostsPaginationViewModel();
+            paginationModel.UserId = id;
+            paginationModel.Page = page.Value;
+            paginationModel.AllPostsCount = await postService.GetAllPostsCountAsync();
+
+            var posts = (await postService.GetAllPostsAsync(page.Value))
+                .ToList();
+
+            var lastPage = Math.Ceiling((double)paginationModel.AllPostsCount / PostsPerPage);
+
+            if ((posts?.Count() ?? 0) == 0 && page.Value > 1)
+            {
+                return RedirectToAction(nameof(All), new { page = lastPage });
+            }
+
+            if (posts != null)
+            {
+                paginationModel.Posts = posts.ToList();
+            }
+
+            ViewBag.ReturnUrl = $"/Post/All?page={page}";
+            ViewBag.LastPage = lastPage;
+            ViewBag.PaginationModel = paginationModel;
+            ViewBag.PreviousPage = page - 1;
+            ViewBag.NextPage = page + 1;
+            ViewBag.Action = nameof(All);
+            ViewBag.Controller = "Post";
+            ViewBag.NoDataText = "No posts available.";
+
+            return View();
         }
     }
 }

@@ -18,6 +18,11 @@ namespace Photor.Infrastructure.Data.Configuration
                 UserId = "dea12856-c198-4129-b3f3-b893d8395082",
                 RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7210",
             });
+            builder.HasData(new IdentityUserRole<string>
+            {
+                UserId = "dea12856-c198-4129-b3f3-b893d8395082",
+                RoleId = "683cd19b-7a34-4cc8-b3cc-64547e4f125f",
+            });
         }
     }
 }

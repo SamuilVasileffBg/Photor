@@ -77,6 +77,8 @@ namespace Photor.Controllers
 
             if (result.Succeeded)
             {
+                await userManager.AddToRoleAsync(user, "User");
+
                 return RedirectToAction(nameof(Login));
             }
 

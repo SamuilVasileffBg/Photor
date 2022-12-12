@@ -21,7 +21,7 @@ namespace Photor.Core.Services
             this.googleDriveService = googleDriveService;
         }
 
-        public async Task<bool> Accessible(Post post, string userId)
+        public async Task<bool> AccessibleAsync(Post post, string userId)
         {
             if (post.FriendsOnly == false)
             {
@@ -34,6 +34,26 @@ namespace Photor.Core.Services
             }
 
             if ((await friendService.FindUserFriendAsync(post.UserId, userId)) == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool Accessible(Post post, string userId)
+        {
+            if (post.FriendsOnly == false)
+            {
+                return true;
+            }
+
+            if (post.UserId == userId)
+            {
+                return true;
+            }
+
+            if (friendService.FindUserFriend(post.UserId, userId) == null)
             {
                 return false;
             }
@@ -116,6 +136,25 @@ namespace Photor.Core.Services
 
             await repository
                 .SaveChangesAsync();
+        }
+
+        public async Task<List<Post>> GetAllPostsAsync(int page)
+        {
+            return await repository
+                .All<Post>()
+                .Where(p => p.IsDeleted == false)
+                .OrderByDescending(p => p.DateTimeOfCreation)
+                .Skip((page - 1) * PostsPerPage)
+                .Take(PostsPerPage)
+                .ToListAsync();
+        }
+
+        public async Task<int> GetAllPostsCountAsync()
+        {
+            return await repository
+                .All<Post>()
+                .Where(p => p.IsDeleted == false)
+                .CountAsync();
         }
 
         public async Task<Post?> GetPostAsync(string id)

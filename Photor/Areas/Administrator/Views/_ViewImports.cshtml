@@ -1,1 +1,4 @@
-﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@using Photor.Core.Contracts
+@inject IUserService userService;
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers

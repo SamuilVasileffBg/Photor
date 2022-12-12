@@ -14,7 +14,7 @@ namespace Photor.Core.Extensions
         {
             var extensionsAllowed = AllowedFormats.Split(", ");
 
-            var result = extensionsAllowed.Any(e => image.FileName.EndsWith(e));
+            var result = extensionsAllowed.Any(e => image.FileName.ToLower().EndsWith(e));
 
             return result;
         }

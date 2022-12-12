@@ -3,6 +3,22 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div
+        class="bg-image p-5 text-center shadow-1-strong rounded mb-5 text-white"
+        style="background-image: url('https://cdn.pixabay.com/photo/2018/01/14/23/12/nature-3082832__480.jpg'); height: 450px;">
+        <div class="mt-5">
+            <h1 class="mb-3 h2">Welcome to Photor!</h1>
+    
+
+            @if ((User?.Identity?.IsAuthenticated ?? false) == true)
+            {
+                <a class="btn btn-primary flex-grow-1" asp-action="All" asp-controller="Post" class="card-link">See recent posts</a>
+                <a class="btn btn-primary flex-grow-1" asp-action="Search" asp-controller="User" class="card-link">Find friends</a>
+            }
+            else
+            {
+                <a class="btn btn-primary flex-grow-1" asp-action="Register" asp-controller="User" class="card-link">Sign in to continue</a>
+            }
+        </div>
+    </div>
 </div>

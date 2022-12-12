@@ -14,7 +14,7 @@ namespace Photor.Core.Services
 {
     public class GoogleDriveService : IGoogleDriveService
     {
-        private const string PathToServiceAccountKeyFile = @"C:\Users\Самуил\Documents\GoogleDriveCredentials\PhotorGoogleDriveCredentials.json";
+        private const string PathToServiceAccountKeyFile = "../Photor.Core/Services/Credentials/PhotorGoogleDriveCredentials.json";
         private const string ServiceAccountEmail = "photor@photor-370917.iam.gserviceaccount.com";
         private const string UploadFileName = "Test";
         private const string DirectoryId = "17JnAOEecQJhOwFEGtrOs_L9IiYnJ79mR";

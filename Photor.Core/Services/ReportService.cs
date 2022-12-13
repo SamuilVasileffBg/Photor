@@ -63,6 +63,7 @@ namespace Photor.Core.Services
                 .Skip(page - 1)
                 .Take(1)
                 .Include(r => r.Post)
+                .ThenInclude(p => p.ApplicationUser)
                 .Include(r => r.User)
                 .FirstOrDefaultAsync();
         }

@@ -78,6 +78,8 @@ namespace Photor.Core.Services
                 .All<UserSavedPost>()
                 .Where(usp => usp.IsDeleted == false && usp.UserId == userId)
                 .OrderByDescending(usp => usp.DateTime)
+                .Include(usp => usp.Post)
+                .ThenInclude(usp => usp.ApplicationUser)
                 .Skip((page - 1) * PostsPerPage)
                 .Take(4)
                 .Include(usp => usp.Post)

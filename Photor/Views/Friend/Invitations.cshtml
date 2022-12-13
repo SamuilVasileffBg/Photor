@@ -8,7 +8,7 @@
 @{
 }
 
-<h1>@ViewBag.Title</h1>
+<h1><a asp-action="Account" asp-controller="User" asp-route-id="@Model.UserId">@ViewBag.UserName</a>'s received friend invitations</h1>
 
 @if (Model.Invitations.Count() == 0){
     <p class="text-center">No invitations</p>

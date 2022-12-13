@@ -56,10 +56,17 @@ else{
     </ul>
 </nav>
 
-<div class="text-center row">
+@*<div class="text-center row">
     @foreach (var friend in Model.Posts)
     {
         <partial name="_PostPreviewPartial" model="@friend"/> 
+    }
+</div>*@
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var post in Model.Posts)
+    {
+        <partial name="_PostPreviewPartial" model="@post"/> 
     }
 </div>
 }

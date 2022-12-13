@@ -143,6 +143,7 @@ namespace Photor.Core.Services
             return await repository
                 .All<Post>()
                 .Where(p => p.IsDeleted == false)
+                .Include(p => p.ApplicationUser)
                 .OrderByDescending(p => p.DateTimeOfCreation)
                 .Skip((page - 1) * PostsPerPage)
                 .Take(PostsPerPage)
@@ -183,6 +184,7 @@ namespace Photor.Core.Services
                 .All<Post>()
                 .Where(p => p.UserId == userId && p.IsDeleted == false)
                 .OrderByDescending(p => p.DateTimeOfCreation)
+                .Include(p => p.ApplicationUser)
                 .Skip((page - 1) * PostsPerPage)
                 .Take(PostsPerPage)
                 .ToListAsync();

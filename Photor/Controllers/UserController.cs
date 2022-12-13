@@ -197,7 +197,14 @@ namespace Photor.Controllers
         [Authorize]
         public async Task<IActionResult> Account(string id, int? page)
         {
-            var model = (await userService.GetUserByIdAsync(id)).ParseToViewModel();
+            var user = await userService.GetUserByIdAsync(id);
+
+            if (user == null)
+            {
+                throw new Exception("User not found.");
+            }
+
+            var model = user.ParseToViewModel();
 
             if (page == null || page < 1)
             {

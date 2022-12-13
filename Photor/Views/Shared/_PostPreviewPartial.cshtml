@@ -13,6 +13,18 @@
 }
 
 <div class="card col-4" style="width: 20rem; ">
+    
+            <div class="dropdown">
+                <button class="btn dropdown-toggle" type="button"
+                data-bs-toggle="dropdown"><img referrerpolicy="no-referrer" src="@Model.ApplicationUser.ImageUrl" width="30" height="30" class="d-inline-block align-top" alt="">
+          @Model.ApplicationUser.UserName</button>
+                <ul class="dropdown-menu">
+                    <li class="nav-item">
+                        <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="Account" asp-route-id="@Model.ApplicationUser.Id">View Account</a>
+                    </li>
+                </ul>
+            </div>
+        
     <a asp-action="View" asp-controller="Post" asp-route-id="@Model.Id">
         <img referrerpolicy="no-referrer" class="card-img-top" style="width: 18rem;" src="@Model.ImageUrl" alt="Post Image">
     </a>
@@ -33,6 +45,7 @@
             <h5>No description</h5>
         }
     </div>
+
     @if (ViewBag.CardButton == "Unsave")
     {
         <a id="unsavePostButton" asp-action="Delete" asp-controller="Save" asp-route-id="@Model.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="btn btn-primary">Unsave Post</a>
@@ -42,3 +55,40 @@
         <a id="viewPostButton" asp-action="View" asp-controller="Post" asp-route-id="@Model.Id" class="btn btn-primary">View Post</a>
     }
 </div>
+
+@*<div class="col">
+    <div class="card h-100">
+      <img referrerpolicy="no-referrer" src="@Model.ImageUrl" class="card-img-top" alt="Post Image"/>
+      <div class="card-body">
+        <h5 class="card-title">Name</h5>
+        <p class="card-text">
+          @if (String.IsNullOrEmpty(Model.Description) == false)
+          {
+              @if (Model.Description.Length > 40)
+              {
+                  <h5 class="card-title mt-1">@Model.Description.Substring(0, 40)...</h5>
+              }
+              else
+              {
+                  <h5 class="card-title mt-1">@Model.Description</h5>
+              }
+          }
+          else
+          {
+              <h5>No description</h5>
+          }
+        </p>
+      </div>
+      <div class="card-footer">
+        @if (ViewBag.CardButton == "Unsave")
+        {
+            <a id="unsavePostButton" asp-action="Delete" asp-controller="Save" asp-route-id="@Model.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="btn btn-primary">Unsave Post</a>
+        }
+        else
+        {
+            <a id="viewPostButton" asp-action="View" asp-controller="Post" asp-route-id="@Model.Id" class="btn btn-primary">View Post</a>
+        }
+        <small class="text-muted">Last updated 3 mins ago</small>
+      </div>
+    </div>
+</div>*@

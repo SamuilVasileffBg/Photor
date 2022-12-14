@@ -24,7 +24,7 @@
                     <span asp-validation-for="@Model.Password" class="text-danger"></span>
                 </div>
                 <div class="text-center">
-                    <button id="login-submit" type="submit" class="btn btn-primary">Log in</button>
+                    <button id="login-submit" asp-route-ReturnUrl="@ViewBag.returnUrl" type="submit" class="btn btn-primary">Log in</button>
                 </div>
             </form>
             <a asp-controller="User" asp-action="Register">Click here to register if you don't have an account.</a>

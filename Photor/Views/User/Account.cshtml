@@ -1,11 +1,16 @@
 ﻿@using Photor.Core.Models.User
 @using Photor.Extensions
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc
+@inject UserManager<ApplicationUser> userManager;
+
 @model UserViewModel
 
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    ViewBag.User = await userManager.FindByIdAsync(Model.Id);
 }
 
 <form>
@@ -115,7 +120,17 @@
                      </ul>
                  </div>
              </div>
-            
+        }
+        @if (User.IsInRole("Administrator") && await userManager.IsInRoleAsync(ViewBag.User, "Administrator") == false)
+        {
+            @if (await userManager.IsInRoleAsync(ViewBag.User, "Moderator"))
+            {
+                <a asp-action="Remove" asp-controller="Moderator" asp-area="Administrator" asp-route-id="@Model.Id" asp-route-returnUrl="@ViewBag.returnUrl" class="btn btn-danger mt-1">Remove from moderator role</a>
+            }
+            else
+            {
+                <a asp-action="Become" asp-controller="Moderator" asp-area="Administrator" asp-route-id="@Model.Id" asp-route-returnUrl="@ViewBag.returnUrl" class="btn btn-success mt-1">Add to moderator role</a>
+            }
         }
 
         <hr />

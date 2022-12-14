@@ -24,6 +24,12 @@ namespace Photor.Infrastructure.Data.Configuration
                 Name = "User",
                 NormalizedName = "USER".ToUpper(),
             });
+            builder.HasData(new IdentityRole
+            {
+                Id = "145bdb34-18fa-4644-b002-6e4a02147b77",
+                Name = "Moderator",
+                NormalizedName = "MODERATOR".ToUpper(),
+            });
         }
     }
 }

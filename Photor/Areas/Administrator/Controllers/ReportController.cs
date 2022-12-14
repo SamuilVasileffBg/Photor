@@ -5,9 +5,6 @@ using Photor.Core.Models.Report;
 
 namespace Photor.Areas.Administrator.Controllers
 {
-    [Area("Administrator")]
-    [Route("Admin/[controller]/[Action]/{id?}")]
-    [Authorize(Roles = "Administrator")]
     public class ReportController : BaseController
     {
         private readonly IReportService reportService;

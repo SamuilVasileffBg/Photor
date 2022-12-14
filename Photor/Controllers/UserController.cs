@@ -92,7 +92,7 @@ namespace Photor.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string? ReturnUrl)
         {
             if (User?.Identity?.IsAuthenticated ?? false)
             {
@@ -101,12 +101,14 @@ namespace Photor.Controllers
 
             var model = new LoginViewModel();
 
+            ViewBag.returnUrl = ReturnUrl;
+
             return View(model);
         }
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model, string? ReturnUrl)
         {
             if (ModelState.IsValid == false)
             {
@@ -121,9 +123,9 @@ namespace Photor.Controllers
 
                 if (result.Succeeded)
                 {
-                    if (user != null && await userManager.IsInRoleAsync(user, "Administrator"))
+                    if (String.IsNullOrEmpty(ReturnUrl) == false)
                     {
-                        return RedirectToAction("Index", "Base", new { Area = "Administrator" });
+                        return Redirect(ReturnUrl);
                     }
 
                     return RedirectToAction("Index", "Home");

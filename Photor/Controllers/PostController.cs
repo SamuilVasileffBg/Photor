@@ -131,18 +131,20 @@ namespace Photor.Controllers
 
             var userId = User.Id();
             var userIsAdmin = User.IsInRole("Administrator");
+            var userIsModerator = User.IsInRole("Moderator");
             var areFriends = (await friendService.FindUserFriendAsync(post.UserId, userId)) != null;
 
             var postAccess = await postService.AccessibleAsync(post, userId);
 
             if (postAccess == false &&
-                userIsAdmin == false)
+                userIsAdmin == false &&
+                userIsModerator == false)
             {
                 throw new Exception("Cannot access this post.");
             }
 
             ViewBag.Disabled = false;
-            if (postAccess == false && userIsAdmin == true)
+            if (postAccess == false)
             {
                 ViewBag.Disabled = true;
             }

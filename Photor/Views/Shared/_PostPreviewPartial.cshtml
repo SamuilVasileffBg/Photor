@@ -7,7 +7,7 @@
 @{
     if (await postService.AccessibleAsync(Model, User.Id()) == false && User.IsInRole("Administrator") == false && User.IsInRole("Moderator") == false)
     {
-        Model.ImageUrl = "https://www.keysigns.co.uk/images/no-access-signs-p1310-40478_zoom.jpg";
+        Model.ImageUrl = "https://lh3.googleusercontent.com/d/1PCmP69H3DhRvY1sXhwsDaTdusLN8mgZ9";
         Model.Description = "This post is for friends only.";
     }
 }

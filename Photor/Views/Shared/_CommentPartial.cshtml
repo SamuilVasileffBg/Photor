@@ -8,23 +8,24 @@
 }
 
 <div class="text-center mb-3">
-            <div class="card" style="width: 90%;">
-                <div class="card-body">
-                    <h5 class="card-title">@Model.User.UserName</h5>
-                    <p class="card-text">@Model.Content</p>
-                    @if (User.Id() == Model.UserId || User.Id() == Model.Post.UserId)
-                    {
-                        <form>
-                            <a type="submit" asp-action="Delete" asp-controller="Comment" asp-route-id="@Model.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="btn btn-primary">Delete Comment</a>
-                        </form>
-                    }
-                    @if (User.Id() == Model.UserId)
-                    {
-                        
-                       <form>
-                            <a type="submit" asp-action="Edit" asp-controller="Comment" asp-route-id="@Model.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="btn btn-primary">Edit Comment</a>
-                        </form>
-                    }
-                </div>
-            </div>
+    <div class="card" style="width: 90%;">
+        <div class="card-body">
+            <img style="width:5%;" referrerpolicy="no-referrer" class="rounded-circle" src="@Model.User.ImageUrl"></img>
+            <h5 class="card-title">@Model.User.UserName</h5>
+            <p class="card-text">@Model.Content</p>
+            <p>Posted @Model.DateTimeOfCreation.GetDateTimeDifferenceText()</p>
+            @if (Model.DateTimeOfLastEdit != null)
+            {
+                <p>Last edited: @Model.DateTimeOfLastEdit.Value.GetDateTimeDifferenceText()</p>
+            }
+            @if (User.Id() == Model.UserId || User.Id() == Model.Post.UserId)
+            {
+                <a asp-action="Delete" asp-controller="Comment" asp-route-id="@Model.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="btn btn-primary">Delete Comment</a>
+            }
+            @if (User.Id() == Model.UserId)
+            {
+                <a asp-action="Edit" asp-controller="Comment" asp-route-id="@Model.Id" asp-route-returnUrl="@ViewBag.ReturnUrl" class="btn btn-primary">Edit Comment</a>
+            }
         </div>
+    </div>
+</div>

@@ -90,7 +90,7 @@ namespace Photor.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(Guid id)
+        public async Task<IActionResult> Edit(Guid id, string? returnUrl)
         {
             var comment = await commentService.GetCommentAsync(id);
 
@@ -111,6 +111,8 @@ namespace Photor.Controllers
                 UserId = comment.UserId,
                 Content = comment.Content,
             };
+
+            ViewBag.ReturnUrl = returnUrl;
 
             return View(model);
         }

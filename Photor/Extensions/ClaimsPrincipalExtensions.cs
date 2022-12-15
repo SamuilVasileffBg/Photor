@@ -2,7 +2,7 @@
 
 namespace Photor.Extensions
 {
-    public static class ClaimsPrincipalExtension
+    public static class ClaimsPrincipalExtensions
     {
         public static string Id(this ClaimsPrincipal user)
         {

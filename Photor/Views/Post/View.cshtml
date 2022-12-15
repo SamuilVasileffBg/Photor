@@ -9,14 +9,29 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    ViewBag.AllCommentsCount = await commentService.GetPostCommentsCountAsync(Model.Id);
 }
 
 <div class="text-center">   
     <img style="width:10%;" referrerpolicy="no-referrer" class="rounded-circle" src="@Model.User.ImageUrl"></img>
+
             <h1><a asp-action="Account" 
                 asp-controller="User"
                 asp-route-id="@Model.User.Id">@Model.User.UserName</a>'s post</h1>
     <img referrerpolicy="no-referrer" src="@Model.ImageUrl" style="max-width:50%; max-height:400px;"></img>
+    @if (ViewBag.FriendsOnly == true)
+    {
+        <p>This post is for friends only &#128107;</p>
+    }
+    else
+    {
+        <p>This post is public &#127757;</p>
+    }
+    <p>Posted @ViewBag.DateTimeAgo</p>
+    @if (ViewBag.LastEdited != null)
+    {
+        <p>Last edited: @ViewBag.LastEdited</p>
+    }
     <hr>
     <h2>Post Description:</h2>
     </br>
@@ -93,31 +108,22 @@
         </div>
     </form>
 
-    @foreach (var comment in await commentService.GetPostCommentsAsync(Model.Id, 1))
+    @if (ViewBag.AllCommentsCount == 0)
     {
-        <div class="text-center mb-3">
-            <div class="card" style="width: 90%;">
-                <div class="card-body">
-                    <h5 class="card-title">@comment.User.UserName</h5>
-                    <p class="card-text">@comment.Content</p>
-                    @if (User.Id() == comment.UserId || User.Id() == comment.Post.UserId)
-                    {
-                        <form>
-                            <button type="submit" asp-action="Delete" asp-controller="Comment" asp-route-id="@comment.Id" class="btn btn-primary">Delete Comment</button>
-                        </form>
-                    }
-                    @if (User.Id() == comment.UserId)
-                    {
-                        
-                       <form>
-                            <button type="submit" asp-action="Edit" asp-controller="Comment" asp-route-id="@comment.Id" class="btn btn-primary">Edit Comment</button>
-                        </form>
-                    }
-                </div>
-            </div>
-        </div>
+        <p>No comments</p>
     }
-    <a asp-action="List" style="width:50%;" asp-controller="Comment" asp-route-postId="@Model.Id" class="btn btn-primary">More comments</a>
+    else
+    {
+        @foreach (var comment in await commentService.GetPostCommentsAsync(Model.Id, 1))
+        {
+            <partial name="_CommentPartial" model="@comment"/>
+        }
+
+        @if (ViewBag.AllCommentsCount > 5)
+        {
+            <a asp-action="List" style="width:50%;" asp-controller="Comment" asp-route-postId="@Model.Id" class="btn btn-primary">More comments</a>
+        }
+    }
 </div>
 
 @section Scripts {

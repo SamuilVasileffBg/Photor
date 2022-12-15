@@ -167,6 +167,14 @@ namespace Photor.Controllers
                 ModelState.AddModelError("", errorMessage);
             }
 
+            ViewBag.FriendsOnly = post.FriendsOnly;
+            ViewBag.DateTimeAgo = post.DateTimeOfCreation.GetDateTimeDifferenceText();
+
+            if (post.DateTimeOfLastEdit != null)
+            {
+                ViewBag.LastEdited = post.DateTimeOfLastEdit.Value.GetDateTimeDifferenceText();
+            }
+
             return View(model);
         }
 

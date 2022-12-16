@@ -72,7 +72,7 @@ else if (String.IsNullOrEmpty(Model.SearchValue) == false) {
         }
 
         <li class="page-item">
-            <a class="page-link" asp-action="Search" asp-controller="User" asp-route-searchValue="@Model.SearchValue" asp-route-page="@ViewBag.LastPage">Last Page</a>
+            <a class="page-link" asp-action="Search" asp-controller="User" asp-route-searchValue="@Model.SearchValue" asp-route-page="@ViewBag.LastPage">Last Page (@ViewBag.LastPage)</a>
         </li>
     </ul>
 </nav>

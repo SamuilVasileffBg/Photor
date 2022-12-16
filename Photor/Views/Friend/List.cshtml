@@ -52,7 +52,7 @@ else{
         }
 
         <li class="page-item">
-            <a class="page-link" asp-action="List" asp-controller="Friend" asp-route-id="@Model.UserId" asp-route-page="@ViewBag.LastPage">Last Page</a>
+            <a class="page-link" asp-action="List" asp-controller="Friend" asp-route-id="@Model.UserId" asp-route-page="@ViewBag.LastPage">Last Page (@ViewBag.LastPage)</a>
         </li>
     </ul>
 </nav>

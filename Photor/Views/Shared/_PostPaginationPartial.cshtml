@@ -51,7 +51,7 @@ else{
         }
 
         <li class="page-item">
-            <a class="page-link" asp-action="@ViewBag.Action" asp-controller="@ViewBag.Controller" asp-route-id="@Model.UserId" asp-route-page="@ViewBag.LastPage">Last Page</a>
+            <a class="page-link" asp-action="@ViewBag.Action" asp-controller="@ViewBag.Controller" asp-route-id="@Model.UserId" asp-route-page="@ViewBag.LastPage">Last Page (@ViewBag.LastPage)</a>
         </li>
     </ul>
 </nav>

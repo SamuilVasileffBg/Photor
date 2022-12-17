@@ -9,7 +9,9 @@
     ViewBag.NextPage = Model.Page + 1;
 }
 
-<h1><a asp-action="Account" asp-controller="User" asp-route-id="@Model.UserId">@ViewBag.UserName</a>'s friends</h1>
+<div class="text-center">
+    <h1><a asp-action="Account" asp-controller="User" asp-route-id="@Model.UserId">@ViewBag.UserName</a>'s friends <span style="color:red;">(@((await friendService.GetUserFriendsCountAsync(Model.UserId))) total friends)</span></h1>
+</div>
 
 @if (Model.Friends.Count() == 0){
     <p class="text-center">No friends</p>

@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using Photor.Infrastructure.Data.Models
+@using Photor.Core.Extensions
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
@@ -26,10 +27,10 @@
                         <a class="dropdown-item" asp-area="" asp-controller="Post" asp-action="Add">Add a new post</a>
                     </li>
                     <li class="nav-item">
-                        <a class="dropdown-item" asp-area="" asp-controller="Friend" asp-action="List" asp-route-id="@ViewBag.User.Id">My Friends</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Friend" asp-action="List" asp-route-id="@ViewBag.User.Id">My Friends <span style="color:red;">@((await friendService.GetUserFriendsCountAsync((string) ViewBag.User.Id)))</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="dropdown-item" asp-area="" asp-controller="Friend" asp-action="Invitations">Received friend invitations</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Friend" asp-action="Invitations">Received friend invitations <span style="color:red;">@((await friendService.GetReceivedFriendInvitationsCountAsync((string) ViewBag.User.Id)))</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="dropdown-item" asp-action="List" asp-controller="Save" class="card-link">Saved Posts</a>

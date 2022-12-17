@@ -11,19 +11,20 @@
 <script>
     document.addEventListener("DOMContentLoaded", function(event) { 
         var scrollpos = localStorage.getItem('scrollpos');
-        if (localStorage['page'] == document.URL) {
+        if (localStorage['page'] == "invitations") {
             window.scrollTo(0, scrollpos);
         }
     });
 
     window.onbeforeunload = function(e) {
-        localStorage.setItem('page', document.URL);
+        localStorage.setItem('page', "invitations");
         localStorage.setItem('scrollpos', window.scrollY);
     };
 </script>
 
 <div class="text-center">
-    <h1><a asp-action="Account" asp-controller="User" asp-route-id="@Model.UserId">@ViewBag.UserName</a>'s received friend invitations</h1>
+    <img style="width:10%;" referrerpolicy="no-referrer" class="rounded-circle" src="@ViewBag.User.ImageUrl"></img>
+    <h1><a asp-action="Account" asp-controller="User" asp-route-id="@Model.UserId">@ViewBag.User.UserName</a>'s received friend invitations</h1>
     <blockquote class="blockquote">
         <p class="mb-0">Total received friend invitations: @((await friendService.GetReceivedFriendInvitationsCountAsync(Model.UserId)))</p>
     </blockquote>

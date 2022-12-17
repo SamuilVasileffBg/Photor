@@ -167,7 +167,7 @@ namespace Photor.Controllers
                 ViewBag.LastPage = lastPage;
                 ViewBag.PreviousPage = page - 1;
                 ViewBag.NextPage = page + 1;
-                ViewBag.UserName = user.UserName;
+                ViewBag.User = user;
 
                 return View(model);
             }
@@ -279,7 +279,7 @@ namespace Photor.Controllers
 
                 ViewBag.ReturnUrl = $"/Friend/List/{id}?page={page}";
                 ViewBag.LastPage = Math.Ceiling((double)model.AllFriendsCount / 5);
-                ViewBag.UserName = user.UserName;
+                ViewBag.User = user;
 
                 return View(model);
             }

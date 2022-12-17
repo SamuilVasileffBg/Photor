@@ -14,14 +14,17 @@ namespace Photor.Controllers
         private readonly ISaveService saveService;
         private readonly IPostService postService;
         private readonly IFriendService friendService;
+        private readonly IUserService userService;
 
         public SaveController(ISaveService saveService,
             IPostService postService,
-            IFriendService friendService)
+            IFriendService friendService,
+            IUserService userService)
         {
             this.saveService = saveService;
             this.postService = postService;
             this.friendService = friendService;
+            this.userService = userService;
         }
 
         public async Task<IActionResult> Add(ViewPostViewModel model, string? returnUrl)
@@ -122,6 +125,9 @@ namespace Photor.Controllers
 
                 ViewBag.ReturnUrl = $"/Save/List?page={page}";
                 ViewBag.LastPage = lastPage;
+                
+                var user = await userService.GetUserByIdAsync(userId);
+                ViewBag.User = user;
 
                 return View(model);
             }

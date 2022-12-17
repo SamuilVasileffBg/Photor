@@ -11,6 +11,9 @@
     ViewBag.NoDataText = "No saved posts";
 }
 
-<h1>My saved posts</h1>
+<div class="text-center">
+    <img style="width:10%;" referrerpolicy="no-referrer" class="rounded-circle" src="@ViewBag.User.ImageUrl"></img>
+    <h1><a asp-action="Account" asp-controller="User" asp-route-id="@Model.UserId">@ViewBag.User.UserName</a>'s saved posts</h1>
+</div>
 
 <partial name="_PostPaginationPartial" model="@Model"/>

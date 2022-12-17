@@ -13,14 +13,14 @@ namespace Photor.Core.Models.User
         public string UserName { get; set; } = null!;
 
         [Required]
-        [StringLength(FirstAndLastNameMaxLength), MinLength(FirstAndLastNameMinLength)]
+        [StringLength(FirstAndLastNameMaxLength), MinLength(FirstAndLastNameMinLength, ErrorMessage = "First name should be at least 2 characters long.")]
         public string FirstName { get; set; } = null!;
 
         [StringLength(DescriptionMaxLength), MinLength(DescriptionMinLength)]
         public string? Description { get; set; }
 
         [Required]
-        [StringLength(FirstAndLastNameMaxLength), MinLength(FirstAndLastNameMinLength)]
+        [StringLength(FirstAndLastNameMaxLength), MinLength(FirstAndLastNameMinLength, ErrorMessage = "Last name should be at least 2 characters long.")]
         public string LastName { get; set; } = null!;
 
         [Required]

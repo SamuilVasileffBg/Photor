@@ -11,7 +11,7 @@ namespace Photor.Core.Models.Report
     public class ReportPostViewModel
     {
         [Required]
-        [StringLength(ReasonMaxLength), MinLength(ReasonMinLength)]
+        [StringLength(ReasonMaxLength), MinLength(ReasonMinLength, ErrorMessage = "Reason should be at least 10 characters long.")]
         public string Reason { get; set; } = null!;
 
         [Required]

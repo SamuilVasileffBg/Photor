@@ -37,6 +37,10 @@
 
         <h1>@Model.UserName</h1>
         <h2>@Model.FirstName @Model.LastName</h2>
+
+        <blockquote class="blockquote">
+            <p class="mb-0">Total posts: @((await postService.GetUserPostsCountAsync(Model.Id)))</p>
+        </blockquote>
         
         
 

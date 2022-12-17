@@ -6,17 +6,17 @@ namespace Photor.Core.Models.Identity
     public class RegisterViewModel
     {
         [Required]
-        [StringLength(UserNameMaxLength, MinimumLength = UserNameMinLength)]
+        [StringLength(UserNameMaxLength), MinLength(UserNameMinLength, ErrorMessage = "Email should be at least 5 digits long.")]
         public string UserName { get; set; } = null!;
 
         [Required]
         [DataType(DataType.EmailAddress)]
-        [StringLength(EmailMaxLength, MinimumLength = EmailMinLength)]
+        [StringLength(EmailMaxLength), MinLength(EmailMinLength, ErrorMessage = "Email should be at least 10 digits long.")]
         public string Email { get; set; } = null!;
 
         [Required]
         [DataType(DataType.Password)]
-        [StringLength(PasswordMaxLength, MinimumLength = PasswordMinLength)]
+        [StringLength(PasswordMaxLength), MinLength(PasswordMinLength, ErrorMessage = "Password should be at least 5 digits long.")]
         public string Password { get; set; } = null!;
 
         [Compare(nameof(Password))]
@@ -24,11 +24,11 @@ namespace Photor.Core.Models.Identity
         public string ConfirmPassword { get; set; } = null!;
 
         [Required]
-        [StringLength(FirstAndLastNameMaxLength), MinLength(FirstAndLastNameMinLength)]
+        [StringLength(FirstAndLastNameMaxLength), MinLength(FirstAndLastNameMinLength, ErrorMessage = "First name should be at least 2 digits long.")]
         public string FirstName { get; set; } = null!;
 
         [Required]
-        [StringLength(FirstAndLastNameMaxLength), MinLength(FirstAndLastNameMinLength)]
+        [StringLength(FirstAndLastNameMaxLength), MinLength(FirstAndLastNameMinLength, ErrorMessage = "Last name should be at least 2 digits long.")]
         public string LastName { get; set; } = null!;
     }
 }

@@ -324,7 +324,7 @@ namespace Photor.Infrastructure.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("FriendInvitations");
+                    b.ToTable("FriendInvitations", (string)null);
                 });
 
             modelBuilder.Entity("Photor.Infrastructure.Data.Models.Post", b =>
@@ -361,7 +361,7 @@ namespace Photor.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("Photor.Infrastructure.Data.Models.UserFriend", b =>
@@ -390,7 +390,7 @@ namespace Photor.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UsersFriends");
+                    b.ToTable("UsersFriends", (string)null);
                 });
 
             modelBuilder.Entity("Photor.Infrastructure.Data.Models.UserLikedPost", b =>
@@ -418,7 +418,7 @@ namespace Photor.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UsersLikedPosts");
+                    b.ToTable("UsersLikedPosts", (string)null);
                 });
 
             modelBuilder.Entity("Photor.Infrastructure.Data.Models.UserPostComment", b =>
@@ -454,7 +454,7 @@ namespace Photor.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UsersPostComments");
+                    b.ToTable("UsersPostComments", (string)null);
                 });
 
             modelBuilder.Entity("Photor.Infrastructure.Data.Models.UserPostReport", b =>
@@ -487,7 +487,7 @@ namespace Photor.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UsersPostReports");
+                    b.ToTable("UsersPostReports", (string)null);
                 });
 
             modelBuilder.Entity("Photor.Infrastructure.Data.Models.UserSavedPost", b =>
@@ -515,7 +515,7 @@ namespace Photor.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UsersSavedPosts");
+                    b.ToTable("UsersSavedPosts", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

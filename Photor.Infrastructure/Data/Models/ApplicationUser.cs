@@ -34,7 +34,6 @@ namespace Photor.Infrastructure.Data.Models
 
         public List<UserLikedPost> UserLikedPosts { get; set; } = new List<UserLikedPost>();
 
-        //public List<UserFriends> UserFriends { get; set; } = new List<UserFriends>();
 
         [InverseProperty(nameof(UserFriend.User))]
         public List<UserFriend> UsersFriends { get; set; } = new List<UserFriend>();
@@ -44,10 +43,6 @@ namespace Photor.Infrastructure.Data.Models
 
         [InverseProperty(nameof(FriendInvitation.Sender))]
         public List<FriendInvitation> FriendInvitationsSent { get; set; } = new List<FriendInvitation>();
-
-        //public List<UserFriend> FriendsReceiver { get; set; } = new List<UserFriend>();
-
-        //public List<FriendInvitation> FriendInvitations { get; set; } = new List<FriendInvitation>();
 
         public List<UserSavedPost> UserSavedPosts { get; set; } = new List<UserSavedPost>();
 

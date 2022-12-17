@@ -12,10 +12,6 @@ namespace Photor.Infrastructure.Data
         {
         }
 
-        //public DbSet<FriendInvitation> FriendsInvitations { get; set; }
-
-        //public DbSet<Image> Images { get; set; }
-
         public DbSet<UserFriend> UsersFriends { get; set; }
 
         public DbSet<Post> Posts { get; set; }
@@ -34,18 +30,6 @@ namespace Photor.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            //builder.Entity<FriendInvitation>()
-            //    .HasKey(fi => new { fi.SenderUserId, fi.ReceiverWebAccId });
-
-            //builder.Entity<UserFriend>()
-            //    .HasKey(f => new { f.UserId, f.FriendId });
-
-            //builder.Entity<UserLikedPost>()
-            //    .HasKey(upl => new { upl.UserId, upl.PostId });
-
-            //builder.Entity<UserSavedPost>()
-            //    .HasKey(usp => new { usp.UserId, usp.PostId });
 
             builder
                 .Entity<ApplicationUser>()
@@ -85,34 +69,6 @@ namespace Photor.Infrastructure.Data
             builder.ApplyConfiguration(new RoleConfiguration());
             builder.ApplyConfiguration(new UserConfiguration());
             builder.ApplyConfiguration(new UserRoleConfiguration());
-            //builder
-            //    .Entity<ApplicationUser>()
-            //    .HasMany(u => u.UserFriends)
-            //    .WithOne(uf => uf.User)
-            //    .HasForeignKey(uf => uf.UserId)
-            //    .OnDelete(DeleteBehavior.NoAction);
-            //
-            //builder
-            //    .Entity<ApplicationUser>()
-            //    .HasMany(u => u.UserFriends)
-            //    .WithOne(uf => uf.Friend)
-            //    .HasForeignKey(uf => uf.FriendId)
-            //    .OnDelete(DeleteBehavior.NoAction);
-
-            //builder
-            //    .Entity<ApplicationUser>()
-            //    .HasMany(u => u.FriendInvitations)
-            //    .WithOne(fi => fi.SenderUser)
-            //    .HasForeignKey(fi => fi.SenderUserId)
-            //    .OnDelete(DeleteBehavior.NoAction);
-            //
-            //builder
-            //    .Entity<ApplicationUser>()
-            //    .HasMany(u => u.FriendInvitations)
-            //    .WithOne(fi => fi.ReceiverUser)
-            //    .HasForeignKey(fi => fi.ReceiverWebAccId)
-            //    .OnDelete(DeleteBehavior.NoAction);
-
         }
     }
 }

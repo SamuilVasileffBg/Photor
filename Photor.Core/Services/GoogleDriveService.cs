@@ -31,9 +31,11 @@ namespace Photor.Core.Services
                 HttpClientInitializer = credential
             });
 
+            var name = Guid.NewGuid();
+
             var fileMetadata = new Google.Apis.Drive.v3.Data.File()
             {
-                Name = UploadFileName,
+                Name = name.ToString(),
                 Parents = new List<string>() { DirectoryId }
             };
 

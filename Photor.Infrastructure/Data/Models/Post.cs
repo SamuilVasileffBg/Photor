@@ -26,10 +26,6 @@ namespace Photor.Infrastructure.Data.Models
         [StringLength(DescriptionMaxLength), MinLength(DescriptionMinLength)]
         public string? Description { get; set; }
 
-        //photo
-
-        //comments
-
         [Required]
         public bool FriendsOnly { get; set; }
 

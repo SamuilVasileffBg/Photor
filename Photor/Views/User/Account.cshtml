@@ -13,6 +13,20 @@
     ViewBag.User = await userManager.FindByIdAsync(Model.Id);
 }
 
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) { 
+        var scrollpos = localStorage.getItem('scrollpos');
+        if (localStorage['page'] == document.URL) {
+            window.scrollTo(0, scrollpos);
+        }
+    });
+
+    window.onbeforeunload = function(e) {
+        localStorage.setItem('page', document.URL);
+        localStorage.setItem('scrollpos', window.scrollY);
+    };
+</script>
+
 <form>
     <div class="text-center">
         <input type="hidden" asp-for="@Model.Id" value="@Model.Id"/>

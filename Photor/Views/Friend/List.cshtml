@@ -9,6 +9,20 @@
     ViewBag.NextPage = Model.Page + 1;
 }
 
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) { 
+        var scrollpos = localStorage.getItem('scrollpos');
+        if (localStorage['page'] == document.URL) {
+            window.scrollTo(0, scrollpos);
+        }
+    });
+
+    window.onbeforeunload = function(e) {
+        localStorage.setItem('page', document.URL);
+        localStorage.setItem('scrollpos', window.scrollY);
+    };
+</script>
+
 <div class="text-center">
     <h1><a asp-action="Account" asp-controller="User" asp-route-id="@Model.UserId">@ViewBag.UserName</a>'s friends <span style="color:red;">(@((await friendService.GetUserFriendsCountAsync(Model.UserId))) total friends)</span></h1>
 </div>

@@ -9,6 +9,20 @@
     ViewBag.NextPage = Model.Page + 1;
 }
 
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) { 
+        var scrollpos = localStorage.getItem('scrollpos');
+        if (localStorage['page'] == document.URL) {
+            window.scrollTo(0, scrollpos);
+        }
+    });
+
+    window.onbeforeunload = function(e) {
+        localStorage.setItem('page', document.URL);
+        localStorage.setItem('scrollpos', window.scrollY);
+    };
+</script>
+
 <div class="text-center">
     <h1><a asp-action="View" asp-controller="Post" asp-route-id="@Model.PostId">Post</a> Comments</h1>
 </div>

@@ -12,6 +12,20 @@
     ViewBag.LastPage = Math.Ceiling((double)Model.AllMatchesCount / 5);
 }
 
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) { 
+        var scrollpos = localStorage.getItem('scrollpos');
+        if (localStorage['page'] == document.URL) {
+            window.scrollTo(0, scrollpos);
+        }
+    });
+
+    window.onbeforeunload = function(e) {
+        localStorage.setItem('page', document.URL);
+        localStorage.setItem('scrollpos', window.scrollY);
+    };
+</script>
+
 <div class="text-center mb-5">
     <h1>Search users &#128269;</h1>
     <h2>Find friends &#129303;</h2>

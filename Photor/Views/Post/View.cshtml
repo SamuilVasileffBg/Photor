@@ -12,6 +12,20 @@
     ViewBag.AllCommentsCount = await commentService.GetPostCommentsCountAsync(Model.Id);
 }
 
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) { 
+        var scrollpos = localStorage.getItem('scrollpos');
+        if (localStorage['page'] == 'postView') {
+            window.scrollTo(0, scrollpos);
+        }
+    });
+
+    window.onbeforeunload = function(e) {
+        localStorage.setItem('page', 'postView');
+        localStorage.setItem('scrollpos', window.scrollY);
+    };
+</script>
+
 <div class="text-center">   
     <img style="width:10%;" referrerpolicy="no-referrer" class="rounded-circle" src="@Model.User.ImageUrl"></img>
 

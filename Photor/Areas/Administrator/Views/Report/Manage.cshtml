@@ -66,7 +66,7 @@ else
         {
             <form>
                 <input type="hidden" asp-for="@Model.Page" value="@ViewBag.NextPage"></input>
-                <checkbox type="hidden" asp-for="@Model.Newest" value="@Model.Newest"></checkbox>
+                <input type="hidden" asp-for="@Model.Newest" value="@Model.Newest"></input>
                 <button type="submit" asp-action="Manage" asp-controller="Report" asp-area="Administrator" class="page-link">Next</button>
             </form>
         }

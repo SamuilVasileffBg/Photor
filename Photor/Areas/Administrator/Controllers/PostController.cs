@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Photor.Core.Contracts;
+using Photor.Infrastructure.Data.Common;
+using Photor.Infrastructure.Data.Models;
 
 namespace Photor.Areas.Administrator.Controllers
 {
@@ -7,11 +10,13 @@ namespace Photor.Areas.Administrator.Controllers
     {
         private readonly IPostService postService;
         private readonly IReportService reportService;
+        private readonly IRepository repository;
 
-        public PostController(IPostService postService, IReportService reportService)
+        public PostController(IPostService postService, IReportService reportService, IRepository repository)
         {
             this.postService = postService;
             this.reportService = reportService;
+            this.repository = repository;
         }
 
         public async Task<IActionResult> Delete(Guid id, string? returnUrl)
@@ -24,6 +29,15 @@ namespace Photor.Areas.Administrator.Controllers
                 if (post == null)
                 {
                     throw new Exception("Post not found.");
+                }
+
+                var anyReport = await repository
+                    .All<UserPostReport>()
+                    .AnyAsync(upr => upr.PostId == id && upr.IsDeleted == false);
+
+                if (anyReport == false)
+                {
+                    throw new Exception("Post has no existing reports.");
                 }
 
                 await postService

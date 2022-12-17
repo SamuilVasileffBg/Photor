@@ -182,25 +182,25 @@ namespace Photor.Controllers
             }
         }
 
-        [Authorize]
-        public async Task<IActionResult> All()
-        {
-            try
-            {
-                var data = await context
-                    .Users
-                    .Select(u => u.ParseToViewModel())
-                    .ToListAsync();
-
-                ViewBag.ReturnUrl = "/User/All";
-
-                return View(data);
-            }
-            catch (Exception e)
-            {
-                return View("Error", e.Message);
-            }
-        }
+        //[Authorize]
+        //public async Task<IActionResult> All()
+        //{
+        //    try
+        //    {
+        //        var data = await context
+        //            .Users
+        //            .Select(u => u.ParseToViewModel())
+        //            .ToListAsync();
+        //
+        //        ViewBag.ReturnUrl = "/User/All";
+        //
+        //        return View(data);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return View("Error", e.Message);
+        //    }
+        //}
 
         [Authorize]
         [HttpGet]

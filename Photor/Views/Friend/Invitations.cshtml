@@ -23,7 +23,10 @@
 </script>
 
 <div class="text-center">
-    <h1><a asp-action="Account" asp-controller="User" asp-route-id="@Model.UserId">@ViewBag.UserName</a>'s received friend invitations <span style="color:red;">(@((await friendService.GetReceivedFriendInvitationsCountAsync(Model.UserId))) total received invitations)</span></h1>
+    <h1><a asp-action="Account" asp-controller="User" asp-route-id="@Model.UserId">@ViewBag.UserName</a>'s received friend invitations</h1>
+    <blockquote class="blockquote">
+        <p class="mb-0">Total received friend invitations: @((await friendService.GetReceivedFriendInvitationsCountAsync(Model.UserId)))</p>
+    </blockquote>
 </div>
 
 @if (Model.Invitations.Count() == 0){

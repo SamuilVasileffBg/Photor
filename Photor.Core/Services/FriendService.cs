@@ -185,42 +185,19 @@ namespace Photor.Core.Services
             await repository.SaveChangesAsync();
         }
 
-        //public IQueryable<ApplicationUser> GetUserFriendsAsync(string userId)
-        //{
-        //    //var userFriends = context
-        //    //    .UsersFriends
-        //    //    .Include(uf => uf.User)
-        //    //    .Include(uf => uf.Friend)
-        //    //    .Where(uf => uf.IsDeleted == false)
-        //    //    .ToList();
-        //    //
-        //    //userFriends = userFriends.Where(uf => uf.UserId == userId || uf.FriendId == userId).ToList();
-        //    //
-        //    //var userCollection = new List<ApplicationUser>();
-        //    //
-        //    //foreach (var userFriend in userFriends)
-        //    //{
-        //    //    if (userFriend.UserId == userId)
-        //    //    {
-        //    //        userCollection.Add(userFriend.Friend);
-        //    //    }
-        //    //    else
-        //    //    {
-        //    //        userCollection.Add(userFriend.User);
-        //    //    }
-        //    //}
-
-        //    return repository
-        //        .All<UserFriend>()
-        //        .Include(uf => uf.User)
-        //        .ThenInclude(uf => uf.Posts)
-        //        .Include(uf => uf.Friend)
-        //        .ThenInclude(uf => uf.Posts)
-        //        .Where(uf => uf.IsDeleted == false)
-        //        .Where(uf => uf.UserId == userId || uf.FriendId == userId)
-        //        .Select(uf => uf.UserId == userId ? uf.Friend
-        //        : uf.User);
-        //}
+        public async Task<IEnumerable<ApplicationUser>> GetUserFriendsAsync(string userId)
+        {
+            return await repository
+                .All<UserFriend>()
+                .Include(uf => uf.User)
+                .Include(uf => uf.Friend)
+                .Where(uf => uf.IsDeleted == false)
+                .Where(uf => uf.UserId == userId || uf.FriendId == userId)
+                .OrderBy(uf => uf.UserId == userId ? uf.FriendId : uf.UserId)
+                .Select(uf => uf.UserId == userId ? uf.Friend
+                : uf.User)
+                .ToListAsync();
+        }
 
         public async Task DeleteFriendInvitationAsync(string senderId, string receiverId)
         {
@@ -261,6 +238,18 @@ namespace Photor.Core.Services
                 .Where(uf => uf.IsDeleted == false)
                 .Where(uf => uf.UserId == userId || uf.FriendId == userId)
                 .CountAsync();
+        }
+
+        public async Task<int> GetMutualFriendsCountAsync(string firstUserId, string secondUserId)
+        {
+            var firstUserFriends = await GetUserFriendsAsync(firstUserId);
+            var secondUserFriends = await GetUserFriendsAsync(secondUserId);
+
+            var count = firstUserFriends
+                .Where(first => secondUserFriends.Any(second => first.Id == second.Id))
+                .Count();
+
+            return count;
         }
     }
 }

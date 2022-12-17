@@ -24,7 +24,14 @@
 </script>
 
 <div class="text-center">
-    <h1><a asp-action="Account" asp-controller="User" asp-route-id="@Model.UserId">@ViewBag.UserName</a>'s friends <span style="color:red;">(@((await friendService.GetUserFriendsCountAsync(Model.UserId))) total friends)</span></h1>
+    <h1><a asp-action="Account" asp-controller="User" asp-route-id="@Model.UserId">@ViewBag.UserName</a>'s friends</h1>
+    <blockquote class="blockquote">
+        <p class="mb-0">Total friends: @((await friendService.GetUserFriendsCountAsync(Model.UserId)))</p>
+        @if (User.Id() != Model.UserId)
+        {
+            <p class="mb-0">Mutual friends: @((await friendService.GetMutualFriendsCountAsync(User.Id(), Model.UserId)))</p>
+        }
+    </blockquote>
 </div>
 
 @if (Model.Friends.Count() == 0){

@@ -24,35 +24,50 @@ namespace Photor.Controllers
 
         public async Task<IActionResult> Add(ViewPostViewModel model)
         {
-            var post = await postService
-                .GetPostAsync(model.Id.ToString());
-
-            if (post == null)
+            try
             {
-                throw new Exception("Post doesn't exist.");
+                var post = await postService
+                    .GetPostAsync(model.Id.ToString());
+
+                if (post == null)
+                {
+                    throw new Exception("Post doesn't exist.");
+                }
+
+                var userId = User.Id();
+
+                if (post.FriendsOnly == true &&
+                    post.UserId != userId &&
+                    await friendService.FindUserFriendAsync(userId, post.UserId) == null)
+                {
+                    throw new Exception("User has no right to like this post.");
+                }
+
+                await likeService
+                    .AddLikeAsync(model.Id, userId);
+
+                return RedirectToAction("View", "Post", new { id = model.Id, commentFieldValue = model.CommentValue });
+            }
+            catch (Exception e)
+            {
+                return View("Error", e.Message);
             }
 
-            var userId = User.Id();
-
-            if (post.FriendsOnly == true &&
-                post.UserId != userId &&
-                await friendService.FindUserFriendAsync(userId, post.UserId) == null)
-            {
-                throw new Exception("User has no right to like this post.");
-            }
-
-            await likeService
-                .AddLikeAsync(model.Id, userId);
-
-            return RedirectToAction("View", "Post", new { id = model.Id, commentFieldValue = model.CommentValue });
         }
 
         public async Task<IActionResult> DeleteLike(ViewPostViewModel model)
         {
-            await likeService
-                .DeleteLikeAsync(model.Id, User.Id());
+            try
+            {
+                await likeService
+                    .DeleteLikeAsync(model.Id, User.Id());
 
-            return RedirectToAction("View", "Post", new { id = model.Id, commentFieldValue = model.CommentValue });
+                return RedirectToAction("View", "Post", new { id = model.Id, commentFieldValue = model.CommentValue });
+            }
+            catch (Exception e)
+            {
+                return View("Error", e.Message);
+            }
         }
     }
 }

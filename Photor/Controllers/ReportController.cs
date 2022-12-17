@@ -19,51 +19,65 @@ namespace Photor.Controllers
         [HttpGet]
         public async Task<IActionResult> ReportPost(Guid id)
         {
-            var post = await postService.GetPostAsync(id.ToString());
-            var userId = User.Id();
-
-            if (post == null)
+            try
             {
-                throw new Exception("Post not found.");
-            }
+                var post = await postService.GetPostAsync(id.ToString());
+                var userId = User.Id();
 
-            if (await postService.AccessibleAsync(post, userId) == false)
+                if (post == null)
+                {
+                    throw new Exception("Post not found.");
+                }
+
+                if (await postService.AccessibleAsync(post, userId) == false)
+                {
+                    throw new Exception("No access.");
+                }
+
+                ViewBag.Post = post;
+
+                var model = new ReportPostViewModel();
+
+                return View(model);
+            }
+            catch (Exception e)
             {
-                throw new Exception("No access.");
+                return View("Error", e.Message);
             }
-
-            ViewBag.Post = post;
-
-            var model = new ReportPostViewModel();
-
-            return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> ReportPost(ReportPostViewModel model)
         {
-            if (ModelState.IsValid == false)
+            try
             {
-                return View(model);
+                if (ModelState.IsValid == false)
+                {
+                    return View(model);
+                }
+
+                var post = await postService.GetPostAsync(model.PostId.ToString());
+                var userId = User.Id();
+
+                if (post == null)
+                {
+                    throw new Exception("Post not found.");
+                }
+
+                if (await postService.AccessibleAsync(post, userId) == false)
+                {
+                    throw new Exception("No access.");
+                }
+
+                await reportService
+                    .ReportPost(model.PostId, userId, model.Reason);
+
+                return RedirectToAction("View", "Post", new { id = model.PostId });
             }
-
-            var post = await postService.GetPostAsync(model.PostId.ToString());
-            var userId = User.Id();
-
-            if (post == null)
+            catch (Exception e)
             {
-                throw new Exception("Post not found.");
+                return View("Error", e.Message);
             }
-
-            if (await postService.AccessibleAsync(post, userId) == false)
-            {
-                throw new Exception("No access.");
-            }
-
-            await reportService
-                .ReportPost(model.PostId, userId, model.Reason);
-
-            return RedirectToAction("View", "Post", new { id = model.PostId });
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Photor.Core.Contracts
 
         public Task<UserFriend?> FindUserFriendAsync(string id1, string id2);
 
-        public UserFriend? FindUserFriend(string id1, string id2);
+        //public UserFriend? FindUserFriend(string id1, string id2);
 
         public Task AcceptFriendInvitationAsync(string senderId, string receiverId);
 
@@ -34,7 +34,7 @@ namespace Photor.Core.Contracts
 
         public Task RemoveUserFriendAsync(string userId, string friendId);
 
-        public IQueryable<ApplicationUser> GetUserFriendsAsync(string userId);
+        //public IQueryable<ApplicationUser> GetUserFriendsAsync(string userId);
 
         public Task<IEnumerable<ApplicationUser>> GetUserFriendsAsync(string userId, int page);
 

@@ -31,6 +31,6 @@ namespace Photor.Core.Contracts
 
         public Task<bool> AccessibleAsync(Post post, string userId);
 
-        public bool Accessible(Post post, string userId);
+        //public bool Accessible(Post post, string userId);
     }
 }

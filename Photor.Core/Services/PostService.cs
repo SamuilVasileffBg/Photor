@@ -41,25 +41,25 @@ namespace Photor.Core.Services
             return true;
         }
 
-        public bool Accessible(Post post, string userId)
-        {
-            if (post.FriendsOnly == false)
-            {
-                return true;
-            }
+        //public bool Accessible(Post post, string userId)
+        //{
+        //    if (post.FriendsOnly == false)
+        //    {
+        //        return true;
+        //    }
 
-            if (post.UserId == userId)
-            {
-                return true;
-            }
+        //    if (post.UserId == userId)
+        //    {
+        //        return true;
+        //    }
 
-            if (friendService.FindUserFriend(post.UserId, userId) == null)
-            {
-                return false;
-            }
+        //    if (friendService.FindUserFriend(post.UserId, userId) == null)
+        //    {
+        //        return false;
+        //    }
 
-            return true;
-        }
+        //    return true;
+        //}
 
         public async Task<Guid> AddPostAsync(AddPostViewModel model)
         {

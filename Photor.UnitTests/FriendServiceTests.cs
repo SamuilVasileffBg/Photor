@@ -722,7 +722,7 @@ namespace Photor.UnitTests
         }
 
         [Test]
-        public async Task GetUserFriendsCountShouldWorkCorrectly()
+        public async Task GetUserFriendsWithPaginationCountShouldWorkCorrectly()
         {
             var userId = "Gosho";
 
@@ -785,6 +785,72 @@ namespace Photor.UnitTests
             var result = await friendService.GetUserFriendsCountAsync(userId);
 
             Assert.That(userFriendList, Has.Count.EqualTo(result));
+        }
+
+        [Test]
+        public async Task GetUserFriendsCountShouldWorkCorrectly()
+        {
+            var userId = "Gosho";
+
+            var friendInvitationList = new List<FriendInvitation>()
+            {
+            };
+
+            var userFriendList = new List<UserFriend>()
+            {
+                new UserFriend()
+                {
+                    UserId = userId,
+                    FriendId = "1",
+                },
+                new UserFriend()
+                {
+                    FriendId = userId,
+                    UserId = "2",
+                },
+                new UserFriend()
+                {
+                    UserId = userId,
+                    FriendId = "3",
+                },
+                new UserFriend()
+                {
+                    FriendId = userId,
+                    UserId = "4",
+                },
+                new UserFriend()
+                {
+                    UserId = userId,
+                    FriendId = "5",
+                },
+                new UserFriend()
+                {
+                    UserId = userId,
+                    FriendId = "6",
+                },
+                new UserFriend()
+                {
+                    UserId = userId,
+                    FriendId = "7",
+                },
+            };
+
+            var mockRepo = new Mock<IRepository>();
+            mockRepo
+                .Setup(r => r.All<FriendInvitation>())
+                .Returns(friendInvitationList.BuildMock());
+
+            mockRepo
+               .Setup(r => r.All<UserFriend>())
+               .Returns(userFriendList.BuildMock());
+
+            var mockUserService = new Mock<IUserService>();
+
+            var friendService = new FriendService(mockUserService.Object, mockRepo.Object);
+
+            var result = await friendService.GetUserFriendsAsync(userId);
+
+            Assert.That(userFriendList, Has.Count.EqualTo(result.Count()));
         }
 
         [Test]
@@ -913,6 +979,172 @@ namespace Photor.UnitTests
             var result = await friendService.GetReceivedFriendInvitationsCountAsync(receiverId);
 
             Assert.That(friendInvitationList, Has.Count.EqualTo(result));
+        }
+
+        [Test]
+        public async Task GetMutualFriendsCountShouldWorkCorrectly()
+        {
+            var firstUserId = "Gosho";
+            var firstUser = new ApplicationUser()
+            {
+                Id = firstUserId,
+                UserName = "SamiAdmin",
+                FirstName = "Samuil",
+                LastName = "Vasilev",
+                NormalizedUserName = "SAMIADMIN",
+                Email = "samiadmin@mail.com",
+                NormalizedEmail = "samiadmin@mail.com".ToUpper(),
+                ImageUrl = @"https://lh3.googleusercontent.com/d/1Lf2T40cLdGd8GuGPEBuFCoPCPNQHz_ey",
+            };
+
+            var secondUserId = "Pesho";
+            var secondUser = new ApplicationUser()
+            {
+                Id = secondUserId,
+                UserName = "SamiAdmin",
+                FirstName = "Samuil",
+                LastName = "Vasilev",
+                NormalizedUserName = "SAMIADMIN",
+                Email = "samiadmin@mail.com",
+                NormalizedEmail = "samiadmin@mail.com".ToUpper(),
+                ImageUrl = @"https://lh3.googleusercontent.com/d/1Lf2T40cLdGd8GuGPEBuFCoPCPNQHz_ey",
+            };
+
+
+            var friendInvitationList = new List<FriendInvitation>()
+            {
+            };
+
+            var userFriendList = new List<UserFriend>()
+            {
+                new UserFriend()
+                {
+                    UserId = firstUserId,
+                    FriendId = "1",
+                    Friend = new ApplicationUser()
+                    {
+                        Id = "1",
+                        UserName = "TestUserName",
+                        FirstName = "Samuil",
+                        LastName = "Vasilev",
+                        NormalizedUserName = "SAMIADMIN",
+                        Email = "samiadmin@mail.com",
+                        NormalizedEmail = "samiadmin@mail.com".ToUpper(),
+                        ImageUrl = @"https://lh3.googleusercontent.com/d/1Lf2T40cLdGd8GuGPEBuFCoPCPNQHz_ey",
+                    },
+                    IsDeleted = false,
+                },
+                new UserFriend()
+                {
+                    FriendId = secondUserId,
+                    UserId = "1",
+                    User = new ApplicationUser()
+                    {
+                        Id = "1",
+                        UserName = "TestUserName",
+                        FirstName = "Samuil",
+                        LastName = "Vasilev",
+                        NormalizedUserName = "SAMIADMIN",
+                        Email = "samiadmin@mail.com",
+                        NormalizedEmail = "samiadmin@mail.com".ToUpper(),
+                        ImageUrl = @"https://lh3.googleusercontent.com/d/1Lf2T40cLdGd8GuGPEBuFCoPCPNQHz_ey",
+                    },
+                    IsDeleted = false,
+                },
+                new UserFriend()
+                {
+                    UserId = firstUserId,
+                    FriendId = "2",
+                    Friend = new ApplicationUser()
+                    {
+                        Id = "2",
+                        UserName = "TestUserName",
+                        FirstName = "Samuil",
+                        LastName = "Vasilev",
+                        NormalizedUserName = "SAMIADMIN",
+                        Email = "samiadmin@mail.com",
+                        NormalizedEmail = "samiadmin@mail.com".ToUpper(),
+                        ImageUrl = @"https://lh3.googleusercontent.com/d/1Lf2T40cLdGd8GuGPEBuFCoPCPNQHz_ey",
+                    },
+                    IsDeleted = false,
+                },
+                new UserFriend()
+                {
+                    FriendId = secondUserId,
+                    UserId = "2",
+                    User = new ApplicationUser()
+                    {
+                        Id = "2",
+                        UserName = "TestUserName",
+                        FirstName = "Samuil",
+                        LastName = "Vasilev",
+                        NormalizedUserName = "SAMIADMIN",
+                        Email = "samiadmin@mail.com",
+                        NormalizedEmail = "samiadmin@mail.com".ToUpper(),
+                        ImageUrl = @"https://lh3.googleusercontent.com/d/1Lf2T40cLdGd8GuGPEBuFCoPCPNQHz_ey",
+                    },
+                    IsDeleted = false,
+                },
+                new UserFriend()
+                {
+                    UserId = firstUserId,
+                    FriendId = "5",
+                    Friend = new ApplicationUser()
+                    {
+                        Id = "5",
+                        UserName = "TestUserName",
+                        FirstName = "Samuil",
+                        LastName = "Vasilev",
+                        NormalizedUserName = "SAMIADMIN",
+                        Email = "samiadmin@mail.com",
+                        NormalizedEmail = "samiadmin@mail.com".ToUpper(),
+                        ImageUrl = @"https://lh3.googleusercontent.com/d/1Lf2T40cLdGd8GuGPEBuFCoPCPNQHz_ey",
+                    },
+                    IsDeleted = false,
+                },
+                new UserFriend()
+                {
+                    UserId = secondUserId,
+                    FriendId = "6",
+                    Friend = new ApplicationUser()
+                    {
+                        Id = "6",
+                        UserName = "TestUserName",
+                        FirstName = "Samuil",
+                        LastName = "Vasilev",
+                        NormalizedUserName = "SAMIADMIN",
+                        Email = "samiadmin@mail.com",
+                        NormalizedEmail = "samiadmin@mail.com".ToUpper(),
+                        ImageUrl = @"https://lh3.googleusercontent.com/d/1Lf2T40cLdGd8GuGPEBuFCoPCPNQHz_ey",
+                    },
+                    IsDeleted = false,
+                },
+                new UserFriend()
+                {
+                    UserId = firstUserId,
+                    User = firstUser,
+                    FriendId = secondUserId,
+                    Friend = secondUser,
+                    IsDeleted = false,
+                },
+            };
+
+            var mockRepo = new Mock<IRepository>();
+            mockRepo
+                .Setup(r => r.All<FriendInvitation>())
+                .Returns(friendInvitationList.BuildMock());
+
+            mockRepo
+               .Setup(r => r.All<UserFriend>())
+               .Returns(userFriendList.BuildMock());
+
+            var mockUserService = new Mock<IUserService>();
+
+            var friendService = new FriendService(mockUserService.Object, mockRepo.Object);
+
+            var result = await friendService.GetMutualFriendsCountAsync(firstUserId, secondUserId);
+
+            Assert.That(result, Is.EqualTo(2));
         }
     }
 }

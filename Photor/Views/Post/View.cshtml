@@ -67,7 +67,7 @@
         <div class="nav-item dropdown">
                  <div class="dropdown">
                      <button class="btn btn-primary" type="button"
-                     data-bs-toggle="dropdown" disabled="@ViewBag.Disabled">More &#128317;</button>
+                     data-bs-toggle="dropdown">More &#128317;</button>
                      <ul class="dropdown-menu">
                          @if (User.Id() == Model.User.Id)
                          {
@@ -79,7 +79,7 @@
                          @if (await saveService.FindSaveAsync(@Model.Id, User.Id()) == null)
                          {
                              <li class="nav-item">
-                                 <button asp-action="Add" asp-controller="Save" asp-route-id="@Model.Id" class="dropdown-item">Save Post</button>
+                                 <button asp-action="Add" disabled="@ViewBag.Disabled" asp-controller="Save" asp-route-id="@Model.Id" class="dropdown-item">Save Post</button>
                              </li>
                          }
                          else

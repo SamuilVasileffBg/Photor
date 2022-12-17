@@ -16,44 +16,58 @@ namespace Photor.Areas.Administrator.Controllers
 
         public async Task<IActionResult> Delete(Guid id, string? returnUrl)
         {
-            var post = await postService
-                .GetPostAsync(id.ToString());
-
-            if (post == null)
+            try
             {
-                throw new Exception("Post not found.");
+                var post = await postService
+                    .GetPostAsync(id.ToString());
+
+                if (post == null)
+                {
+                    throw new Exception("Post not found.");
+                }
+
+                await postService
+                    .DeletePostAsync(id);
+
+                if (String.IsNullOrEmpty(returnUrl) == false)
+                {
+                    return Redirect(returnUrl);
+                }
+
+                return Redirect("/Admin/Report/Manage");
             }
-
-            await postService
-                .DeletePostAsync(id);
-
-            if (String.IsNullOrEmpty(returnUrl) == false)
+            catch (Exception e)
             {
-                return Redirect(returnUrl);
+                return View("Error", e.Message);
             }
-
-            return Redirect("/Admin/Report/Manage");
         }
 
         public async Task<IActionResult> IsOkay(Guid id, string? returnUrl)
         {
-            var report = await reportService
-                .GetReportAsync(id);
-
-            if (report == null)
+            try
             {
-                throw new Exception("Report not found.");
+                var report = await reportService
+                    .GetReportAsync(id);
+
+                if (report == null)
+                {
+                    throw new Exception("Report not found.");
+                }
+
+                await reportService
+                    .DeleteReportAsync(id);
+
+                if (String.IsNullOrEmpty(returnUrl) == false)
+                {
+                    return Redirect(returnUrl);
+                }
+
+                return Redirect("/Administrator/Report/Manage");
             }
-
-            await reportService
-                .DeleteReportAsync(id);
-
-            if (String.IsNullOrEmpty(returnUrl) == false)
+            catch (Exception e)
             {
-                return Redirect(returnUrl);
+                return View("Error", e.Message);
             }
-
-            return Redirect("/Administrator/Report/Manage");
         }
     }
 }

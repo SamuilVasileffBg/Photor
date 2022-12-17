@@ -29,7 +29,7 @@ namespace Photor.Controllers
                     throw new Exception("Post not found.");
                 }
 
-                if (await postService.AccessibleAsync(post, userId) == false)
+                if (await postService.AccessibleAsync(post, userId) == false && User.IsInRole("Administrator") == false && User.IsInRole("Moderator") == false)
                 {
                     throw new Exception("No access.");
                 }
@@ -64,7 +64,7 @@ namespace Photor.Controllers
                     throw new Exception("Post not found.");
                 }
 
-                if (await postService.AccessibleAsync(post, userId) == false)
+                if (await postService.AccessibleAsync(post, userId) == false && User.IsInRole("Administrator") == false && User.IsInRole("Moderator") == false)
                 {
                     throw new Exception("No access.");
                 }

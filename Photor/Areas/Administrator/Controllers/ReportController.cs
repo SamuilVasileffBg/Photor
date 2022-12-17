@@ -21,45 +21,52 @@ namespace Photor.Areas.Administrator.Controllers
         [HttpGet]
         public async Task<IActionResult> Manage(int? page, bool? newest)
         {
-            if (newest == null)
+            try
             {
-                newest = false;
-            }
+                if (newest == null)
+                {
+                    newest = false;
+                }
 
-            if (page == null || page < 1)
+                if (page == null || page < 1)
+                {
+                    return Redirect($"/Admin/Report/Manage?page=1&newest={newest}");
+                }
+
+                //return RedirectToAction("Index", "Base", new { Area = "Administrator" });
+
+                var model = new ManageReportViewModel();
+                model.AllMatchesCount = await reportService.AllReportsCountAsync();
+
+                model.Page = page.Value;
+                model.Newest = newest.Value;
+                model.AllMatchesCount = await reportService.AllReportsCountAsync();
+
+                var report = await reportService.GetReportsAsync(page.Value, newest.Value);
+
+                var lastPage = Math.Ceiling((double)model.AllMatchesCount);
+
+                if (report == null && page.Value > 1)
+                {
+                    return Redirect($"/Admin/Report/Manage?page={lastPage}&newest={newest}");
+                }
+
+                if (report != null)
+                {
+                    model.Report = report;
+                }
+
+                ViewBag.ReturnUrl = $"/Admin/Report/Manage?page={page}&newest={newest}";
+                ViewBag.LastPage = lastPage;
+                ViewBag.PreviousPage = page - 1;
+                ViewBag.NextPage = page + 1;
+
+                return View(model);
+            }
+            catch (Exception e)
             {
-                return Redirect($"/Admin/Report/Manage?page=1&newest={newest}");
+                return View("Error", e.Message);
             }
-
-            //return RedirectToAction("Index", "Base", new { Area = "Administrator" });
-
-            var model = new ManageReportViewModel();
-            model.AllMatchesCount = await reportService.AllReportsCountAsync();
-
-            model.Page = page.Value;
-            model.Newest = newest.Value;
-            model.AllMatchesCount = await reportService.AllReportsCountAsync();
-
-            var report = await reportService.GetReportsAsync(page.Value, newest.Value);
-
-            var lastPage = Math.Ceiling((double)model.AllMatchesCount);
-
-            if (report == null && page.Value > 1)
-            {
-                return Redirect($"/Admin/Report/Manage?page={lastPage}&newest={newest}");
-            }
-
-            if (report != null)
-            {
-                model.Report = report;
-            }
-
-            ViewBag.ReturnUrl = $"/Admin/Report/Manage?page={page}&newest={newest}";
-            ViewBag.LastPage = lastPage;
-            ViewBag.PreviousPage = page - 1;
-            ViewBag.NextPage = page + 1;
-
-            return View(model);
         }
     }
 }
